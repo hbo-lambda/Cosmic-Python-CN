@@ -1,0 +1,1401 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../c.Part1/">
+      
+      
+        <link rel="next" href="../e.Repository%20Pattern/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>1.领域建模 - My Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="My Docs" class="md-header__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              1.领域建模
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="My Docs" class="md-nav__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    My Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    REAMDME
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../a.Preface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    前言
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../b.Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    介绍
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c.Part1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第一部分: 构建支持领域建模的架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    1.领域建模
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    1.领域建模
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      什么是领域模型
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      探索领域语言
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      单元测试领域模型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="单元测试领域模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dataclasses" class="md-nav__link">
+    <span class="md-ellipsis">
+      dataclasses非常适合值对象
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      值对象和实体
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      并非所有东西都必须是对象：领域服务函数
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="并非所有东西都必须是对象：领域服务函数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      魔术方法让我们可以用Python中惯用的方式来使用模型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      异常也能表达领域概念
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e.Repository%20Pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.存储库模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../f.Coupling%20and%20Abstractions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.简短插曲：耦合和抽象
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../g.Flask%20API%20and%20Service%20Layer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4.我们的第一个用例：Flask API和服务层
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../h.TDD%20in%20High%20Gear%20and%20Low%20Gear/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.TDD高速和低速
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i.Unit%20of%20Work%20Pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6.工作单元模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../j.aggregates%20and%20Consistency%20Boundaries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7.聚合和一致性边界
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k.Part2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第二部分 事件驱动架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l.Events%20and%20the%20Message%20Bus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8.事件和消息总线
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../m.Going%20to%20Town%20on%20the%20Message%20Bus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9.使用消息总线大干一场
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../n.Commands%20and%20Command%20Handler/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10.命令和命令处理程序
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../o.Event-Driven%20Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11.事件驱动架构：使用事件集成微服务
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../p.CQRS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12.命令查询职责分离
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../q.Dependency%20Injection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13.依赖注入（和引导）
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../r.Epilogue/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    结语
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../s.Appendix%20A/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录A：摘要图表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../t.Appendix%20B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录B：模板项目结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../u.Appendix%20C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录C：更换基础设施：用csv完成所有工作
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v.Appendix%20D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录D：Django 的存储库和工作单元模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../w.Appendix%20E/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录E：验证
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      什么是领域模型
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      探索领域语言
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      单元测试领域模型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="单元测试领域模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dataclasses" class="md-nav__link">
+    <span class="md-ellipsis">
+      dataclasses非常适合值对象
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      值对象和实体
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      并非所有东西都必须是对象：领域服务函数
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="并非所有东西都必须是对象：领域服务函数">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      魔术方法让我们可以用Python中惯用的方式来使用模型
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      异常也能表达领域概念
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="1">1.领域建模</h1>
+<p>本章将介绍如何以与 TDD 高度兼容的方式使用代码对业务流程进行建模。我们将讨论域建模的重要性，并介绍域建模的几个关键模式：实体、值对象和域服务。</p>
+<p>图1 是我们领域模型模式的一个简单视觉占位符。我们将在本章中补充一些细节，随着我们进入其他章节，我们将围绕领域模型构建事物，但您应该始终能够在核心处找到这些小形状。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0101.png" />
+    <figcaption><font size=2>图1.领域模型的占位符</font></figcaption>
+</figure>
+<h2 id="_1"><font color='red'>什么是领域模型</font></h2>
+<p>在<a href="../b.Introduction/">介绍</a>中，我们使用术语业务逻辑层 来描述三层架构的中心层。在本书的其余部分，我们将改用术语领域模型。这是来自 DDD 社区的一个术语，可以更好地表达我们的意图。</p>
+<p>领域是一个比较高级的说法，它指的是你试图解决的问题。作者目前在一家家具在线零售商工作。根据你所讨论的系统，领域可能涉及购买和采购、或者产品设计、或者物流和交付。大多数程序员的工作日都在尝试改进或使业务流程自动化；领域就是这些流程支持的一组活动。</p>
+<p>模型是对捕捉有用属性的过程（或现象）的映射。人类非常擅长在头脑中建立事物的模型。例如，当有人向你扔球时，你几乎能无意识地预测它的运动，因为你对物体在空间中移动的方式有一个模型。当然，你的模型并不完美。人类对近光速或真空中物体行为的直觉很差，因为我们的模型从未被设计用于涵盖这些情况。这并不意味着模型是错误的，但确实意味着某些预测超出了它的范畴。</p>
+<p>领域模型是企业主对其业务的思维导图。所有商务人士都有这样的思维导图——它们是人类思考复杂流程的方式。</p>
+<p>你可以判断出他们何时会用这些思维导图，因为他们使用商业用语。在复杂系统上进行协作的人们之间自然会产生行话。</p>
+<p>想象一下，你，我们不幸的读者，突然和你的朋友和家人乘坐外星飞船被送到距离地球数光年之外的地方，并且必须从基本原理出发，弄清楚如何导航回家。</p>
+<p>在最初几天里，你可能只是随意按按钮，但很快你就会知道哪些按钮是干什么的，这样你就可以互相下达指令。你可能会说：“按下闪烁的小玩意旁边的红色按钮，然后把那个大杠杆扔到雷达装置旁边。”</p>
+<p>几周之内，你就会更准确地使用词语来描述飞船的功能：“增加货舱三的氧气含量”或“打开小型推进器”。几个月后，你就会掌握描述整个复杂过程的语言：“开始着陆程序”或“准备跃迁”。这个过程会非常自然地发生，无需任何正式的努力来建立共享的词汇表。</p>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px;">
+<p align='center'><strong style='font-size:1.6em;color:#186d7a'>这不是一本DDD书籍，你应该读一本DDD书籍</strong></p>
+<p>领域驱动设计（DDD）使领域建模的概念流行起来，通过专注于核心业务领域，在改变了人们设计软件的方面取得了巨大成功。我们在本书中介绍的许多架构模式，包括实体、聚合、值对象（见 7.聚合 ）和 存储库（在下一章中），都源自DDD传统。</p>
+<p>简而言之，DDD 认为软件最重要的一点是它提供了问题的有用模型。如果我们正确建立了该模型，我们的软件就能创造价值并使新事物成为可能。</p>
+<p>如果我们弄错了模型，它就会成为需要解决的障碍。在这本书中，我们可以展示构建领域模型的基础知识，并围绕它构建一个架构，使模型尽可能不受外部约束，以便于发展和改变。</p>
+<p>但是，DDD 以及开发领域模型的流程、工具和技术还有很多内容。我们希望让您体验一下，并且极力鼓励您继续阅读一本合适的 DDD 书籍：</p>
+<ul>
+    <li>最初的“蓝皮书”，领域驱动设计，作者：Eric Evans（Addison-Wesley Professional）</li>
+    <li>“红皮书”，《实施领域驱动设计》， 作者：Vaughn Vernon（Addison-Wesley Professional）</li>
+</ul>
+</div>
+
+<p>在现实的商业世界中也是如此。业务利益相关者使用的术语代表了对领域模型的精炼理解，其中复杂的思想和流程被浓缩为一个单词或短语。</p>
+<p>当我们听到业务利益相关者使用陌生的词汇，或以特定方式使用术语时，我们应该倾听以理解更深层次的含义，并将他们来之不易的经验编码到我们的软件中。</p>
+<p>在本书中，我们将使用真实领域的模型，具体来说是我们当前工作中的模型。MADE.com是一家成功的家具零售商。我们从世界各地的制造商那里采购家具，并销往欧洲各地。</p>
+<p>当您购买沙发或咖啡桌时，我们必须想出最好的办法，将您的商品从波兰、中国或越南运送到您的客厅。</p>
+<p>从高层次来看，我们有独立的系统负责采购库存、向客户销售库存以及向客户发货。中间系统需要通过根据客户的订单分配库存来协调该流程；请参见图2</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0102.png" />
+    <figcaption><font size=2>图2.分配服务的环境图</font></figcaption>
+</figure>
+<p>就本书而言，我们假设企业决定实施一种令人兴奋的新库存分配方式。到目前为止，企业一直根据仓库中的实际可用库存来显示库存和交货时间。如果仓库中的库存用完，产品将被列为“缺货”，直到制造商下一批货物到达。</p>
+<p>创新点在于：如果我们有一个系统可以跟踪所有货物以及它们何时到达，我们就可以把这些船上的货物视为真正的库存，并视为我们库存的一部分，只是交货时间会稍微长一些。缺货的货物会越来越少，我们的销量也会越来越高，而且企业可以通过在国内仓库中保持较低的库存来节省成本。</p>
+<p>但分配订单不再只是仓库系统中减少单个数量的简单事情。我们需要一个更复杂的分配机制。是时候进行一些领域建模了。</p>
+<h2 id="_2"><font color='red'>探索领域语言</font></h2>
+<p>理解领域模型需要时间、耐心和便利贴。我们与业务专家进行了初步对话，并就领域模型的第一个最小版本的词汇表和一些规则达成一致。只要有可能，我们就会要求提供具体示例来说明每条规则。</p>
+<p>我们确保用业务术语（ DDD 术语中的通用语言）来表达这些规则。我们为对象选择容易记住的标识符，以便更容易讨论示例。</p>
+<p>以下展示了我们在与领域专家讨论分配时可能记录的一些笔记。</p>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px">
+    <p align='center'><strong style='font-size:1.6em;color:#186d7a'>分配注意事项</strong></p>
+    <p>产品由SKU（发音为“skew”）标识，SKU是库存单位的缩写。客户下订单。订单由订单参考标识，由多个订单行组成，每行都有一个SKU和数量。例如：</p>
+    <ul>
+        <li>10个RED-CHAIR</li>
+        <li>1个TASTELESS-LAMP</li>
+    </ul>
+    <p>采购部门订购小批量的库存。一批库存有唯一的ID（成为参考）、一个SKU和一个数量。</p>
+    <p>我们需要将订单行分配 给批次。当我们将订单行分配给批次时，我们会将该特定批次的库存发送到客户的送货地址。当我们将x单位的库存分配给批次时，可用数量会减少x。例如：</p>
+    <ul>
+        <li>我们有一批 20 个 SMALL-TABLE，并且为 2 个 SMALL-TABLE 分配一个订单行。</li>
+        <li>该批次应剩余 18 个 SMALL-TABLE。</li>
+    </ul>
+    <p>如果可用数量小于订单行的数量，则无法分配给批次。例如：</p>
+    <ul>
+        <li>我们有一个BLUE-CUSHION 数量为1的批次，，然后有一个2个BLUE-CUSHION的订单行。</li>
+        <li>我们不应该将订单行分配给该批次。</li>
+    </ul>
+    <p>我们不能分配同一个订单行两次。例如：</p>
+    <ul>
+        <li>我们有一个 数量为10 BLUE-VASE的批次，然后我们将2个BLUE-VASE的订单行分配给它。</li>
+        <li>如果我们再次将订单行分配给同一批次，该批次可用数量仍然为8。</li>
+    </ul>
+    <p>如果批次目前正在发货，或者它们可能在仓库库存中，则它们会有一个预计到达时间 (ETA)。我们优先分配给仓库库存，而不是发货批次。我们按照预计到达时间最早的顺序分配给发货批次。</p>
+</div>
+
+<h2 id="_3"><font color='red'>单元测试领域模型</font></h2>
+<p>我们不会在本书中向您展示 TDD 的工作原理，但我们想向您展示如何根据此次业务对话构建模型。</p>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px">
+    <p align='center'><strong style='font-size:1.6em;color:#186d7a'>读者练习</strong></p>
+    <p>为什么不试试自己解决这个问题呢？编写一些单元测试，看看能否以清晰、干净的代码捕捉到这些业务规则的本质（最好不查看我们下面提供的解决方案！）</p>
+    <p>你会在<a src='https://github.com/cosmicpython/code/tree/chapter_01_domain_model_exercise'>GitHub</a>上找到一些占位符单元测试，但你可以从头开始，或者根据你的喜好组合/重写它们。</p>
+</div>
+
+<p>我们的首次测试可能如下所示：</p>
+<div class="language-py highlight"><span class="filename">第一次分配测试（test_batch.py）</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="nf">test_allocating_to_a_batch_reduces_the_available_quantity</span><span class="p">():</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">batch</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="s2">&quot;batch-001&quot;</span><span class="p">,</span> <span class="s2">&quot;SMALL-TABLE&quot;</span><span class="p">,</span> <span class="n">qty</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">())</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">line</span> <span class="o">=</span> <span class="n">OrderLine</span><span class="p">(</span><span class="s2">&quot;order-ref&quot;</span><span class="p">,</span> <span class="s2">&quot;SMALL-TABLE&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">batch</span><span class="o">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">assert</span> <span class="n">batch</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">18</span>
+</span></code></pre></div>
+<p>我们的单元测试的名称描述了我们希望从系统中看到的行为，我们使用的类和变量的名称取自业务术语。我们可以将这段代码展示给我们的非技术同事，他们会同意这正确地描述了系统的行为。</p>
+<p>这是一个满足我们要求的领域模型：</p>
+<div class="language-py highlight"><span class="filename">批次领域模型的初版（model.py）</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1">#(1) (2)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">class</span> <span class="nc">OrderLine</span><span class="p">:</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">orderid</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">qty</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="k">class</span> <span class="nc">Batch</span><span class="p">:</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">qty</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">date</span><span class="p">]):</span>  <span class="c1">#(2)</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="n">ref</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">sku</span> <span class="o">=</span> <span class="n">sku</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">=</span> <span class="n">qty</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="k">def</span> <span class="nf">allocate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="n">OrderLine</span><span class="p">):</span>  <span class="c1">#(3)</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">-=</span> <span class="n">line</span><span class="o">.</span><span class="n">qty</span>
+</span></code></pre></div>
+<ol>
+<li><code>OrderLine</code>是一个没有具体的行为的不可变的数据类。</li>
+<li>为了保持代码整洁，我们不会将导入显示在大多数代码中。我们希望您能猜到这是通过<code>from dataclasses import dataclass</code>，<code>typing.Optional</code>和<code>datetime.date</code>导入的。如果您想要仔细检查任何内容，您可以查看分支中每个章节的完整代码。(<a href="https://github.com/cosmicpython/code/tree/chapter_01_domain_model">1.领域模型</a>)</li>
+<li>类型提示在 Python 中仍是一个有争议的问题。对于领域模型，它们有时可以帮助澄清或记录预期的参数是什么，而使用 IDE 的人往往对它们心存感激。您可能会认为在可读性方面付出的代价太高了</li>
+</ol>
+<p>我们在这里的实现很简单：<code>Batch</code>只是包装了一个整数<code>available_quantity</code>，并在分配时减少该值。虽然我们编写了相当多的代码来执行从一个数减去另一个数的操作，但我们认为精确地建模会得到回报。</p>
+<p>让我们编写一些新的失败测试：</p>
+<div class="language-py highlight"><span class="filename">测试我们可以分配的逻辑（test_batches.py）</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span> <span class="nf">make_batch_and_line</span><span class="p">(</span><span class="n">sku</span><span class="p">,</span> <span class="n">batch_qty</span><span class="p">,</span> <span class="n">line_qty</span><span class="p">):</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="k">return</span> <span class="p">(</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        <span class="n">Batch</span><span class="p">(</span><span class="s2">&quot;batch-001&quot;</span><span class="p">,</span> <span class="n">sku</span><span class="p">,</span> <span class="n">batch_qty</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()),</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>        <span class="n">OrderLine</span><span class="p">(</span><span class="s2">&quot;order-123&quot;</span><span class="p">,</span> <span class="n">sku</span><span class="p">,</span> <span class="n">line_qty</span><span class="p">),</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">def</span> <span class="nf">test_can_allocate_if_available_greater_than_required</span><span class="p">():</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">large_batch</span><span class="p">,</span> <span class="n">small_line</span> <span class="o">=</span> <span class="n">make_batch_and_line</span><span class="p">(</span><span class="s2">&quot;ELEGANT-LAMP&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="k">assert</span> <span class="n">large_batch</span><span class="o">.</span><span class="n">can_allocate</span><span class="p">(</span><span class="n">small_line</span><span class="p">)</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="k">def</span> <span class="nf">test_cannot_allocate_if_available_smaller_than_required</span><span class="p">():</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">small_batch</span><span class="p">,</span> <span class="n">large_line</span> <span class="o">=</span> <span class="n">make_batch_and_line</span><span class="p">(</span><span class="s2">&quot;ELEGANT-LAMP&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    <span class="k">assert</span> <span class="n">small_batch</span><span class="o">.</span><span class="n">can_allocate</span><span class="p">(</span><span class="n">large_line</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="k">def</span> <span class="nf">test_can_allocate_if_available_equal_to_required</span><span class="p">():</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>    <span class="n">batch</span><span class="p">,</span> <span class="n">line</span> <span class="o">=</span> <span class="n">make_batch_and_line</span><span class="p">(</span><span class="s2">&quot;ELEGANT-LAMP&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="k">assert</span> <span class="n">batch</span><span class="o">.</span><span class="n">can_allocate</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="k">def</span> <span class="nf">test_cannot_allocate_if_skus_do_not_match</span><span class="p">():</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>    <span class="n">batch</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="s2">&quot;batch-001&quot;</span><span class="p">,</span> <span class="s2">&quot;UNCOMFORTABLE-CHAIR&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>    <span class="n">different_sku_line</span> <span class="o">=</span> <span class="n">OrderLine</span><span class="p">(</span><span class="s2">&quot;order-123&quot;</span><span class="p">,</span> <span class="s2">&quot;EXPENSIVE-TOASTER&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>    <span class="k">assert</span> <span class="n">batch</span><span class="o">.</span><span class="n">can_allocate</span><span class="p">(</span><span class="n">different_sku_line</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">False</span>
+</span></code></pre></div>
+<p>这里没有什么太出乎意料的事情。我们重构了测试套件，这样我们就不会重复相同的代码行来为同一个 SKU 创建<code>Batch</code>和<code>OrderLine</code>；并且我们为新方法编写了四个简单的测试<code>can_allocate</code>。再次注意，我们使用的名称反映了我们领域专家的语言，我们商定的示例直接写入代码中。
+我们也可以通过编写<code>Batch</code>的<code>can_allocate</code> 方法来直接实现这一点：</p>
+<div class="language-py highlight"><span class="filename">模型中的新方法（model.py）</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span> <span class="nf">can_allocate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="n">OrderLine</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sku</span> <span class="o">==</span> <span class="n">line</span><span class="o">.</span><span class="n">sku</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">&gt;=</span> <span class="n">line</span><span class="o">.</span><span class="n">qty</span>
+</span></code></pre></div>
+<p>到目前为止，我们可以通过简单地增加和减少<code>Batch.available_quantity</code>来管理实现，但当我们开始进行<code>deallocate()</code>测试时，我们将不得不采取更智能的解决方案：</p>
+<div class="language-py highlight"><span class="filename">这个测试将需要一个更智能的模型（test_batches.py）</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">def</span> <span class="nf">test_can_only_deallocate_allocated_lines</span><span class="p">():</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">batch</span><span class="p">,</span> <span class="n">unallocated_line</span> <span class="o">=</span> <span class="n">make_batch_and_line</span><span class="p">(</span><span class="s2">&quot;DECORATIVE-TRINKET&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">batch</span><span class="o">.</span><span class="n">deallocate</span><span class="p">(</span><span class="n">unallocated_line</span><span class="p">)</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="k">assert</span> <span class="n">batch</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">20</span>
+</span></code></pre></div>
+<p>在此测试中，我们断言，除非<code>Batch</code>先前分配了该<code>Orderline</code>，否则从该<code>Batch</code>中取消分配<code>OrderLine</code>不会产生任何影响。为了实现这一点，我们<code>Batch</code>需要了解哪些<code>OrderLine</code>已被分配。让我们看看实现：</p>
+<div class="language-py highlight"><span class="filename">领域模型现在跟踪分配（model.py）</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">class</span> <span class="nc">Batch</span><span class="p">:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">qty</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">date</span><span class="p">]):</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="n">ref</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">sku</span> <span class="o">=</span> <span class="n">sku</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">eta</span> <span class="o">=</span> <span class="n">eta</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_purchased_quantity</span> <span class="o">=</span> <span class="n">qty</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_allocations</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>  <span class="c1"># type: Set[OrderLine]</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="k">def</span> <span class="nf">allocate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="n">OrderLine</span><span class="p">):</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_allocate</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_allocations</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>    <span class="k">def</span> <span class="nf">deallocate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="n">OrderLine</span><span class="p">):</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>        <span class="k">if</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allocations</span><span class="p">:</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_allocations</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>    <span class="nd">@property</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>    <span class="k">def</span> <span class="nf">allocated_quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">qty</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allocations</span><span class="p">)</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    <span class="nd">@property</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>    <span class="k">def</span> <span class="nf">available_quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_purchased_quantity</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">allocated_quantity</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>    <span class="k">def</span> <span class="nf">can_allocate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="n">OrderLine</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sku</span> <span class="o">==</span> <span class="n">line</span><span class="o">.</span><span class="n">sku</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">&gt;=</span> <span class="n">line</span><span class="o">.</span><span class="n">qty</span>
+</span></code></pre></div>
+<p>UML中的模型</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0103.png" />
+    <figcaption><font size=2>图3.UML中的模型</font></figcaption>
+</figure>
+<p>现在有些进展了，批次（<code>Batch</code>）现在跟踪一组已分配的订单行（<code>OrderLine</code>）。当我们分配时，如果我们有足够的可用数量，我们只需将其添加到集合中。我们的<code>available_quantity</code>现在是一个计算的属性：已购买数量减去已分配数量。</p>
+<p>是的，我们还可以做很多事情。让人有点不安的是<code>allocate()</code>和<code>deallocate()</code>可能会默默失败，但我们已经掌握了基础知识。</p>
+<p>顺便说一下，使用<code>set</code>来处理<code>._allocations</code>，可以使我们能够轻松处理最后的测试，因为<code>set</code>中的项是唯一的：</p>
+<div class="language-py highlight"><span class="filename">最后一次批次测试!(test_batches.py）</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span> <span class="nf">test_allocation_is_idempotent</span><span class="p">():</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">batch</span><span class="p">,</span> <span class="n">line</span> <span class="o">=</span> <span class="n">make_batch_and_line</span><span class="p">(</span><span class="s2">&quot;ANGULAR-DESK&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">batch</span><span class="o">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">batch</span><span class="o">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="k">assert</span> <span class="n">batch</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">18</span>
+</span></code></pre></div>
+<p>目前，说领域模型太过简单，不值得用 DDD（甚至面向对象！）来思考，这可能是一个合理的批评。在现实生活中，会出现许多业务规则和边缘情况：客户可以要求在特定的未来日期交货，这意味着我们可能不想将它们分配给最早的批次。有些 SKU 不是分批的，而是直接从供应商处按需订购的，因此它们的逻辑不同。根据客户的位置，我们可以只分配给他们所在地区的部分仓库和货物 — 除了一些 SKU，如果我们所在地区缺货，我们很乐意从不同地区的仓库发货。等等。现实世界中的真实企业知道如何以比我们在页面上显示的速度更快地堆积复杂性！</p>
+<p>但是，我们将把这个简单的领域模型作为更复杂事物的占位符，在本书的其余部分中扩展我们的简单领域模型，并将其插入到 API、数据库和电子表格的现实世界中。我们将看到，严格遵守封装和谨慎分层的原则将如何帮助我们避免陷入困境。</p>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px">
+    <p align='center'><strong style='font-size:1.6em;color:#186d7a'>更多类型，更多的类型提示</strong></p>
+    如果您真的想要深入使用类型提示，您甚至可以使用<code>typing.NewType</code>来包装原始类型：
+<pre>
+    <code style='border: 1px solid;'>
+from dataclasses import dataclass
+from typing import NewType
+
+Quantity = NewType("Quantity", int)
+Sku = NewType("Sku", str)
+Reference = NewType("Reference", str)
+...
+
+class Batch:
+    def __init__(self, ref: Reference, sku: Sku, qty: Quantity):
+        self.sku = sku
+        self.reference = ref
+        self._purchased_quantity = qty
+    </code>
+</pre>
+<p>这将允许我们的类型检查器确保我们正确传递了参数。
+<p>你认为这是好事还是坏事，还有待商榷。</p>
+</div>
+
+<h3 id="dataclasses"><font color='red'>dataclasses非常适合值对象</font></h3>
+<p>在之前的代码中，我们大量使用了"line"这个术语，但是什么是"line"（行）? 在我们的业务语言中，一个订单有多个订单项（line items），每个订单项都包含一个SKU和一个数量。我们可以想象，包含订单信息的简单YAML文件可能如下所示：</p>
+<div class="language-yaml highlight"><span class="filename">订单信息yaml</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">Order_reference</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">12345</span><span class="w"></span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nt">Lines</span><span class="p">:</span><span class="w"></span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sku</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RED-CHAIR</span><span class="w"></span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nt">qty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span><span class="w"></span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sku</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BLU-CHAIR</span><span class="w"></span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nt">qty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span><span class="w"></span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">sku</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GRN-CHAIR</span><span class="w"></span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="nt">qty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span><span class="w"></span>
+</span></code></pre></div>
+<p>请注意，虽然订单有一个可以唯一标识它的引用，但行（<code>line</code>）没有。即使我们将引用添加到<code>OrderLine</code>类中，它也不是唯一标识订单行本身的东西。</p>
+<p>每当我们有一个具有数据但没有标识的业务概念时，通常我们选择使用值对象（<em>Value Object</em> ）来表示它。值对象是由其持有的数据进行唯一标识的领域对象；通常我们使它们不可变：</p>
+<div class="language-py highlight"><span class="filename">OrderLine是一个值对象</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="k">class</span> <span class="nc">OrderLine</span><span class="p">:</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">orderid</span><span class="p">:</span> <span class="n">OrderReference</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">sku</span><span class="p">:</span> <span class="n">ProductReference</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">qty</span><span class="p">:</span> <span class="n">Quantity</span>
+</span></code></pre></div>
+<p><code>dataclasse</code>或<code>namedtuples</code>给我们带来的一个好处是值相等性，也就是说，“具有相同orderid、sku和qty的两个订单行（<code>OrderLine</code>）是相等的”。</p>
+<div class="language-py highlight"><span class="filename">更多值对象示例</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">NamedTuple</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="k">class</span> <span class="nc">Name</span><span class="p">:</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="n">first_name</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>    <span class="n">surname</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="k">class</span> <span class="nc">Money</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>    <span class="n">currency</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>    <span class="n">value</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="n">Line</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Line&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sku&#39;</span><span class="p">,</span> <span class="s1">&#39;qty&#39;</span><span class="p">])</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="k">def</span> <span class="nf">test_equality</span><span class="p">():</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>    <span class="k">assert</span> <span class="n">Money</span><span class="p">(</span><span class="s1">&#39;gbp&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="n">Money</span><span class="p">(</span><span class="s1">&#39;gbp&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>    <span class="k">assert</span> <span class="n">Name</span><span class="p">(</span><span class="s1">&#39;Harry&#39;</span><span class="p">,</span> <span class="s1">&#39;Percival&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">Name</span><span class="p">(</span><span class="s1">&#39;Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Gregory&#39;</span><span class="p">)</span>
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>    <span class="k">assert</span> <span class="n">Line</span><span class="p">(</span><span class="s1">&#39;RED-CHAIR&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">==</span> <span class="n">Line</span><span class="p">(</span><span class="s1">&#39;RED-CHAIR&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</span></code></pre></div>
+<p>这些值对象符合我们关于其值在现实中如何运作的直觉。我们讨论的是哪张10英镑纸币并不重要，因为它们都具有相同的价值。同样，如果名字和姓氏都匹配，两个名字是相等的；如果两个订单行具有想通的客户、sku和数量，则它们等同。但是，我们仍然可以对值对象添加复杂的行为。事实上，支持值的操作是很常见的；例如，数学运算：</p>
+<div class="language-py highlight"><span class="filename">值对象上的运算</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">fiver</span> <span class="o">=</span> <span class="n">Money</span><span class="p">(</span><span class="s1">&#39;gbp&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">tenner</span> <span class="o">=</span> <span class="n">Money</span><span class="p">(</span><span class="s1">&#39;gbp&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="k">def</span> <span class="nf">can_add_money_values_for_the_same_currency</span><span class="p">():</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="k">assert</span> <span class="n">fiver</span> <span class="o">+</span> <span class="n">fiver</span> <span class="o">==</span> <span class="n">tenner</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="k">def</span> <span class="nf">can_subtract_money_values</span><span class="p">():</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    <span class="k">assert</span> <span class="n">tenner</span> <span class="o">-</span> <span class="n">fiver</span> <span class="o">==</span> <span class="n">fiver</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="k">def</span> <span class="nf">adding_different_currencies_fails</span><span class="p">():</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>        <span class="n">Money</span><span class="p">(</span><span class="s1">&#39;usd&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="n">Money</span><span class="p">(</span><span class="s1">&#39;gbp&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="k">def</span> <span class="nf">can_multiply_money_by_a_number</span><span class="p">():</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>    <span class="k">assert</span> <span class="n">fiver</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">==</span> <span class="n">Money</span><span class="p">(</span><span class="s1">&#39;gbp&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="k">def</span> <span class="nf">multiplying_two_money_values_is_an_error</span><span class="p">():</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">TypeError</span><span class="p">):</span>
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>        <span class="n">tenner</span> <span class="o">*</span> <span class="n">fiver</span>
+</span></code></pre></div>
+<p>为了让这些测试真正通过，你需要开始在我们的<code>Money</code>类上实现一些魔术方法：</p>
+<div class="language-py highlight"><span class="filename">在值对象实现运算</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">class</span> <span class="nc">Money</span><span class="p">:</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">currency</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">value</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Money</span><span class="p">:</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">currency</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">currency</span><span class="p">:</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot add </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">currency</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">other</span><span class="o">.</span><span class="n">currency</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>        <span class="k">return</span> <span class="n">Money</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currency</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+</span></code></pre></div>
+<h3 id="_4"><font color='red'>值对象和实体</font></h3>
+<p>订单行（<code>OrderLine</code>）由其订单ID、SKU和数量唯一标识；如果我们更改其中一个值，我们现在有一个新的订单行（<code>OrderLine</code>）。这就是值对象的定义：任何仅由其数据标识并且没有长期身份的对象。但是批次（<code>Batch</code>）呢？批次是由一个引用（reference）标识的。</p>
+<p>我们使用术语实体（<code>entity</code>）来描述具有长期身份的领域对象。在上一页，我们引入一个名字类（<code>Name</code>）作为值对象。如果我们取Harry Percival这个名字并更改其中的一个字母，我们会得到新的<code>Name</code>对象Barry Percival。</p>
+<p>应该清楚的是Harry Percival不等于Barry Percival：</p>
+<div class="language-py highlight"><span class="filename">名字本身是无法改变的...</span><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">def</span> <span class="nf">test_name_equality</span><span class="p">():</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="k">assert</span> <span class="n">Name</span><span class="p">(</span><span class="s2">&quot;Harry&quot;</span><span class="p">,</span> <span class="s2">&quot;Percival&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="n">Name</span><span class="p">(</span><span class="s2">&quot;Barry&quot;</span><span class="p">,</span> <span class="s2">&quot;Percival&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>但是Harry作为一个人又如何呢？人们确实会改变他们的名字、婚姻状况，甚至性别，但我们仍然会认出他们是同一个人。这是因为人类与名字不同，具有持久的身份：</p>
+<div class="language-py highlight"><span class="filename">但人可以...</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="n">Name</span><span class="p">):</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="k">def</span> <span class="nf">test_barry_is_harry</span><span class="p">():</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    <span class="n">harry</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="n">Name</span><span class="p">(</span><span class="s2">&quot;Harry&quot;</span><span class="p">,</span> <span class="s2">&quot;Percival&quot;</span><span class="p">))</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    <span class="n">barry</span> <span class="o">=</span> <span class="n">harry</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>    <span class="n">barry</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">Name</span><span class="p">(</span><span class="s2">&quot;Barry&quot;</span><span class="p">,</span> <span class="s2">&quot;Percival&quot;</span><span class="p">)</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>    <span class="k">assert</span> <span class="n">harry</span> <span class="ow">is</span> <span class="n">barry</span> <span class="ow">and</span> <span class="n">barry</span> <span class="ow">is</span> <span class="n">harry</span>
+</span></code></pre></div>
+<p>实体与值不同，具有身份相等性。我们可以更改它们的值，它们仍然可以被明确地识别为相同的东西。在我们的示例中，批次（<code>batches</code>）是实体。我们可以为批次分配订单行，或更改预计到货日期，它仍然是同一个实体。</p>
+<p>通常，我们通过在实体上实现相等运算符来在代码中明确表示这一点：</p>
+<div class="language-py highlight"><span class="filename">实现相等运算符（model.py）</span><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">class</span> <span class="nc">Batch</span><span class="p">:</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="o">...</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Batch</span><span class="p">):</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>            <span class="k">return</span> <span class="kc">False</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>        <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Python的<code>__eq__</code>魔术方法定义了类在使用<code>==</code>运算符时的行为。</p>
+<p>对于实体和值对象，还值得考虑<code>__hash__</code>方法的工作方式。这是Python用于控制对象在添加到集合或用作字典键时的行为的魔术方法；您可以在Python文档中找到更多信息。</p>
+<p>对于值对象，哈希值应该基于所有值属性，并且我们应该确保对象是不可变的。通过在数据类上指定<code>@frozen=True</code>，我们可以实现这一点。</p>
+<p>对于实体，最简单的选项是将哈希值设为None，这意味着对象是不可哈希的，例如不能在集合中使用。如果出于某种原因，您决定确实希望在实体上使用集合或字典操作，则哈希应基于属性，例如，该属性定义了实体随时间变化的唯一身份。您还应该尝试以某种方式将该<code>.reference</code>属性设为只读</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>这是一个棘手的领域；在修改<code>__hash__</code>时，您也不应该忘记修改<code>__eq__</code>。如果您不确定自己在做什么，建议进一步阅读。我们的技术审阅员Hynek Schlawack编写的文章"<a href="https://hynek.me/articles/hashes-and-equality/">Python Hashes and Equality</a>"是一个很好的起点。</p>
+</div>
+<h2 id="_5"><font color='red'>并非所有东西都必须是对象：领域服务函数</font></h2>
+<p>我们已经创建了一个表示批次的模型，但实际上我们需要做的是将订单行分配给一组特定的批次，这些批次代表了我们所有的库存。</p>
+<div class="admonition quote">
+<p class="admonition-title">Quote</p>
+<p>“有时，这根本就不是一回事。”
+<p align='right'>— Eric Evans</p>
+<p align='right'>Domain-Driven Design</p></p>
+</div>
+<p>Evans讨论了在实体或值对象中没有自然归属的领域服务操作的概念。一个负责分配订单行的东西，给定一组批次，听起来很像一个函数，而且我们可以利用Python作为一种多范式语言的特性，直接将其实现为一个函数。</p>
+<p>让我们看看如何通过测试驱动来创建这样一个函数：</p>
+<div class="language-py highlight"><span class="filename">测试我们的领域服务（test_allocate.py）</span><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">def</span> <span class="nf">test_prefers_current_stock_batches_to_shipments</span><span class="p">():</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">in_stock_batch</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="s2">&quot;in-stock-batch&quot;</span><span class="p">,</span> <span class="s2">&quot;RETRO-CLOCK&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="n">shipment_batch</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="s2">&quot;shipment-batch&quot;</span><span class="p">,</span> <span class="s2">&quot;RETRO-CLOCK&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="n">tomorrow</span><span class="p">)</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">line</span> <span class="o">=</span> <span class="n">OrderLine</span><span class="p">(</span><span class="s2">&quot;oref&quot;</span><span class="p">,</span> <span class="s2">&quot;RETRO-CLOCK&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>    <span class="n">allocate</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="p">[</span><span class="n">in_stock_batch</span><span class="p">,</span> <span class="n">shipment_batch</span><span class="p">])</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>    <span class="k">assert</span> <span class="n">in_stock_batch</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">90</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    <span class="k">assert</span> <span class="n">shipment_batch</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">100</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="k">def</span> <span class="nf">test_prefers_earlier_batches</span><span class="p">():</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>    <span class="n">earliest</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="s2">&quot;speedy-batch&quot;</span><span class="p">,</span> <span class="s2">&quot;MINIMALIST-SPOON&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="n">today</span><span class="p">)</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>    <span class="n">medium</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="s2">&quot;normal-batch&quot;</span><span class="p">,</span> <span class="s2">&quot;MINIMALIST-SPOON&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="n">tomorrow</span><span class="p">)</span>
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>    <span class="n">latest</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="s2">&quot;slow-batch&quot;</span><span class="p">,</span> <span class="s2">&quot;MINIMALIST-SPOON&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="n">later</span><span class="p">)</span>
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>    <span class="n">line</span> <span class="o">=</span> <span class="n">OrderLine</span><span class="p">(</span><span class="s2">&quot;order1&quot;</span><span class="p">,</span> <span class="s2">&quot;MINIMALIST-SPOON&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>    <span class="n">allocate</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="p">[</span><span class="n">medium</span><span class="p">,</span> <span class="n">earliest</span><span class="p">,</span> <span class="n">latest</span><span class="p">])</span>
+</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>
+</span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>    <span class="k">assert</span> <span class="n">earliest</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">90</span>
+</span><span id="__span-15-21"><a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>    <span class="k">assert</span> <span class="n">medium</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">100</span>
+</span><span id="__span-15-22"><a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>    <span class="k">assert</span> <span class="n">latest</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">100</span>
+</span><span id="__span-15-23"><a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a>
+</span><span id="__span-15-24"><a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>
+</span><span id="__span-15-25"><a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a><span class="k">def</span> <span class="nf">test_returns_allocated_batch_ref</span><span class="p">():</span>
+</span><span id="__span-15-26"><a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a>    <span class="n">in_stock_batch</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="s2">&quot;in-stock-batch-ref&quot;</span><span class="p">,</span> <span class="s2">&quot;HIGHBROW-POSTER&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-15-27"><a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a>    <span class="n">shipment_batch</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="s2">&quot;shipment-batch-ref&quot;</span><span class="p">,</span> <span class="s2">&quot;HIGHBROW-POSTER&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="n">tomorrow</span><span class="p">)</span>
+</span><span id="__span-15-28"><a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a>    <span class="n">line</span> <span class="o">=</span> <span class="n">OrderLine</span><span class="p">(</span><span class="s2">&quot;oref&quot;</span><span class="p">,</span> <span class="s2">&quot;HIGHBROW-POSTER&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</span><span id="__span-15-29"><a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a>    <span class="n">allocation</span> <span class="o">=</span> <span class="n">allocate</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="p">[</span><span class="n">in_stock_batch</span><span class="p">,</span> <span class="n">shipment_batch</span><span class="p">])</span>
+</span><span id="__span-15-30"><a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a>    <span class="k">assert</span> <span class="n">allocation</span> <span class="o">==</span> <span class="n">in_stock_batch</span><span class="o">.</span><span class="n">reference</span>
+</span></code></pre></div>
+<p>我们的服务可能如下所示：</p>
+<div class="language-py highlight"><span class="filename">我们的领域服务的独立函数（model.py）</span><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">def</span> <span class="nf">allocate</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="n">OrderLine</span><span class="p">,</span> <span class="n">batches</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Batch</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="n">batch</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">batches</span><span class="p">)</span> <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">can_allocate</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>    <span class="n">batch</span><span class="o">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>    <span class="k">return</span> <span class="n">batch</span><span class="o">.</span><span class="n">reference</span>
+</span></code></pre></div>
+<h3 id="python"><font color='red'>魔术方法让我们可以用Python中惯用的方式来使用模型</font></h3>
+<p>您可能会喜欢或可能不会喜欢前面代码中使用<code>next()</code>，但我们非常确定您会同意能够在批次列表中使用<code>sorted()</code>是一种很好的、​​惯用的Python方式。</p>
+<p>为了使其发挥作用，我们在我们的领域模型上实现了<code>__gt__</code>方法：</p>
+<div class="language-py highlight"><span class="filename">魔术方法可以表达领域语义（model.py）</span><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">class</span> <span class="nc">Batch</span><span class="p">:</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="o">...</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">eta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>            <span class="k">return</span> <span class="kc">False</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>        <span class="k">if</span> <span class="n">other</span><span class="o">.</span><span class="n">eta</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>            <span class="k">return</span> <span class="kc">True</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">eta</span> <span class="o">&gt;</span> <span class="n">other</span><span class="o">.</span><span class="n">eta</span>
+</span></code></pre></div>
+<p>这很好。</p>
+<h3 id="_6"><font color='red'>异常也能表达领域概念</font></h3>
+<p>我们还有最后一个概念要介绍：异常也可用于表达领域概念。在与领域专家的对话中，我们了解到由于缺货而无法分配订单的可能性，我们可以通过使用领域异常来捕获该情况：</p>
+<div class="language-py highlight"><span class="filename">测试缺货异常（test_allocate.py）</span><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">def</span> <span class="nf">test_raises_out_of_stock_exception_if_cannot_allocate</span><span class="p">():</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    <span class="n">batch</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="s2">&quot;batch1&quot;</span><span class="p">,</span> <span class="s2">&quot;SMALL-FORK&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="n">today</span><span class="p">)</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="n">allocate</span><span class="p">(</span><span class="n">OrderLine</span><span class="p">(</span><span class="s2">&quot;order1&quot;</span><span class="p">,</span> <span class="s2">&quot;SMALL-FORK&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">[</span><span class="n">batch</span><span class="p">])</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">OutOfStock</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s2">&quot;SMALL-FORK&quot;</span><span class="p">):</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>        <span class="n">allocate</span><span class="p">(</span><span class="n">OrderLine</span><span class="p">(</span><span class="s2">&quot;order2&quot;</span><span class="p">,</span> <span class="s2">&quot;SMALL-FORK&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">[</span><span class="n">batch</span><span class="p">])</span>
+</span></code></pre></div>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px;">
+<p align='center'><strong style='font-size:1.6em;color:#186d7a'>领域建模回顾</strong></p>
+<p><strong>领域建模</strong></p>
+<p>这是代码中最接近业务的部分，最有可能发生变化，也是您为业务提供最大价值的地方。使其易于理解和修改。</p>
+<p><strong>区分实体和值对象</strong></p>
+<p>值对象由其属性定义。通常最好将其实现为不可变类型。如果更改值对象的属性，则表示不同的对象。相反，实体具有随时间可能变化的属性，但仍然是同一个实体。定义唯一标识实体的内容很重要（通常是某种名称或引用字段）。</p>
+<p><strong>并非所有东西都必须是对象</strong></p>
+<p>Python是一种多范式语言，因此让代码中的“动词”成为函数。对于每个<code>FooManager</code>、<code>BarBuilder</code>或<code>BazFactory</code>，通常都可以使用更具表达力和可读性的<code>manage_foo()</code>、<code>build_bar()</code>或<code>get_baz()</code>函数。</p>
+<p><strong>现在是应用最佳面向对象设计原则的时候了</strong></p>
+<p>重新审视SOLID原则以及所有其他好的启发式方法，比如“有”与“是”，“优先使用组合而非继承”等等。</p>
+<p><strong>你还需要考虑一致性边界和聚合</strong></p>
+<p>但这是[第7章_聚合]的话题。</p>
+</div>
+
+<p>我们不会让您对实现过程感到太过厌烦，但要注意的主要一点是，我们在通用语言中命名异常时要小心，就像我们命名实体、值对象和服务一样：</p>
+<div class="language-py highlight"><span class="filename">引发领域异常（model.py）</span><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">class</span> <span class="nc">OutOfStock</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="k">pass</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="k">def</span> <span class="nf">allocate</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="n">OrderLine</span><span class="p">,</span> <span class="n">batches</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Batch</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>        <span class="n">batch</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>        <span class="o">...</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>        <span class="k">raise</span> <span class="n">OutOfStock</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Out of stock for sku </span><span class="si">{</span><span class="n">line</span><span class="o">.</span><span class="n">sku</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>本章末尾的领域模型是我们最终成果的直观表示。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0104.png" />
+    <figcaption><font size=2>图4.本章末尾的领域模型</font></figcaption>
+</figure>
+<p>现在可能就够了！我们有一个领域服务，可用于我们的第一个用例。但首先我们需要一个数据库……</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

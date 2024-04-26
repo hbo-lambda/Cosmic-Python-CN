@@ -1,0 +1,1665 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../l.Events%20and%20the%20Message%20Bus/">
+      
+      
+        <link rel="next" href="../n.Commands%20and%20Command%20Handler/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>9.使用消息总线大干一场 - My Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#9" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="My Docs" class="md-header__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              9.使用消息总线大干一场
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="My Docs" class="md-nav__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    My Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    REAMDME
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../a.Preface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    前言
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../b.Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    介绍
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c.Part1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第一部分: 构建支持领域建模的架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../d.Domain%20Modeling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.领域建模
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e.Repository%20Pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.存储库模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../f.Coupling%20and%20Abstractions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.简短插曲：耦合和抽象
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../g.Flask%20API%20and%20Service%20Layer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4.我们的第一个用例：Flask API和服务层
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../h.TDD%20in%20High%20Gear%20and%20Low%20Gear/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.TDD高速和低速
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i.Unit%20of%20Work%20Pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6.工作单元模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../j.aggregates%20and%20Consistency%20Boundaries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7.聚合和一致性边界
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k.Part2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第二部分 事件驱动架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l.Events%20and%20the%20Message%20Bus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8.事件和消息总线
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    9.使用消息总线大干一场
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    9.使用消息总线大干一场
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      新需求引领我们走向新架构
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="新需求引领我们走向新架构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      想象一个架构变革：一切都将成为事件处理程序
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      将服务函数重构为消息处理程序
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="将服务函数重构为消息处理程序">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uow" class="md-nav__link">
+    <span class="md-ellipsis">
+      消息总线现在从 UoW 收集事件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      我们的测试也都是根据事件编写的
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      暂时的丑陋黑客：消息总线必须返回结果
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      修改 API 以处理事件
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      实现我们的新需求
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="实现我们的新需求">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      我们的新事件
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      测试新的处理程序
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="测试新的处理程序">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      实现
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      一种新的领域模型方法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      可选：使用虚假消息总线对隔离事件处理程序进行单元测试
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="总结">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      我们取得了什么成就？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      我们为什么能取得这些成就？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../n.Commands%20and%20Command%20Handler/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10.命令和命令处理程序
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../o.Event-Driven%20Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11.事件驱动架构：使用事件集成微服务
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../p.CQRS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12.命令查询职责分离
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../q.Dependency%20Injection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13.依赖注入（和引导）
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../r.Epilogue/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    结语
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../s.Appendix%20A/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录A：摘要图表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../t.Appendix%20B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录B：模板项目结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../u.Appendix%20C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录C：更换基础设施：用csv完成所有工作
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v.Appendix%20D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录D：Django 的存储库和工作单元模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../w.Appendix%20E/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录E：验证
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      新需求引领我们走向新架构
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="新需求引领我们走向新架构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      想象一个架构变革：一切都将成为事件处理程序
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      将服务函数重构为消息处理程序
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="将服务函数重构为消息处理程序">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#uow" class="md-nav__link">
+    <span class="md-ellipsis">
+      消息总线现在从 UoW 收集事件
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      我们的测试也都是根据事件编写的
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      暂时的丑陋黑客：消息总线必须返回结果
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api" class="md-nav__link">
+    <span class="md-ellipsis">
+      修改 API 以处理事件
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      实现我们的新需求
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="实现我们的新需求">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      我们的新事件
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      测试新的处理程序
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="测试新的处理程序">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      实现
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      一种新的领域模型方法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      可选：使用虚假消息总线对隔离事件处理程序进行单元测试
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="总结">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      我们取得了什么成就？
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      我们为什么能取得这些成就？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="9">9.使用消息总线大干一场</h1>
+<p>在本章中，我们将开始使事件成为应用程序内部结构中更为重要的部分。我们将从之前的状态开始：如图1，其中事件是一个可选的副作用……</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0901.png" />
+    <figcaption><font size=2>图1.之前：消息总线是一个可选的附加组件</font></figcaption>
+</figure>
+<p>…​到现在如图2，一切都通过消息总线进行，我们的应用程序从根本上已经转变为消息处理器。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0902.png" />
+    <figcaption><font size=2>图2.消息总线现在是服务层的主要入口点</font></figcaption>
+</figure>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>本章的代码位于<a href="https://github.com/cosmicpython/code/tree/chapter_09_all_messagebus">GitHub</a>上的chapter_09_all_messagebus 分支中：
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git clone https://github.com/cosmicpython/code.git
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cd code
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>git checkout chapter_09_all_messagebus
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a># or to code along, checkout the previous chapter:
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>git checkout chapter_08_events_and_message_bus
+</span></code></pre></div></p>
+</div>
+<h2 id="_1"><font color='red'>新需求引领我们走向新架构</font></h2>
+<p>Rich Hickey 谈到了情境化软件，即运行时间较长的软件，用于管理真实世界的流程。例如仓库管理系统、物流调度程序和工资系统。</p>
+<p>这种软件编写起来很棘手，因为在现实世界中，总是会发生意想不到的事情，因为现实世界中充满了物理对象和不可靠的人。例如：</p>
+<ol>
+<li>在盘点过程中，我们发现三栋<code>SPRINGY-MATTRESS</code>房屋因屋顶漏水而遭受了水损。</li>
+<li>一批<code>RELIABLE-FORK</code>货物缺少所需文件，被海关扣留数周。随后有三批<code>RELIABLE-FORK</code>货物未能通过安全测试并被销毁。</li>
+<li>全球片材的短缺意味着我们无法生产下一批<code>SPARKLY-BOOKCASE</code>。</li>
+</ol>
+<p>在这种情况下，我们了解到需要更改系统中已有的批次数量。也许有人在清单上写错了数字，或者一些沙发从卡车上掉了下来。在与企业交谈后，我们将这种情况建模为图3的样子</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0903.png" />
+    <figcaption><font size=2>图3.批次数量改变意味着取消分配和重新分配</font></figcaption>
+</figure>
+<p>是的，我们将调用的称为<code>BatchQuantityChanged</code>的事件应该会引导我们更改批次的数量，但同时也要应用业务规则：如果新数量下降到低于已分配的总量，我们需要 从该批次中取消分配 这些订单。然后每个订单都需要新的分配，我们可以将其捕获为名为<code>AllocationRequired</code>的事件。</p>
+<p>也许您已经预料到我们的内部消息总线和事件可以帮助实现这一要求。我们可以定义一个名为<code>change_batch_quantity</code>的服务，它知道如何调整批次数量以及如何释放多余的订单行，然后每个释放都可以发出一个<code>AllocationRequired</code>事件，该事件可以在单独的事务中转发到现有<code>allocate</code>服务。再一次，我们的消息总线帮助我们实施单一责任原则，并允许我们在事务和数据完整性之间做出选择。</p>
+<h3 id="_2"><font color='red'>想象一个架构变革：一切都将成为事件处理程序</font></h3>
+<p>但在开始之前，请先想一想我们要去哪里。我们的系统中有两种流程：</p>
+<ul>
+<li>由服务层函数处理的 API 调用</li>
+<li>内部事件（可能作为服务层函数的副作用而引发）及其处理程序（进而调用服务层函数）</li>
+</ul>
+<p>如果一切都是事件处理程序，那不是更简单吗？如果我们将 API 调用重新视为捕获事件，那么服务层函数也可以是事件处理程序，我们不再需要区分内部和外部事件处理程序：</p>
+<ul>
+<li><code>services.allocate()</code>可以作为<code>AllocationRequired</code>事件的处理程序 并可以发出<code>Allocated</code>事件作为其输出。</li>
+<li><code>services.add_batch()</code>可以是<code>BatchCreated</code>事件的处理程序</li>
+</ul>
+<p>我们的新需求将符合相同的模式：</p>
+<ul>
+<li>名为<code>BatchQuantityChanged</code>的事件可以调用名为<code>change_batch_quantity()</code>的处理程序。</li>
+<li>并且它可能引发的新<code>AllocationRequired</code>事件也可以被传递到<code>services.allocate()</code>，因此来自 API 的全新分配和由释放分配内部触发的重新分配之间没有概念上的区别。</li>
+</ul>
+<p>听起来有点多？让我们逐步实现这一切。我们将遵循<a href="https://martinfowler.com/articles/preparatory-refactoring-example.html">准备重构</a>工作流程，即“让更改变得简单；然后进行简单的更改”：</p>
+<ol>
+<li>我们将服务层重构为事件处理程序。我们可以习惯于将事件作为我们描述系统输入的方式。具体来说，现有函数<code>services.allocate()</code>将成为名为<code>AllocationRequired</code>的事件的处理程序。</li>
+<li>我们构建一个端到端测试，将<code>BatchQuantityChanged</code>事件放入系统并查找<code>Allocated</code>出现的事件。</li>
+<li>我们的实现在概念上非常简单：一个新的<code>BatchQuantityChanged</code>事件处理程序，它将实现发出<code>AllocationRequired</code>事件，而这些事件又将由 API 使用的完全相同的分配处理程序来处理。</li>
+</ol>
+<p>在此过程中，我们将对消息总线和 UoW 进行小幅调整，将将新事件放到消息总线上的责任转移到消息总线本身。</p>
+<h2 id="_3"><font color='red'>将服务函数重构为消息处理程序</font></h2>
+<p>我们首先定义捕获当前 API 输入的两个事件 - <code>AllocationRequired</code>和<code>BatchCreated</code>：</p>
+<div class="language-py highlight"><span class="filename">BatchCreated 和 AllocationRequired 事件（src/allocation/domain/events.py）</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@dataclass</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">class</span> <span class="nc">BatchCreated</span><span class="p">(</span><span class="n">Event</span><span class="p">):</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">ref</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">qty</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">eta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">date</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="o">...</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="nd">@dataclass</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="k">class</span> <span class="nc">AllocationRequired</span><span class="p">(</span><span class="n">Event</span><span class="p">):</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="n">orderid</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="n">qty</span><span class="p">:</span> <span class="nb">int</span>
+</span></code></pre></div>
+<p>然后我们将services.py重命名为handlers.py；我们为<code>send_out_of_stock_notification</code>添加现有的消息处理程序；最重要的是，我们更改所有处理程序，使它们具有相同的输入、事件和 UoW：</p>
+<div class="language-py highlight"><span class="filename">处理程序和服务是同一件事（src/allocation/service_layer/handlers.py）</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span> <span class="nf">add_batch</span><span class="p">(</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">BatchCreated</span><span class="p">,</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">):</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="k">with</span> <span class="n">uow</span><span class="p">:</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="n">product</span> <span class="o">=</span> <span class="n">uow</span><span class="o">.</span><span class="n">products</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sku</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">sku</span><span class="p">)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        <span class="o">...</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="k">def</span> <span class="nf">allocate</span><span class="p">(</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">AllocationRequired</span><span class="p">,</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    <span class="n">line</span> <span class="o">=</span> <span class="n">OrderLine</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">orderid</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">sku</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">qty</span><span class="p">)</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    <span class="o">...</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="k">def</span> <span class="nf">send_out_of_stock_notification</span><span class="p">(</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">OutOfStock</span><span class="p">,</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="p">):</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>    <span class="n">email</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>        <span class="s2">&quot;stock@made.com&quot;</span><span class="p">,</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>        <span class="sa">f</span><span class="s2">&quot;Out of stock for </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">sku</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>    <span class="p">)</span>
+</span></code></pre></div>
+<p>变化可能更明显一点，如下所示：</p>
+<div class="language-py highlight"><span class="filename">从服务更改为处理程序（src/allocation/service_layer/handlers.py）</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a> <span class="k">def</span> <span class="nf">add_batch</span><span class="p">(</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="o">-</span>    <span class="n">ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">qty</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">eta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">date</span><span class="p">],</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="o">+</span>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">BatchCreated</span><span class="p">,</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>     <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a> <span class="p">):</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>     <span class="k">with</span> <span class="n">uow</span><span class="p">:</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="o">-</span>        <span class="n">product</span> <span class="o">=</span> <span class="n">uow</span><span class="o">.</span><span class="n">products</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sku</span><span class="o">=</span><span class="n">sku</span><span class="p">)</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="o">+</span>        <span class="n">product</span> <span class="o">=</span> <span class="n">uow</span><span class="o">.</span><span class="n">products</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sku</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">sku</span><span class="p">)</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>     <span class="o">...</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a> <span class="k">def</span> <span class="nf">allocate</span><span class="p">(</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="o">-</span>    <span class="n">orderid</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">qty</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="o">+</span>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">AllocationRequired</span><span class="p">,</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>     <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a> <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="o">-</span>    <span class="n">line</span> <span class="o">=</span> <span class="n">OrderLine</span><span class="p">(</span><span class="n">orderid</span><span class="p">,</span> <span class="n">sku</span><span class="p">,</span> <span class="n">qty</span><span class="p">)</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="o">+</span>    <span class="n">line</span> <span class="o">=</span> <span class="n">OrderLine</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">orderid</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">sku</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">qty</span><span class="p">)</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>     <span class="o">...</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="o">+</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="o">+</span><span class="k">def</span> <span class="nf">send_out_of_stock_notification</span><span class="p">(</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a><span class="o">+</span>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">OutOfStock</span><span class="p">,</span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="o">+</span>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="o">+</span><span class="p">):</span>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="o">+</span>    <span class="n">email</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>     <span class="o">...</span>
+</span></code></pre></div>
+<p>在此过程中，我们让服务层的 API 更加结构化和一致。它原本是一堆散乱的原语，现在则使用定义明确的对象。</p>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px;">
+<p align='center'><strong style='font-size:1.6em;color:#186d7a'>从领域对象，到起初的痴迷，再到事件作为接口</strong></p>
+<p>你们中的一些人可能还记得[将服务层测试与域完全分离]，其中我们将服务层 API 从域对象更改为基元。现在我们要回到原来的状态，但要更改为不同的对象？发生了什么？</p>
+<p>在面向对象圈子里，人们将对原始类型的痴迷视为一种反模式：他们会说，避免在公共 API 中使用原始类型，而是用自定义值类来包装它们。在 Python 世界中，很多人会对此持怀疑态度，认为这是一条经验法则。如果盲目地应用，这肯定会带来不必要的复杂性。所以这不是我们本身正在做的事情。</p>
+
+<p>从领域对象到原语的转变给我们带来了很好的解耦：我们的客户端代码不再直接与领域耦合，因此即使我们决定更改模型，服务层也可以提供保持不变的 API，反之亦然。</p>
+<p>那么我们是否倒退了呢？好吧，我们的核心领域模型对象仍然可以自由变化，但相反，我们将外部世界与我们的事件类耦合在一起。它们也是领域的一部分，但我们希望它们变化较少，因此将它们耦合在一起是一种合理的产物。</p>
+
+<p>我们自己买了什么？现在，在我们的应用程序中调用用例时，我们不再需要记住特定的基元组合，而只需要记住一个代表应用程序输入的事件类。这在概念上非常好。最重要的是，正如您将在[附录E 验证]中看到的那样，这些事件类可以成为进行一些输入验证的好地方。</p>
+</div>
+
+<h3 id="uow"><font color='red'>消息总线现在从 UoW 收集事件</font></h3>
+<p>我们的事件处理程序现在需要一个 UoW。此外，随着我​​们的消息总线成为我们应用程序的核心，明确让它负责收集和处理新事件是有意义的。到目前为止，UoW 和消息总线之间存在一些循环依赖，因此这将使其成为单向的。我们将让消息总线从 UoW 中拉取事件，而不是让 UoW 将事件推送到消息总线上。</p>
+<div class="language-py highlight"><span class="filename">Handle 采用 UoW 并管理队列 (src/allocation/service_layer/messagebus.py）</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">def</span> <span class="nf">handle</span><span class="p">(</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">Event</span><span class="p">,</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>  <span class="c1">#(1)</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">):</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">queue</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span><span class="p">]</span>  <span class="c1">#(2)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>        <span class="n">event</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1">#(3)</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">HANDLERS</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">event</span><span class="p">)]:</span>  <span class="c1">#(3)</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>            <span class="n">handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">uow</span><span class="o">=</span><span class="n">uow</span><span class="p">)</span>  <span class="c1">#(4)</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>            <span class="n">queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">uow</span><span class="o">.</span><span class="n">collect_new_events</span><span class="p">())</span>  <span class="c1">#(5)</span>
+</span></code></pre></div>
+<ol>
+<li>现在，消息总线每次启动时都会传递 UoW。</li>
+<li>当我们开始处理第一个事件时，我们启动一个队列。</li>
+<li>我们从队列前面弹出事件并调用它们的处理程序（字典<code>HANDLERS</code>没有改变；它仍然将事件类型映射到处理程序函数）。</li>
+<li>消息总线将 UoW 传递给每个处理程序。</li>
+<li>每个处理程序完成后，我们会收集所有已生成的新事件并将其添加到队列中。</li>
+</ol>
+<p>在unit_of_work.py中，<code>publish_events()</code>变成不太活跃的方法，<code>collect_new_events()</code>：</p>
+<div class="language-py highlight"><span class="filename">UoW 不再将事件直接放在总线上 (src/allocation/service_layer/unit_of_work.py）</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="o">-</span><span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">messagebus</span>  <span class="c1">#(1)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a> <span class="k">class</span> <span class="nc">AbstractUnitOfWork</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="o">@@</span> <span class="o">-</span><span class="mi">22</span><span class="p">,</span><span class="mi">13</span> <span class="o">+</span><span class="mi">21</span><span class="p">,</span><span class="mi">11</span> <span class="o">@@</span> <span class="k">class</span> <span class="nc">AbstractUnitOfWork</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>     <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>         <span class="bp">self</span><span class="o">.</span><span class="n">_commit</span><span class="p">()</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="o">-</span>        <span class="bp">self</span><span class="o">.</span><span class="n">publish_events</span><span class="p">()</span>  <span class="c1">#(2)</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="o">-</span>    <span class="k">def</span> <span class="nf">publish_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="o">+</span>    <span class="k">def</span> <span class="nf">collect_new_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>         <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">products</span><span class="o">.</span><span class="n">seen</span><span class="p">:</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>             <span class="k">while</span> <span class="n">product</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="o">-</span>                <span class="n">event</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="o">-</span>                <span class="n">messagebus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="o">+</span>                <span class="k">yield</span> <span class="n">product</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1">#(3)</span>
+</span></code></pre></div>
+<ol>
+<li>该<code>unit_of_work</code>模块现在不再依赖于<code>messagebus</code>。</li>
+<li>我们不再<code>commit</code>时自动<code>publish_events</code>。取而代之的是，消息总线会跟踪事件队列。</li>
+<li>并且 UoW 不再主动将事件放在消息总线上；它只是使它们可用。</li>
+</ol>
+<h3 id="_4"><font color='red'>我们的测试也都是根据事件编写的</font></h3>
+<p>我们的测试现在通过创建事件并将其放在消息总线上来运行，而不是直接调用服务层函数：</p>
+<div class="language-py highlight"><span class="filename">处理程序测试使用事件（tests/unit/test_handlers.py）</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">class</span> <span class="nc">TestAddBatch</span><span class="p">:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>     <span class="k">def</span> <span class="nf">test_for_new_product</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>         <span class="n">uow</span> <span class="o">=</span> <span class="n">FakeUnitOfWork</span><span class="p">()</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="o">-</span>        <span class="n">services</span><span class="o">.</span><span class="n">add_batch</span><span class="p">(</span><span class="s2">&quot;b1&quot;</span><span class="p">,</span> <span class="s2">&quot;CRUNCHY-ARMCHAIR&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="o">+</span>        <span class="n">messagebus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="o">+</span>            <span class="n">events</span><span class="o">.</span><span class="n">BatchCreated</span><span class="p">(</span><span class="s2">&quot;b1&quot;</span><span class="p">,</span> <span class="s2">&quot;CRUNCHY-ARMCHAIR&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">uow</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="o">+</span>        <span class="p">)</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>         <span class="k">assert</span> <span class="n">uow</span><span class="o">.</span><span class="n">products</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CRUNCHY-ARMCHAIR&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>         <span class="k">assert</span> <span class="n">uow</span><span class="o">.</span><span class="n">committed</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="o">...</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a> <span class="k">class</span> <span class="nc">TestAllocate</span><span class="p">:</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>     <span class="k">def</span> <span class="nf">test_returns_allocation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>         <span class="n">uow</span> <span class="o">=</span> <span class="n">FakeUnitOfWork</span><span class="p">()</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="o">-</span>        <span class="n">services</span><span class="o">.</span><span class="n">add_batch</span><span class="p">(</span><span class="s2">&quot;batch1&quot;</span><span class="p">,</span> <span class="s2">&quot;COMPLICATED-LAMP&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="o">-</span>        <span class="n">result</span> <span class="o">=</span> <span class="n">services</span><span class="o">.</span><span class="n">allocate</span><span class="p">(</span><span class="s2">&quot;o1&quot;</span><span class="p">,</span> <span class="s2">&quot;COMPLICATED-LAMP&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="o">+</span>        <span class="n">messagebus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="o">+</span>            <span class="n">events</span><span class="o">.</span><span class="n">BatchCreated</span><span class="p">(</span><span class="s2">&quot;batch1&quot;</span><span class="p">,</span> <span class="s2">&quot;COMPLICATED-LAMP&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">uow</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="o">+</span>        <span class="p">)</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="o">+</span>        <span class="n">result</span> <span class="o">=</span> <span class="n">messagebus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="o">+</span>            <span class="n">events</span><span class="o">.</span><span class="n">AllocationRequired</span><span class="p">(</span><span class="s2">&quot;o1&quot;</span><span class="p">,</span> <span class="s2">&quot;COMPLICATED-LAMP&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">uow</span>
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="o">+</span>        <span class="p">)</span>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a>         <span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="s2">&quot;batch1&quot;</span>
+</span></code></pre></div>
+<h3 id="_5"><font color='red'>暂时的丑陋黑客：消息总线必须返回结果</font></h3>
+<p>我们的 API 和服务层目前希望在调用我们的<code>allocate()</code>处理程序时知道分配的批处理引用。这意味着我们需要对消息总线进行临时修改，以使其返回事件：</p>
+<div class="language-py highlight"><span class="filename">消息总线返回结果（src/allocation/service_layer/messagebus.py）</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a> <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>     <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">Event</span><span class="p">,</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>     <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a> <span class="p">):</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="o">+</span>    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>     <span class="n">queue</span> <span class="o">=</span> <span class="p">[</span><span class="n">event</span><span class="p">]</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>     <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>         <span class="n">event</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>         <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">HANDLERS</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">event</span><span class="p">)]:</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="o">-</span>            <span class="n">handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">uow</span><span class="o">=</span><span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="o">+</span>            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">uow</span><span class="o">=</span><span class="n">uow</span><span class="p">))</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>             <span class="n">queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">uow</span><span class="o">.</span><span class="n">collect_new_events</span><span class="p">())</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="o">+</span>    <span class="k">return</span> <span class="n">results</span>
+</span></code></pre></div>
+<p>这是因为我们在系统中混合了读写职责。我们将在<a href="../p.CQRS/">12.CQRS</a>中解决这个问题。</p>
+<h3 id="api"><font color='red'>修改 API 以处理事件</font></h3>
+<div class="language-py highlight"><span class="filename">Flask 更改为消息总线作为差异（src/allocation/entrypoints/flask_app.py）</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a> <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/allocate&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a> <span class="k">def</span> <span class="nf">allocate_endpoint</span><span class="p">():</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>     <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="o">-</span>        <span class="n">batchref</span> <span class="o">=</span> <span class="n">services</span><span class="o">.</span><span class="n">allocate</span><span class="p">(</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="o">-</span>            <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;orderid&quot;</span><span class="p">],</span>  <span class="c1">#(1)</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="o">-</span>            <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;sku&quot;</span><span class="p">],</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="o">-</span>            <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;qty&quot;</span><span class="p">],</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="o">-</span>            <span class="n">unit_of_work</span><span class="o">.</span><span class="n">SqlAlchemyUnitOfWork</span><span class="p">(),</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="o">+</span>        <span class="n">event</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">AllocationRequired</span><span class="p">(</span>  <span class="c1">#(2)</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="o">+</span>            <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;orderid&quot;</span><span class="p">],</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;sku&quot;</span><span class="p">],</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;qty&quot;</span><span class="p">]</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>         <span class="p">)</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="o">+</span>        <span class="n">results</span> <span class="o">=</span> <span class="n">messagebus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">SqlAlchemyUnitOfWork</span><span class="p">())</span>  <span class="c1">#(3)</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="o">+</span>        <span class="n">batchref</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>     <span class="k">except</span> <span class="n">InvalidSku</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></code></pre></div>
+<ol>
+<li>而不是使用从请求JSON中提取的一堆原语来调用服务层……​</li>
+<li>我们实例化一个事件。</li>
+<li>然后我们将它传递给消息总线。</li>
+</ol>
+<p>我们应该回到一个功能齐全的应用程序，但现在它是完全由事件驱动的：</p>
+<p>过去的服务层功能现在是事件处理程序。</p>
+<p>这使得它们与我们调用来处理域模型引发的内部事件的函数相同。</p>
+<p>我们使用事件作为数据结构来捕获系统输入以及交接内部工作包。</p>
+<p>现在，整个应用程序最好被描述为一个消息处理器，或者如果你愿意的话，也可以称为一个事件处理器。我们将在<a href="../n.Commands%20and%20Command%20Handler/">下一章</a>中讨论两者的区别 。</p>
+<h2 id="_6"><font color='red'>实现我们的新需求</font></h2>
+<p>我们已经完成了重构阶段。让我们看看我们是否真的“让改变变得简单”。让我们实现我们的新需求，如图4.重新分配流程的序列图所示：我们将接收一些新<code>BatchQuantityChanged</code>事件作为输入，并将它们传递给处理程序，处理程序又可能会发出一些<code>AllocationRequired</code>事件，而这些事件又将返回到我们现有的处理程序进行重新分配。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0904.png" />
+    <figcaption><font size=2>图4.重新分配流程的序列图</font></figcaption>
+</figure>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>当您将类似这样的事务拆分到两个工作单元时，您现在有两个数据库事务，因此您将面临完整性问题：可能会发生一些事情，导致第一个事务完成，但第二个事务没有完成。您需要考虑这是否可以接受，以及是否需要注意何时发生并采取措施。</p>
+</div>
+<h3 id="_7"><font color='red'>我们的新事件</font></h3>
+<p>告诉我们批次数量已发生变化的事件很简单；它只需要一个批次参考和一个新的数量：</p>
+<div class="language-py highlight"><span class="filename">新事件（src/allocation/domain/events.py）</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nd">@dataclass</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">class</span> <span class="nc">BatchQuantityChanged</span><span class="p">(</span><span class="n">Event</span><span class="p">):</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    <span class="n">ref</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="n">qty</span><span class="p">:</span> <span class="nb">int</span>
+</span></code></pre></div>
+<h2 id="_8"><font color='red'>测试新的处理程序</font></h2>
+<p>根据在<a href="../g.Flask%20API%20and%20Service%20Layer/">4.服务层</a>中学到的经验教训，我们可以“全速前进”，在事件方面以尽可能高的抽象级别编写单元测试。它们可能如下所示：</p>
+<div class="language-py highlight"><span class="filename">处理程序对 change_batch_quantity 的测试（tests/unit/test_handlers.py）</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">class</span> <span class="nc">TestChangeBatchQuantity</span><span class="p">:</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="k">def</span> <span class="nf">test_changes_available_quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>        <span class="n">uow</span> <span class="o">=</span> <span class="n">FakeUnitOfWork</span><span class="p">()</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>        <span class="n">messagebus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>            <span class="n">events</span><span class="o">.</span><span class="n">BatchCreated</span><span class="p">(</span><span class="s2">&quot;batch1&quot;</span><span class="p">,</span> <span class="s2">&quot;ADORABLE-SETTEE&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span> <span class="n">uow</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>        <span class="p">)</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>        <span class="p">[</span><span class="n">batch</span><span class="p">]</span> <span class="o">=</span> <span class="n">uow</span><span class="o">.</span><span class="n">products</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sku</span><span class="o">=</span><span class="s2">&quot;ADORABLE-SETTEE&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">batches</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>        <span class="k">assert</span> <span class="n">batch</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">100</span>  <span class="c1">#(1)</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>        <span class="n">messagebus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">events</span><span class="o">.</span><span class="n">BatchQuantityChanged</span><span class="p">(</span><span class="s2">&quot;batch1&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>        <span class="k">assert</span> <span class="n">batch</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">50</span>  <span class="c1">#(1)</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>    <span class="k">def</span> <span class="nf">test_reallocates_if_necessary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>        <span class="n">uow</span> <span class="o">=</span> <span class="n">FakeUnitOfWork</span><span class="p">()</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>        <span class="n">event_history</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>            <span class="n">events</span><span class="o">.</span><span class="n">BatchCreated</span><span class="p">(</span><span class="s2">&quot;batch1&quot;</span><span class="p">,</span> <span class="s2">&quot;INDIFFERENT-TABLE&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>            <span class="n">events</span><span class="o">.</span><span class="n">BatchCreated</span><span class="p">(</span><span class="s2">&quot;batch2&quot;</span><span class="p">,</span> <span class="s2">&quot;INDIFFERENT-TABLE&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()),</span>
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>            <span class="n">events</span><span class="o">.</span><span class="n">AllocationRequired</span><span class="p">(</span><span class="s2">&quot;order1&quot;</span><span class="p">,</span> <span class="s2">&quot;INDIFFERENT-TABLE&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>            <span class="n">events</span><span class="o">.</span><span class="n">AllocationRequired</span><span class="p">(</span><span class="s2">&quot;order2&quot;</span><span class="p">,</span> <span class="s2">&quot;INDIFFERENT-TABLE&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>        <span class="p">]</span>
+</span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">event_history</span><span class="p">:</span>
+</span><span id="__span-10-23"><a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>            <span class="n">messagebus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-10-24"><a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>        <span class="p">[</span><span class="n">batch1</span><span class="p">,</span> <span class="n">batch2</span><span class="p">]</span> <span class="o">=</span> <span class="n">uow</span><span class="o">.</span><span class="n">products</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sku</span><span class="o">=</span><span class="s2">&quot;INDIFFERENT-TABLE&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">batches</span>
+</span><span id="__span-10-25"><a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a>        <span class="k">assert</span> <span class="n">batch1</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">10</span>
+</span><span id="__span-10-26"><a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>        <span class="k">assert</span> <span class="n">batch2</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">50</span>
+</span><span id="__span-10-27"><a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>
+</span><span id="__span-10-28"><a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>        <span class="n">messagebus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">events</span><span class="o">.</span><span class="n">BatchQuantityChanged</span><span class="p">(</span><span class="s2">&quot;batch1&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-10-29"><a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a>
+</span><span id="__span-10-30"><a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a>        <span class="c1"># order1 or order2 will be deallocated, so we&#39;ll have 25 - 20</span>
+</span><span id="__span-10-31"><a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a>        <span class="k">assert</span> <span class="n">batch1</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">5</span>  <span class="c1">#(2)</span>
+</span><span id="__span-10-32"><a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a>        <span class="c1"># and 20 will be reallocated to the next batch</span>
+</span><span id="__span-10-33"><a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a>        <span class="k">assert</span> <span class="n">batch2</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">30</span>  <span class="c1">#(2)</span>
+</span></code></pre></div>
+<ol>
+<li>这个简单的情况很容易实现；我们只需修改一个数量。</li>
+<li>但是，如果我们尝试将数量更改为少于已分配的数量，我们将需要取消分配至少一个订单，并且我们希望将其重新分配给新的批次。</li>
+</ol>
+<h3 id="_9"><font color='red'>实现</font></h3>
+<div class="language-py highlight"><span class="filename">处理程序委托给模型层（src/allocation/service_layer/handlers.py）</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">def</span> <span class="nf">change_batch_quantity</span><span class="p">(</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">BatchQuantityChanged</span><span class="p">,</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="p">):</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="k">with</span> <span class="n">uow</span><span class="p">:</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>        <span class="n">product</span> <span class="o">=</span> <span class="n">uow</span><span class="o">.</span><span class="n">products</span><span class="o">.</span><span class="n">get_by_batchref</span><span class="p">(</span><span class="n">batchref</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">ref</span><span class="p">)</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>        <span class="n">product</span><span class="o">.</span><span class="n">change_batch_quantity</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">ref</span><span class="p">,</span> <span class="n">qty</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">qty</span><span class="p">)</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>        <span class="n">uow</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</span></code></pre></div>
+<p>我们意识到我们的存储库需要一种新的查询类型：</p>
+<div class="language-py highlight"><span class="filename">我们的存储库中的一种新查询类型（src/allocation/adapters/repository.py）</span><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">class</span> <span class="nc">AbstractRepository</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="o">...</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sku</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">model</span><span class="o">.</span><span class="n">Product</span><span class="p">:</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>        <span class="o">...</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    <span class="k">def</span> <span class="nf">get_by_batchref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batchref</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">model</span><span class="o">.</span><span class="n">Product</span><span class="p">:</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>        <span class="n">product</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_by_batchref</span><span class="p">(</span><span class="n">batchref</span><span class="p">)</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>        <span class="k">if</span> <span class="n">product</span><span class="p">:</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>        <span class="k">return</span> <span class="n">product</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>    <span class="k">def</span> <span class="nf">_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">Product</span><span class="p">):</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>    <span class="k">def</span> <span class="nf">_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sku</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">model</span><span class="o">.</span><span class="n">Product</span><span class="p">:</span>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>
+</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>    <span class="k">def</span> <span class="nf">_get_by_batchref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batchref</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">model</span><span class="o">.</span><span class="n">Product</span><span class="p">:</span>
+</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>    <span class="o">...</span>
+</span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>
+</span><span id="__span-12-26"><a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="k">class</span> <span class="nc">SqlAlchemyRepository</span><span class="p">(</span><span class="n">AbstractRepository</span><span class="p">):</span>
+</span><span id="__span-12-27"><a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>    <span class="o">...</span>
+</span><span id="__span-12-28"><a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>
+</span><span id="__span-12-29"><a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>    <span class="k">def</span> <span class="nf">_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sku</span><span class="p">):</span>
+</span><span id="__span-12-30"><a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Product</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">sku</span><span class="o">=</span><span class="n">sku</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+</span><span id="__span-12-31"><a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a>
+</span><span id="__span-12-32"><a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>    <span class="k">def</span> <span class="nf">_get_by_batchref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batchref</span><span class="p">):</span>
+</span><span id="__span-12-33"><a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>        <span class="k">return</span> <span class="p">(</span>
+</span><span id="__span-12-34"><a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Product</span><span class="p">)</span>
+</span><span id="__span-12-35"><a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a>            <span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Batch</span><span class="p">)</span>
+</span><span id="__span-12-36"><a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a>            <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">orm</span><span class="o">.</span><span class="n">batches</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="n">batchref</span><span class="p">)</span>
+</span><span id="__span-12-37"><a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a>            <span class="o">.</span><span class="n">first</span><span class="p">()</span>
+</span><span id="__span-12-38"><a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a>        <span class="p">)</span>
+</span></code></pre></div>
+<p>在<code>FakeRepository</code>也是：</p>
+<div class="language-py highlight"><span class="filename">更新虚假 repo (tests/unit/test_handlers.py）</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">class</span> <span class="nc">FakeRepository</span><span class="p">(</span><span class="n">repository</span><span class="o">.</span><span class="n">AbstractRepository</span><span class="p">):</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="o">...</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="k">def</span> <span class="nf">_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sku</span><span class="p">):</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>        <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_products</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">sku</span> <span class="o">==</span> <span class="n">sku</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>    <span class="k">def</span> <span class="nf">_get_by_batchref</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batchref</span><span class="p">):</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>            <span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_products</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">batches</span> <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="n">batchref</span><span class="p">),</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>            <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>        <span class="p">)</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>我们正在向存储库添加查询，以使此用例更易于实现。只要我们的查询返回单个聚合，我们就不会违反任何规则。如果您发现自己在存储库上编写了复杂的查询，则可能需要考虑不同的设计。特别是像<code>get_most_popular_products</code>或<code>find_products_by_order_id</code>这样的方法肯定会触发我们的第六感。
+[11.事件驱动架构：使用事件集成微服务]和[结语]有一些关于管理复杂查询的提示。</p>
+</div>
+<h3 id="_10"><font color='red'>一种新的领域模型方法</font></h3>
+<p>我们向模型添加了新方法，该方法以内联方式执行数量更改和释放并发布新事件。我们还修改了现有的分配函数以发布事件：</p>
+<div class="language-py highlight"><span class="filename">我们的模型不断发展以满足新的需求（src/allocation/domain/model.py）</span><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">class</span> <span class="nc">Product</span><span class="p">:</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="o">...</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>    <span class="k">def</span> <span class="nf">change_batch_quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">qty</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>        <span class="n">batch</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">batches</span> <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="n">ref</span><span class="p">)</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>        <span class="n">batch</span><span class="o">.</span><span class="n">_purchased_quantity</span> <span class="o">=</span> <span class="n">qty</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>        <span class="k">while</span> <span class="n">batch</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>            <span class="n">line</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">deallocate_one</span><span class="p">()</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>                <span class="n">events</span><span class="o">.</span><span class="n">AllocationRequired</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">orderid</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">sku</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">qty</span><span class="p">)</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>            <span class="p">)</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="o">...</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="k">class</span> <span class="nc">Batch</span><span class="p">:</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>    <span class="o">...</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>    <span class="k">def</span> <span class="nf">deallocate_one</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OrderLine</span><span class="p">:</span>
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allocations</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+</span></code></pre></div>
+<p>我们连接新的处理程序：</p>
+<div class="language-py highlight"><span class="filename">消息总线增长（src/allocation/service_layer/messagebus.py）</span><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">HANDLERS</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>    <span class="n">events</span><span class="o">.</span><span class="n">BatchCreated</span><span class="p">:</span> <span class="p">[</span><span class="n">handlers</span><span class="o">.</span><span class="n">add_batch</span><span class="p">],</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="n">events</span><span class="o">.</span><span class="n">BatchQuantityChanged</span><span class="p">:</span> <span class="p">[</span><span class="n">handlers</span><span class="o">.</span><span class="n">change_batch_quantity</span><span class="p">],</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>    <span class="n">events</span><span class="o">.</span><span class="n">AllocationRequired</span><span class="p">:</span> <span class="p">[</span><span class="n">handlers</span><span class="o">.</span><span class="n">allocate</span><span class="p">],</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>    <span class="n">events</span><span class="o">.</span><span class="n">OutOfStock</span><span class="p">:</span> <span class="p">[</span><span class="n">handlers</span><span class="o">.</span><span class="n">send_out_of_stock_notification</span><span class="p">],</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="p">}</span>  <span class="c1"># type: Dict[Type[events.Event], List[Callable]]</span>
+</span></code></pre></div>
+<p>我们的新需求已全面实现。</p>
+<h2 id="_11"><font color='red'>可选：使用虚假消息总线对隔离事件处理程序进行单元测试</font></h2>
+<p>我们对重新分配工作流的主要测试是端到端的（请参阅测试驱动新处理程序 中的示例代码）。它使用真实的消息总线，并测试整个流程，其中<code>BatchQuantityChanged</code>事件处理程序触发释放，并发出新<code>AllocationRequired</code>事件，而这些事件又由它们自己的处理程序处理。一个测试涵盖多个事件和处理程序的链。</p>
+<p>根据事件链的复杂程度，您可能决定要单独测试一些处理程序。您可以使用“假”消息总线来执行此操作。</p>
+<p>在我们的例子中，我们实际上是通过修改<code>publish_events()</code>方法<code>FakeUnitOfWork</code>并将其与真实消息总线分离来进行干预，而是让它记录它所看到的事件：</p>
+<div class="language-py highlight"><span class="filename">在 UoW 中实现的虚假消息总线 (tests/unit/test_handlers.py）</span><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">class</span> <span class="nc">FakeUnitOfWorkWithFakeMessageBus</span><span class="p">(</span><span class="n">FakeUnitOfWork</span><span class="p">):</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">events_published</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># type: List[events.Event]</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>    <span class="k">def</span> <span class="nf">publish_events</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>        <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">products</span><span class="o">.</span><span class="n">seen</span><span class="p">:</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>            <span class="k">while</span> <span class="n">product</span><span class="o">.</span><span class="n">events</span><span class="p">:</span>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">events_published</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</span></code></pre></div>
+<p>现在，当我们使用<code>FakeUnitOfWorkWithFakeMessageBus</code>调用<code>messagebus.handle()</code>时，它只会运行该事件的处理程序。因此，我们可以编写一个更独立的单元测试：我们不必检查所有副作用，只需检查如果数量低于已分配的总数，<code>BatchQuantityChanged</code>是否会导致<code>AllocationRequired</code>：</p>
+<div class="language-py highlight"><span class="filename">单独测试重新分配（tests/unit/test_handlers.py）</span><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="k">def</span> <span class="nf">test_reallocates_if_necessary_isolated</span><span class="p">():</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="n">uow</span> <span class="o">=</span> <span class="n">FakeUnitOfWorkWithFakeMessageBus</span><span class="p">()</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>    <span class="c1"># test setup as before</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>    <span class="n">event_history</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>        <span class="n">events</span><span class="o">.</span><span class="n">BatchCreated</span><span class="p">(</span><span class="s2">&quot;batch1&quot;</span><span class="p">,</span> <span class="s2">&quot;INDIFFERENT-TABLE&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>        <span class="n">events</span><span class="o">.</span><span class="n">BatchCreated</span><span class="p">(</span><span class="s2">&quot;batch2&quot;</span><span class="p">,</span> <span class="s2">&quot;INDIFFERENT-TABLE&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()),</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>        <span class="n">events</span><span class="o">.</span><span class="n">AllocationRequired</span><span class="p">(</span><span class="s2">&quot;order1&quot;</span><span class="p">,</span> <span class="s2">&quot;INDIFFERENT-TABLE&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>        <span class="n">events</span><span class="o">.</span><span class="n">AllocationRequired</span><span class="p">(</span><span class="s2">&quot;order2&quot;</span><span class="p">,</span> <span class="s2">&quot;INDIFFERENT-TABLE&quot;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>    <span class="p">]</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">event_history</span><span class="p">:</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a>        <span class="n">messagebus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>    <span class="p">[</span><span class="n">batch1</span><span class="p">,</span> <span class="n">batch2</span><span class="p">]</span> <span class="o">=</span> <span class="n">uow</span><span class="o">.</span><span class="n">products</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sku</span><span class="o">=</span><span class="s2">&quot;INDIFFERENT-TABLE&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">batches</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>    <span class="k">assert</span> <span class="n">batch1</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">10</span>
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>    <span class="k">assert</span> <span class="n">batch2</span><span class="o">.</span><span class="n">available_quantity</span> <span class="o">==</span> <span class="mi">50</span>
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>
+</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a>    <span class="n">messagebus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">events</span><span class="o">.</span><span class="n">BatchQuantityChanged</span><span class="p">(</span><span class="s2">&quot;batch1&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">),</span> <span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>
+</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>    <span class="c1"># assert on new events emitted rather than downstream side-effects</span>
+</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a>    <span class="p">[</span><span class="n">reallocation_event</span><span class="p">]</span> <span class="o">=</span> <span class="n">uow</span><span class="o">.</span><span class="n">events_published</span>
+</span><span id="__span-17-21"><a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a>    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reallocation_event</span><span class="p">,</span> <span class="n">events</span><span class="o">.</span><span class="n">AllocationRequired</span><span class="p">)</span>
+</span><span id="__span-17-22"><a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a>    <span class="k">assert</span> <span class="n">reallocation_event</span><span class="o">.</span><span class="n">orderid</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;order1&quot;</span><span class="p">,</span> <span class="s2">&quot;order2&quot;</span><span class="p">}</span>
+</span><span id="__span-17-23"><a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a>    <span class="k">assert</span> <span class="n">reallocation_event</span><span class="o">.</span><span class="n">sku</span> <span class="o">==</span> <span class="s2">&quot;INDIFFERENT-TABLE&quot;</span>
+</span></code></pre></div>
+<p>是否要这样做取决于事件链的复杂性。我们建议从边到边测试开始，仅在必要时才诉诸此方法。</p>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px;">
+<p align='center'><strong style='font-size:1.6em;color:#186d7a'>读者练习</strong></p>
+<p>强迫自己真正理解一些代码的一个好方法是重构它。在讨论单独测试处理程序时，我们使用了一种称为FakeUnitOfWorkWithFakeMessageBus的方法，它不必要地复杂，并且违反了 SRP。</p>
+<p>如果我们将消息总线改为一个类，那么构建FakeMessageBus就更加简单了：</p>
+<pre>
+    <code style='border: 1px solid;'>
+# 抽象消息总线及其真实版本和虚假版本
+class AbstractMessageBus:
+    HANDLERS: Dict[Type[events.Event], List[Callable]]
+
+    def handle(self, event: events.Event):
+        for handler in self.HANDLERS[type(event)]:
+            handler(event)
+
+
+class MessageBus(AbstractMessageBus):
+    HANDLERS = {
+        events.OutOfStock: [send_out_of_stock_notification],
+
+    }
+
+
+class FakeMessageBus(messagebus.AbstractMessageBus):
+    def __init__(self):
+        self.events_published = []  # type: List[events.Event]
+        self.HANDLERS = {
+            events.OutOfStock: [lambda e: self.events_published.append(e)]
+        }
+    </code>
+</pre>
+因此跳转到<a src='https://github.com/cosmicpython/code/tree/chapter_09_all_messagebus'>GitHub</a>上的代码 ，看看是否可以获得一个基于类的版本，然后编写一个<code>test_reallocates_if_necessary_isolated()</code>早期版本。
+
+如果您需要更多灵感，我们在[13.依赖注入]中使用了基于类的消息总线。
+</div>
+
+<h2 id="_12"><font color='red'>总结</font></h2>
+<p>让我们回顾一下我们所取得的成就，并思考我们为什么能够做到这一点。</p>
+<h3 id="_13"><font color='red'>我们取得了什么成就？</font></h3>
+<p>事件是简单的数据类，用于定义系统中输入和内部消息的数据结构。从 DDD 的角度来看，这非常强大，因为事件通常可以很好地转换为业务语言（如果您还没有了解过，请查阅事件风暴）。</p>
+<p>处理程序是我们对事件做出反应的方式。它们可以向下调用我们的模型或向外调用外部服务。如果愿意，我们可以为单个事件定义多个处理程序。处理程序还可以引发其他事件。这使我们能够非常细致地了解处理程序的作用并真正遵守 SRP。</p>
+<h3 id="_14"><font color='red'>我们为什么能取得这些成就？</font></h3>
+<p>我们使用这些架构模式的持续目标是尝试让应用程序的复杂性增长速度低于其大小。当我们全力投入消息总线时，我们总是会付出架构复杂性的代价（请参阅表1），但我们获得的模式可以处理几乎任意复杂的需求，而无需对我们的工作方式进行任何概念或架构更改。</p>
+<p>这里我们添加了一个相当复杂的用例（更改数量、取消分配、启动新交易、重新分配、发布外部通知），但从架构上看，复杂性并没有增加。我们添加了新事件、新处理程序和新外部适配器（用于电子邮件），所有这些都是我们架构中现有的事物类别，我们理解并知道如何推理，并且很容易向新手解释。我们的移动部件每个都有一项工作，它们以明确定义的方式相互连接，并且没有意外的副作用。</p>
+<p><font color='#186d7a'>表1.整个应用程序是一条消息总线：权衡</font></p>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>处理程序和服务是同一件事，因此更简单。</td>
+<td>从 Web 的角度来看，消息总线仍然是一种有点难以预测的做事方式。你无法提前知道事情何时会结束。</td>
+</tr>
+<tr>
+<td>我们有一个很好的数据结构来输入系统。</td>
+<td>模型对象和事件之间会有字段和结构的重复，这会产生维护成本。向其中一个对象添加字段通常意味着向其他对象中的至少一个对象添加字段。</td>
+</tr>
+</tbody>
+</table>
+<p>现在，您可能想知道，这些<code>BatchQuantityChanged</code>事件将从何而来？答案将在几章后揭晓。但首先，让我们讨论一下<a href="../n.Commands%20and%20Command%20Handler/">事件与命令</a>。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

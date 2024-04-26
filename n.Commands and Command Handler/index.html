@@ -1,0 +1,1203 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../m.Going%20to%20Town%20on%20the%20Message%20Bus/">
+      
+      
+        <link rel="next" href="../o.Event-Driven%20Architecture/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>10.命令和命令处理程序 - My Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#10" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="My Docs" class="md-header__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              10.命令和命令处理程序
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="My Docs" class="md-nav__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    My Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    REAMDME
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../a.Preface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    前言
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../b.Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    介绍
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c.Part1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第一部分: 构建支持领域建模的架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../d.Domain%20Modeling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.领域建模
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e.Repository%20Pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.存储库模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../f.Coupling%20and%20Abstractions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.简短插曲：耦合和抽象
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../g.Flask%20API%20and%20Service%20Layer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4.我们的第一个用例：Flask API和服务层
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../h.TDD%20in%20High%20Gear%20and%20Low%20Gear/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.TDD高速和低速
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i.Unit%20of%20Work%20Pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6.工作单元模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../j.aggregates%20and%20Consistency%20Boundaries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7.聚合和一致性边界
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k.Part2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第二部分 事件驱动架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l.Events%20and%20the%20Message%20Bus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8.事件和消息总线
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../m.Going%20to%20Town%20on%20the%20Message%20Bus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9.使用消息总线大干一场
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    10.命令和命令处理程序
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    10.命令和命令处理程序
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      命令和事件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      异常处理的差异
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      讨论：事件、命令和错误处理
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      同步恢复错误
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../o.Event-Driven%20Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11.事件驱动架构：使用事件集成微服务
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../p.CQRS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12.命令查询职责分离
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../q.Dependency%20Injection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13.依赖注入（和引导）
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../r.Epilogue/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    结语
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../s.Appendix%20A/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录A：摘要图表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../t.Appendix%20B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录B：模板项目结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../u.Appendix%20C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录C：更换基础设施：用csv完成所有工作
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v.Appendix%20D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录D：Django 的存储库和工作单元模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../w.Appendix%20E/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录E：验证
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      命令和事件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      异常处理的差异
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      讨论：事件、命令和错误处理
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      同步恢复错误
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="10">10.命令和命令处理程序</h1>
+<p>在上一章中，我们讨论了使用事件作为表示系统输入的一种方式，并将应用程序变成了消息处理机器。</p>
+<p>为了实现这一点，我们将所有用例函数转换为事件处理程序。当 API 收到创建新批次的 POST 时，它会构建一个新<code>BatchCreated</code>事件并将其处理为内部事件。这可能感觉违反直觉。毕竟，批次尚未创建；这就是我们调用 API 的原因。我们将通过引入命令并展示如何通过相同的消息总线处理它们但规则略有不同来解决这个概念上的缺陷。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>本章的代码位于<a href="https://github.com/cosmicpython/code/tree/chapter_10_commands">GitHub</a>上的chapter_10_commands 分支中：
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git clone https://github.com/cosmicpython/code.git
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cd code
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>git checkout chapter_10_commands
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a># or to code along, checkout the previous chapter:
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>git checkout chapter_09_all_messagebus
+</span></code></pre></div></p>
+</div>
+<h2 id="_1"><font color='red'>命令和事件</font></h2>
+<p>与事件一样，命令也是一种消息，即系统的一部分向另一部分发送的指令。我们通常用哑数据结构来表示命令，并且可以像处理事件一样处理它们。</p>
+<p>然而，命令和事件之间的差异很重要。</p>
+<p>命令由一个参与者发送给另一个特定的参与者，期望结果会发生特定的事情。当我们将表单发布到 API 处理程序时，我们正在发送命令。我们用命令式动词短语命名命令，例如“分配库存”或“延迟发货”。</p>
+<p>命令捕获意图。它们表达了我们希望系统做某事的愿望。因此，当它们失败时，发送者需要接收错误信息。</p>
+<p>事件由参与者向所有感兴趣的听众广播。当我们发布时 BatchQuantityChanged，我们不知道谁会接收它。我们用过去时动词短语命名事件，如“订单分配到库存”或“发货延迟”。</p>
+<p>我们经常使用事件来传播有关成功命令的知识。</p>
+<p>事件记录过去发生的事情。由于我们不知道谁在处理事件，因此发送者不应该关心接收者是成功还是失败。表1重述了两者的区别。</p>
+<p><font color='#186d7a'>表1.事件与命令</font></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>事件</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>命名</td>
+<td>过去式</td>
+<td>命令式</td>
+</tr>
+<tr>
+<td>错误处理</td>
+<td>独立</td>
+<td>吵闹</td>
+</tr>
+<tr>
+<td>发送给</td>
+<td>所有监听者</td>
+<td>接收者</td>
+</tr>
+</tbody>
+</table>
+<p>我们的系统中现在有哪些类型的命令？</p>
+<div class="language-py highlight"><span class="filename">提取一些命令（src/allocation/domain/commands.py）</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span> <span class="nc">Command</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="k">pass</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="nd">@dataclass</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="k">class</span> <span class="nc">Allocate</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>  <span class="c1">#(1)</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">orderid</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">qty</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="nd">@dataclass</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="k">class</span> <span class="nc">CreateBatch</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>  <span class="c1">#(2)</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="n">ref</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="n">qty</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    <span class="n">eta</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">date</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="nd">@dataclass</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="k">class</span> <span class="nc">ChangeBatchQuantity</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>  <span class="c1">#(3)</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    <span class="n">ref</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>    <span class="n">qty</span><span class="p">:</span> <span class="nb">int</span>
+</span></code></pre></div>
+<ol>
+<li><code>commands.Allocate</code>将取代<code>events.AllocationRequired</code>。</li>
+<li><code>commands.CreateBatch</code>将取代<code>events.BatchCreated</code>。</li>
+<li><code>commands.ChangeBatchQuantity</code>将取代<code>events.BatchQuantityChanged</code>。</li>
+</ol>
+<h2 id="_2"><font color='red'>异常处理的差异</font></h2>
+<p>仅更改名称和动词就很好了，但这不会改变我们系统的行为。我们希望以类似的方式处理事件和命令，但不完全相同。让我们看看我们的消息总线如何变化：</p>
+<div class="language-py highlight"><span class="filename">以不同方式调度事件和命令 (src/allocation/service_layer/messagebus.py）</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">Message</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="n">commands</span><span class="o">.</span><span class="n">Command</span><span class="p">,</span> <span class="n">events</span><span class="o">.</span><span class="n">Event</span><span class="p">]</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">def</span> <span class="nf">handle</span><span class="p">(</span>  <span class="c1">#(1)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">):</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">queue</span> <span class="o">=</span> <span class="p">[</span><span class="n">message</span><span class="p">]</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="k">while</span> <span class="n">queue</span><span class="p">:</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>        <span class="n">message</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">events</span><span class="o">.</span><span class="n">Event</span><span class="p">):</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>            <span class="n">handle_event</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="n">uow</span><span class="p">)</span>  <span class="c1">#(2)</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">commands</span><span class="o">.</span><span class="n">Command</span><span class="p">):</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>            <span class="n">cmd_result</span> <span class="o">=</span> <span class="n">handle_command</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">queue</span><span class="p">,</span> <span class="n">uow</span><span class="p">)</span>  <span class="c1">#(2)</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cmd_result</span><span class="p">)</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2"> was not an Event or Command&quot;</span><span class="p">)</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>    <span class="k">return</span> <span class="n">results</span>
+</span></code></pre></div>
+<ol>
+<li>它仍然有一个主handle()入口点，它接受一个message，可能是命令或事件。</li>
+<li>我们将事件和命令发送给两个不同的辅助函数，如下所示。</li>
+</ol>
+<p>我们处理事件的方式如下：</p>
+<div class="language-py highlight"><span class="filename">事件不能中断流程（src/allocation/service_layer/messagebus.py）</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span> <span class="nf">handle_event</span><span class="p">(</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">Event</span><span class="p">,</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">queue</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Message</span><span class="p">],</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">):</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">EVENT_HANDLERS</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">event</span><span class="p">)]:</span>  <span class="c1">#(1)</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>        <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;handling event </span><span class="si">%s</span><span class="s2"> with handler </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>            <span class="n">handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">uow</span><span class="o">=</span><span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>            <span class="n">queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">uow</span><span class="o">.</span><span class="n">collect_new_events</span><span class="p">())</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception handling event </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>            <span class="k">continue</span>  <span class="c1">#(2)</span>
+</span></code></pre></div>
+<ol>
+<li>事件发送到调度程序，该调度程序可以将每个事件委托给多个处理程序。</li>
+<li>它捕获并记录错误，但不会让它们中断消息处理。</li>
+</ol>
+<p>以下是我们执行命令的方式：</p>
+<div class="language-py highlight"><span class="filename">命令重新引发异常（src/allocation/service_layer/messagebus.py）</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">def</span> <span class="nf">handle_command</span><span class="p">(</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">command</span><span class="p">:</span> <span class="n">commands</span><span class="o">.</span><span class="n">Command</span><span class="p">,</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">queue</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Message</span><span class="p">],</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="p">):</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;handling command </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>        <span class="n">handler</span> <span class="o">=</span> <span class="n">COMMAND_HANDLERS</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">command</span><span class="p">)]</span>  <span class="c1">#(1)</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        <span class="n">result</span> <span class="o">=</span> <span class="n">handler</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">uow</span><span class="o">=</span><span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>        <span class="n">queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">uow</span><span class="o">.</span><span class="n">collect_new_events</span><span class="p">())</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>        <span class="k">return</span> <span class="n">result</span>  <span class="c1">#(3)</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception handling command </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>        <span class="k">raise</span>  <span class="c1">#(2)</span>
+</span></code></pre></div>
+<ol>
+<li>命令调度程序期望每个命令只有一个处理程序。</li>
+<li>如果出现任何错误，它们会快速失败并且会冒泡。</li>
+</ol>
+<p><code>return result</code>只是暂时的；这是一个临时的<code>hack</code>，允许消息总线返回批处理引用以供 API 使用。我们将在<a href="../p.CQRS/">12.CQRS</a>中修复此问题。</p>
+<p>我们还将单个<code>HANDLERS</code>字典更改为用于命令和事件的不同字典。根据我们的惯例，命令只能有一个处理程序：</p>
+<div class="language-py highlight"><span class="filename">新的处理程序字典（src/allocation/service_layer/messagebus.py）</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">EVENT_HANDLERS</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="n">events</span><span class="o">.</span><span class="n">OutOfStock</span><span class="p">:</span> <span class="p">[</span><span class="n">handlers</span><span class="o">.</span><span class="n">send_out_of_stock_notification</span><span class="p">],</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="p">}</span>  <span class="c1"># type: Dict[Type[events.Event], List[Callable]]</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">COMMAND_HANDLERS</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">commands</span><span class="o">.</span><span class="n">Allocate</span><span class="p">:</span> <span class="n">handlers</span><span class="o">.</span><span class="n">allocate</span><span class="p">,</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    <span class="n">commands</span><span class="o">.</span><span class="n">CreateBatch</span><span class="p">:</span> <span class="n">handlers</span><span class="o">.</span><span class="n">add_batch</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    <span class="n">commands</span><span class="o">.</span><span class="n">ChangeBatchQuantity</span><span class="p">:</span> <span class="n">handlers</span><span class="o">.</span><span class="n">change_batch_quantity</span><span class="p">,</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="p">}</span>  <span class="c1"># type: Dict[Type[commands.Command], Callable]</span>
+</span></code></pre></div>
+<h2 id="_3"><font color='red'>讨论：事件、命令和错误处理</font></h2>
+<p>许多开发人员在这一点上感到不安，并询问：“如果事件无法处理会发生什么？我该如何确保系统处于一致状态？”如果我们在内存不足的错误终止进程之前，<code>messagebus.handle</code>处理了一半的事件，我们如何减轻丢失消息造成的问题？</p>
+<p>让我们从最坏的情况开始：我们无法处理事件，系统处于不一致状态。什么样的错误会导致这种情况？在我们的系统中，通常当只有一半操作完成时，我们就会处于不一致状态。</p>
+<p>例如，我们可以将三个单位的 <code>DESIRABLE_BEANBAG</code> 分配给客户的订单，但不知何故未能减少剩余库存量。这会导致不一致的状态：这三单位的库存既已分配又可用，具体取决于您如何看待它。稍后，我们可能会将这些订单分配给另一个客户，这给客户支持带来了麻烦。</p>
+<p>不过，在我们的分配服务中，我们已经采取措施防止这种情况发生。我们仔细识别了充当一致性边界的聚合，并引入了UoW来管理聚合原子化更新的成功或失败。</p>
+<p>例如，当我们将库存分配给订单时，我们的一致性边界是<code>Product</code>聚合。这意味着我们不能意外地过度分配：要么将特定订单行分配给产品，要么不分配给产品——不存在不一致状态的空间。</p>
+<p>根据定义，我们不要求两个聚合立即保持一致，因此如果我们无法处理事件并仅更新单个聚合，我们的系统仍然可以实现最终一致性。我们不应该违反系统的任何约束。</p>
+<p>记住这个例子，我们可以更好地理解将消息拆分为命令和事件的原因。当用户想要让系统执行某项操作时，我们将他们的请求表示为命令。该命令应修改单个聚合，并且整体成功或失败。我们需要做的任何其他记账、清理和通知都可以通过事件进行。我们不需要事件处理程序成功才能使命令成功。</p>
+<p>让我们看看另一个例子（来自一个不同的、假想的项目）来看看为什么不行。</p>
+<p>假设我们正在建立一个销售昂贵奢侈品的电子商务网站。我们的营销部门希望奖励重复访问的客户。我们将在客户进行第三次购买后将他们标记为 VIP，这将使他们有权享受优先待遇和特殊优惠。我们对这个故事的接受标准如下：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Given a customer with two orders in their history,
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>When the customer places a third order,
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Then they should be flagged as a VIP.
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>When a customer first becomes a VIP
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>Then we should send them an email to congratulate them
+</span></code></pre></div>
+<p>使用本书中已经讨论过的技术，我们决定构建一个新的History聚合，用于记录订单，并在满足规则时引发域事件。我们将像这样构建代码：</p>
+<div class="language-py highlight"><span class="filename">VIP 客户（不同项目的示例代码）</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">class</span> <span class="nc">History</span><span class="p">:</span>  <span class="c1"># Aggregate</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">customer_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">orders</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>  <span class="c1"># Set[HistoryEntry]</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">customer_id</span> <span class="o">=</span> <span class="n">customer_id</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="k">def</span> <span class="nf">record_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">order_amount</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span> <span class="c1">#(1)</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        <span class="n">entry</span> <span class="o">=</span> <span class="n">HistoryEntry</span><span class="p">(</span><span class="n">order_id</span><span class="p">,</span> <span class="n">order_amount</span><span class="p">)</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>        <span class="k">if</span> <span class="n">entry</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">:</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>            <span class="k">return</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orders</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>                <span class="n">CustomerBecameVIP</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">customer_id</span><span class="p">)</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>            <span class="p">)</span>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="k">def</span> <span class="nf">create_order_from_basket</span><span class="p">(</span><span class="n">uow</span><span class="p">,</span> <span class="n">cmd</span><span class="p">:</span> <span class="n">CreateOrder</span><span class="p">):</span> <span class="c1">#(2)</span>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>    <span class="k">with</span> <span class="n">uow</span><span class="p">:</span>
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>        <span class="n">order</span> <span class="o">=</span> <span class="n">Order</span><span class="o">.</span><span class="n">from_basket</span><span class="p">(</span><span class="n">cmd</span><span class="o">.</span><span class="n">customer_id</span><span class="p">,</span> <span class="n">cmd</span><span class="o">.</span><span class="n">basket_items</span><span class="p">)</span>
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>        <span class="n">uow</span><span class="o">.</span><span class="n">orders</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>        <span class="n">uow</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>  <span class="c1"># raises OrderCreated</span>
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>
+</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="k">def</span> <span class="nf">update_customer_history</span><span class="p">(</span><span class="n">uow</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">OrderCreated</span><span class="p">):</span> <span class="c1">#(3)</span>
+</span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>    <span class="k">with</span> <span class="n">uow</span><span class="p">:</span>
+</span><span id="__span-7-30"><a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a>        <span class="n">history</span> <span class="o">=</span> <span class="n">uow</span><span class="o">.</span><span class="n">order_history</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">customer_id</span><span class="p">)</span>
+</span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>        <span class="n">history</span><span class="o">.</span><span class="n">record_order</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">order_id</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">order_amount</span><span class="p">)</span>
+</span><span id="__span-7-32"><a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a>        <span class="n">uow</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>  <span class="c1"># raises CustomerBecameVIP</span>
+</span><span id="__span-7-33"><a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a>
+</span><span id="__span-7-34"><a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a>
+</span><span id="__span-7-35"><a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a><span class="k">def</span> <span class="nf">congratulate_vip_customer</span><span class="p">(</span><span class="n">uow</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">CustomerBecameVip</span><span class="p">):</span> <span class="c1">#(4)</span>
+</span><span id="__span-7-36"><a id="__codelineno-7-36" name="__codelineno-7-36" href="#__codelineno-7-36"></a>    <span class="k">with</span> <span class="n">uow</span><span class="p">:</span>
+</span><span id="__span-7-37"><a id="__codelineno-7-37" name="__codelineno-7-37" href="#__codelineno-7-37"></a>        <span class="n">customer</span> <span class="o">=</span> <span class="n">uow</span><span class="o">.</span><span class="n">customers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">customer_id</span><span class="p">)</span>
+</span><span id="__span-7-38"><a id="__codelineno-7-38" name="__codelineno-7-38" href="#__codelineno-7-38"></a>        <span class="n">email</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>
+</span><span id="__span-7-39"><a id="__codelineno-7-39" name="__codelineno-7-39" href="#__codelineno-7-39"></a>            <span class="n">customer</span><span class="o">.</span><span class="n">email_address</span><span class="p">,</span>
+</span><span id="__span-7-40"><a id="__codelineno-7-40" name="__codelineno-7-40" href="#__codelineno-7-40"></a>            <span class="sa">f</span><span class="s1">&#39;Congratulations </span><span class="si">{</span><span class="n">customer</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s1">!&#39;</span>
+</span><span id="__span-7-41"><a id="__codelineno-7-41" name="__codelineno-7-41" href="#__codelineno-7-41"></a>        <span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>History</code>聚合捕获指示客户何时成为 VIP 的规则。当规则在未来变得更加复杂时，这使我们能够很好地处理变化。</li>
+<li>我们的第一个处理程序为客户创建订单并引发域事件<code>OrderCreated</code>。</li>
+<li>我们的第二个处理程序更新<code>History</code>对象以记录订单已创建。</li>
+<li>最后，当客户成为 VIP 时，我们会向客户发送一封电子邮件。</li>
+</ol>
+<p>使用此代码，我们可以对事件驱动系统中的错误处理获得一些直觉。</p>
+<p>在我们当前的实现中，我们在将状态持久化到数据库后 引发有关聚合的事件。如果我们在持久化之前引发这些事件并同时提交所有更改会怎么样？这样，我们就可以确保所有工作都已完成。这不是更安全吗？</p>
+<p>但是，如果电子邮件服务器稍微超载，会发生什么情况？如果所有工作必须同时完成，繁忙的电子邮件服务器可能会阻止我们收取订单款项。</p>
+<p>如果<code>History</code>聚合实现中出现错误，会发生什么情况？我们是否应该因为无法识别您是 VIP 而无法收款？</p>
+<p>通过分离这些问题，我们使得事情可以单独失败，从而提高系统的整体可靠性。此代码中唯一需要完成的部分是创建订单的命令处理程序。这是客户唯一关心的部分，也是我们的业务利益相关者应该优先考虑的部分。</p>
+<p>请注意，我们有意将事务边界与业务流程的开始和结束对齐。我们在代码中使用的名称与业务利益相关者使用的术语相匹配，我们编写的处理程序与自然语言验收标准的步骤相匹配。名称和结构的一致性有助于我们在系统变得越来越大、越来越复杂时对其进行推理。</p>
+<h2 id="_4"><font color='red'>同步恢复错误</font></h2>
+<p>希望我们已经说服了您，事件失败与引发它们的命令无关，这是可以接受的。那么，当错误不可避免地发生时，我们应该怎么做才能确保能够从错误中恢复？</p>
+<p>我们首先需要知道错误何时发生，为此我们通常依赖日志。</p>
+<p>让我们再次看一下消息总线中的<code>handle_event</code>方法：</p>
+<div class="language-py highlight"><span class="filename">当前处理函数（src/allocation/service_layer/messagebus.py）</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span> <span class="nf">handle_event</span><span class="p">(</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">Event</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">queue</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Message</span><span class="p">],</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">):</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">EVENT_HANDLERS</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">event</span><span class="p">)]:</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>        <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;handling event </span><span class="si">%s</span><span class="s2"> with handler </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>            <span class="n">handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">uow</span><span class="o">=</span><span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>            <span class="n">queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">uow</span><span class="o">.</span><span class="n">collect_new_events</span><span class="p">())</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception handling event </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>            <span class="k">continue</span>
+</span></code></pre></div>
+<p>当我们在系统中处理消息时，我们要做的第一件事就是写一行日志来记录我们要做的事情。对于我们的CustomerBecameVIP用例，日志可能如下所示：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Handling event CustomerBecameVIP(customer_id=12345)
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>with handler &lt;function congratulate_vip_customer at 0x10ebc9a60&gt;
+</span></code></pre></div>
+<p>因为我们选择使用数据类作为消息类型，所以我们整齐地打印了传入数据的摘要，我们可以将其复制并粘贴到 Python shell 中以重新创建对象。</p>
+<p>当发生错误时，我们可以使用记录的数据在单元测试中重现问题或将消息重播到系统中。</p>
+<p>手动重放非常适合需要先修复错误才能重新处理事件的情况，但我们的系统总会遇到某种程度的瞬时故障。这包括网络故障、表死锁和部署导致的短暂停机等。</p>
+<p>对于大多数情况，我们可以通过重试优雅地恢复。正如谚语所说，“如果一开始你没有成功，请以指数增加的退避期重试该操作。”</p>
+<div class="language-py highlight"><span class="filename">处理重试（src/allocation/service_layer/messagebus.py）</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span> <span class="nn">tenacity</span> <span class="kn">import</span> <span class="n">Retrying</span><span class="p">,</span> <span class="n">RetryError</span><span class="p">,</span> <span class="n">stop_after_attempt</span><span class="p">,</span> <span class="n">wait_exponential</span> <span class="c1">#(1)</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="o">...</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="k">def</span> <span class="nf">handle_event</span><span class="p">(</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">Event</span><span class="p">,</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    <span class="n">queue</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Message</span><span class="p">],</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="p">):</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">EVENT_HANDLERS</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">event</span><span class="p">)]:</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>        <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>            <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="n">Retrying</span><span class="p">(</span>  <span class="c1">#(2)</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>                <span class="n">stop</span><span class="o">=</span><span class="n">stop_after_attempt</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>                <span class="n">wait</span><span class="o">=</span><span class="n">wait_exponential</span><span class="p">()</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>            <span class="p">):</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>                <span class="k">with</span> <span class="n">attempt</span><span class="p">:</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;handling event </span><span class="si">%s</span><span class="s2"> with handler </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>                    <span class="n">handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">uow</span><span class="o">=</span><span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>                    <span class="n">queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">uow</span><span class="o">.</span><span class="n">collect_new_events</span><span class="p">())</span>
+</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>        <span class="k">except</span> <span class="n">RetryError</span> <span class="k">as</span> <span class="n">retry_failure</span><span class="p">:</span>
+</span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+</span><span id="__span-10-23"><a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>                <span class="s2">&quot;Failed to handle event </span><span class="si">%s</span><span class="s2"> times, giving up!&quot;</span><span class="p">,</span>
+</span><span id="__span-10-24"><a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>                <span class="n">retry_failure</span><span class="o">.</span><span class="n">last_attempt</span><span class="o">.</span><span class="n">attempt_number</span>
+</span><span id="__span-10-25"><a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a>            <span class="p">)</span>
+</span><span id="__span-10-26"><a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>            <span class="k">continue</span>
+</span></code></pre></div>
+<ol>
+<li><code>Tenacity</code> 是一个实现重试常见模式的 Python 库。</li>
+<li>在这里，我们将消息总线配置为最多重试三次操作，并且尝试之间的等待时间呈指数增加。</li>
+</ol>
+<p>重试可能失败的操作可能是提高软件弹性的唯一最佳方法。同样，工作单元和命令处理程序模式意味着每次尝试都从一致的状态开始，不会让事情半途而废。</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>在某个时候，不考虑tenacity，我们都必须放弃尝试处理该消息。构建具有分布式消息的可靠系统很难，我们必须略过一些棘手的部分。在结语中提供了指向更多参考资料的指针。</p>
+</div>
+<h2 id="_5"><font color='red'>总结</font></h2>
+<p>在本书中，我们决定先介绍事件的概念，然后再介绍命令的概念，但其他指南通常反其道而行之。通过为请求命名并赋予其自己的数据结构，明确我们的系统可以响应的请求，这是相当基本的做法。有时您会看到人们使用命令处理程序模式这一名称来描述我们对事件、命令和消息总线的操作。</p>
+<p>表1讨论了您在加入之前应该权衡考虑的一些事情。</p>
+<p><font color='#186d7a'>表1.拆分命令和事件：权衡</font></p>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>以不同的方式处理命令和事件有助于我们了解哪些事情必须成功以及哪些事情我们可以稍后整理。</td>
+<td>命令和事件之间的语义差异可能很微妙。预计这些差异会引起争论。</td>
+</tr>
+<tr>
+<td><code>CreateBatch</code>肯定比<code>BatchCreated</code>更不容易混淆。我们明确表达了用户的意图，明确总比隐含好，对吧？</td>
+<td>我们明确地欢迎失败。我们知道有时事情会出错，我们选择通过使故障更小、更孤立来处理这个问题。这会使系统更难推理，需要更好的监控。</td>
+</tr>
+</tbody>
+</table>
+<p>在<a href="../o.Event-Driven%20Architecture/">11.事件驱动架构：使用事件集成微服务</a>中我们将讨论使用事件作为集成模式。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1623 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../p.CQRS/">
+      
+      
+        <link rel="next" href="../r.Epilogue/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>13.依赖注入（和引导） - My Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#13" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="My Docs" class="md-header__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              13.依赖注入（和引导）
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="My Docs" class="md-nav__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    My Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    REAMDME
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../a.Preface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    前言
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../b.Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    介绍
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c.Part1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第一部分: 构建支持领域建模的架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../d.Domain%20Modeling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.领域建模
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e.Repository%20Pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.存储库模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../f.Coupling%20and%20Abstractions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.简短插曲：耦合和抽象
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../g.Flask%20API%20and%20Service%20Layer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4.我们的第一个用例：Flask API和服务层
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../h.TDD%20in%20High%20Gear%20and%20Low%20Gear/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.TDD高速和低速
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i.Unit%20of%20Work%20Pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6.工作单元模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../j.aggregates%20and%20Consistency%20Boundaries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7.聚合和一致性边界
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k.Part2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第二部分 事件驱动架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l.Events%20and%20the%20Message%20Bus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8.事件和消息总线
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../m.Going%20to%20Town%20on%20the%20Message%20Bus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9.使用消息总线大干一场
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../n.Commands%20and%20Command%20Handler/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10.命令和命令处理程序
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../o.Event-Driven%20Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11.事件驱动架构：使用事件集成微服务
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../p.CQRS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12.命令查询职责分离
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    13.依赖注入（和引导）
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    13.依赖注入（和引导）
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      隐式依赖与显式依赖
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java" class="md-nav__link">
+    <span class="md-ellipsis">
+      显式依赖关系不是很奇怪而且很像 Java 吗？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#di" class="md-nav__link">
+    <span class="md-ellipsis">
+      准备处理程序：使用闭包和部分函数进行手动 DI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用类的替代方法
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      引导脚本
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      消息总线在运行时被赋予处理程序
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      在入口点使用 Bootstrap
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#di_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      在测试中初始化 DI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      “正确”构建适配器：一个实际示例
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="“正确”构建适配器：一个实际示例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      定义抽象和具体实现
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      为你的测试制作一个假版本
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      弄清楚如何对真实事物进行集成测试
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../r.Epilogue/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    结语
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../s.Appendix%20A/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录A：摘要图表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../t.Appendix%20B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录B：模板项目结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../u.Appendix%20C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录C：更换基础设施：用csv完成所有工作
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v.Appendix%20D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录D：Django 的存储库和工作单元模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../w.Appendix%20E/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录E：验证
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      隐式依赖与显式依赖
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#java" class="md-nav__link">
+    <span class="md-ellipsis">
+      显式依赖关系不是很奇怪而且很像 Java 吗？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#di" class="md-nav__link">
+    <span class="md-ellipsis">
+      准备处理程序：使用闭包和部分函数进行手动 DI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用类的替代方法
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      引导脚本
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      消息总线在运行时被赋予处理程序
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      在入口点使用 Bootstrap
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#di_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      在测试中初始化 DI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      “正确”构建适配器：一个实际示例
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="“正确”构建适配器：一个实际示例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      定义抽象和具体实现
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      为你的测试制作一个假版本
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      弄清楚如何对真实事物进行集成测试
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="13">13.依赖注入（和引导）</h1>
+<p>在 Python 世界中，依赖注入 (DI) 受到质疑。到目前为止，在本书的示例代码中，我们没有使用依赖注入，也运行得很好！</p>
+<p>在本章中，我们将探讨代码中的一些痛点，这些痛点导致我们考虑使用 DI，并且我们将提供一些执行选项，让您选择您认为最 Pythonic 的选项。</p>
+<p>我们还将向我们的架构添加一个名为bootstrap.py的新组件；它将负责依赖项注入，以及我们经常需要的一些其他初始化内容。我们将解释为什么这种东西在 OO 语言中被称为组合根，以及为什么bootstrap 脚本非常适合我们的目的。</p>
+<p>图1.没有引导程序：入口点做了很多事情，展示了我们的应用程序在没有引导程序的情况下是什么样子：入口点做了很多初始化工作，并传递了我们的主要依赖项 UoW。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>如果您还没有读过，那么在继续阅读本章之前，值得先阅读<a href="../f.Coupling%20and%20Abstractions/">3.耦合和抽象</a> ，特别是关于函数式与面向对象依赖管理的讨论。</p>
+</div>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_1301.png" />
+    <figcaption><font size=2>图1.没有引导程序：入口点做了很多事情</font></figcaption>
+</figure>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>本章的代码位于<a href="https://github.com/cosmicpython/code/tree/chapter_13_dependency_injection">GitHub</a>上的chapter_13_dependency_injection 分支中：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git clone https://github.com/cosmicpython/code.git
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cd code
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>git checkout chapter_13_dependency_injection
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a># or to code along, checkout the previous chapter:
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>git checkout chapter_12_cqrs
+</span></code></pre></div>
+</div>
+<p>图2.Bootstrap 将所有工作集中在一个地方，表明我们的引导程序接管了这些职责。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_1302.png" />
+    <figcaption><font size=2>图2.Bootstrap 集中处理所有这些</font></figcaption>
+</figure>
+<h2 id="_1"><font color='red'>隐式依赖与显式依赖</font></h2>
+<p>根据您的大脑类型，此时您可能会在内心深处感到一丝不安。让我们来谈谈这个问题。我们向您展示了两种管理依赖关系和测试依赖关系的方法。</p>
+<p>对于我们的数据库依赖关系，我们构建了一个精心设计的显式依赖关系框架，并提供了在测试中覆盖它们的简单选项。我们的主要处理程序函数声明了对 UoW 的显式依赖关系：</p>
+<div class="language-py highlight"><span class="filename">我们的处理程序对 UoW 有明确的依赖性（src/allocation/service_layer/handlers.py）</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span> <span class="nf">allocate</span><span class="p">(</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">cmd</span><span class="p">:</span> <span class="n">commands</span><span class="o">.</span><span class="n">Allocate</span><span class="p">,</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">):</span>
+</span></code></pre></div>
+<p>这使得在我们的服务层测试中替换伪 UoW 变得很容易：</p>
+<div class="language-py highlight"><span class="filename">针对伪 UoW 进行服务层测试：（tests/unit/test_services.py）</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>    <span class="n">uow</span> <span class="o">=</span> <span class="n">FakeUnitOfWork</span><span class="p">()</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">messagebus</span><span class="o">.</span><span class="n">handle</span><span class="p">([</span><span class="o">...</span><span class="p">],</span> <span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">UoW</span> <span class="n">本身声明了对会话工厂的明确依赖</span><span class="err">：</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="err">```</span><span class="n">py</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;UoW 依赖于会话工厂 (src/allocation/service_layer/unit_of_work.py）&#39;</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">class</span> <span class="nc">SqlAlchemyUnitOfWork</span><span class="p">(</span><span class="n">AbstractUnitOfWork</span><span class="p">):</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session_factory</span><span class="o">=</span><span class="n">DEFAULT_SESSION_FACTORY</span><span class="p">):</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">session_factory</span> <span class="o">=</span> <span class="n">session_factory</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        <span class="o">...</span>
+</span></code></pre></div>
+<p>我们在集成测试中利用它，有时可以使用 SQLite 而不是 Postgres：</p>
+<div class="language-py highlight"><span class="filename">针对不同数据库的集成测试（tests/integration/test_uow.py）</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span> <span class="nf">test_rolls_back_uncommitted_work_by_default</span><span class="p">(</span><span class="n">sqlite_session_factory</span><span class="p">):</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">uow</span> <span class="o">=</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">SqlAlchemyUnitOfWork</span><span class="p">(</span><span class="n">sqlite_session_factory</span><span class="p">)</span>  <span class="c1">#(1)</span>
+</span></code></pre></div>
+<ol>
+<li>集成测试将默认的 Postgres 替换session_factory为 SQLite。</li>
+</ol>
+<h2 id="java"><font color='red'>显式依赖关系不是很奇怪而且很像 Java 吗？</font></h2>
+<p>如果你习惯了 Python 中通常发生的事情，你会认为这一切有点奇怪。标准做法是通过简单地导入来隐式声明我们的依赖项，然后如果我们需要为测试更改它，我们可以使用 <code>monkeypatch</code>，就像动态语言中的 Right 和 True 一样：</p>
+<div class="language-py highlight"><span class="filename">电子邮件发送作为正常的基于导入的依赖项（src/allocation/service_layer/handlers.py）</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span> <span class="nn">allocation.adapters</span> <span class="kn">import</span> <span class="n">email</span><span class="p">,</span> <span class="n">redis_eventpublisher</span>  <span class="c1">#(1)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="o">...</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">def</span> <span class="nf">send_out_of_stock_notification</span><span class="p">(</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">OutOfStock</span><span class="p">,</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">):</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">email</span><span class="o">.</span><span class="n">send</span><span class="p">(</span>  <span class="c1">#(2)</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        <span class="s2">&quot;stock@made.com&quot;</span><span class="p">,</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>        <span class="sa">f</span><span class="s2">&quot;Out of stock for </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">sku</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>    <span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li>硬编码导入</li>
+<li>直接致电特定电子邮件发件人</li>
+</ol>
+<p>为什么只是为了测试而用不必要的参数污染我们的应用程序代码？<code>mock.patch</code>使<code>monkeypatching</code>变得简单而方便：</p>
+<div class="language-py highlight"><span class="filename">模拟点补丁，感谢 Michael Foord (tests/unit/test_handlers.py）</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>    <span class="k">with</span> <span class="n">mock</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">&quot;allocation.adapters.email.send&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_send_mail</span><span class="p">:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>        <span class="o">...</span>
+</span></code></pre></div>
+<p>问题是，我们让它看起来很容易，因为我们的玩具示例不会发送真正的电子邮件（<code>email.send_mail</code>只是<code>print</code>），但在现实生活中，您最终必须为每个可能导致缺货通知的测试调用<code>mock.patch</code>。如果您使用大量模拟来防止不良副作用的代码库，您就会知道模拟样板有多烦人。</p>
+<p>你会知道，模拟将我们与实现紧密联系在一起。通过选择 monkeypatch <code>email.send_mail</code>，我们被束缚着去做<code>import email</code>，如果我们想做<code>from email import send_mail</code>一个简单的重构，我们就必须改变我们所有的模拟。</p>
+<p>所以这是一种权衡。是的，严格来说，声明显式依赖项是不必要的，使用它们会使我们的应用程序代码稍微复杂一些。但作为回报，我们会得到更易于编写和管理的测试。</p>
+<p>最重要的是，声明显式依赖关系是依赖反转原则的一个例子 - 我们不是对特定细节有（隐式）依赖，而是对抽象有（显式）依赖：</p>
+<div class="admonition quote">
+<p class="admonition-title">Quote</p>
+<p>清晰比晦涩好。</p>
+<p><p align='right'>Python 之禅</p></p>
+</div>
+<div class="language-py highlight"><span class="filename">显式依赖更加抽象（src/allocation/service_layer/handlers.py）</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">def</span> <span class="nf">send_out_of_stock_notification</span><span class="p">(</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">OutOfStock</span><span class="p">,</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">send_mail</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="p">):</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">send_mail</span><span class="p">(</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>        <span class="s2">&quot;stock@made.com&quot;</span><span class="p">,</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>        <span class="sa">f</span><span class="s2">&quot;Out of stock for </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">sku</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="p">)</span>
+</span></code></pre></div>
+<p>但是，如果我们确实改为明确声明所有这些依赖项，谁来注入它们，又如何注入？到目前为止，我们实际上只处理传递 UoW：我们的测试使用<code>FakeUnitOfWork</code>，而 Flask 和 Redis 事件消费者入口点使用真正的 UoW，消息总线将它们传递到我们的命令处理程序。如果我们添加真实和虚假的电子邮件类，谁来创建它们并传递它们？</p>
+<p>它需要在流程生命周期中尽早发生，因此最明显的地方就是我们的入口点。这意味着 Flask 和 Redis 以及我们的测试中会出现额外的（重复的）垃圾。我们还必须将传递依赖项的责任添加到消息总线，而消息总线已经有工作要做；这感觉像是违反了 SRP。</p>
+<p>相反，我们将采用一种称为Composition Root 的模式（对你我来说，这是一个引导脚本），并且我们将进行一些“手动 DI”（无需框架的依赖注入）。请参阅图3.入口点和消息总线之间的引导程序。</p>
+<figure>
+    <img align="center" alt="" src="https://www.cosmicpython.com/book/images/apwp_1303.png" />
+    <figcaption><font size=2>图3.入口点和消息总线之间的引导程序</font></figcaption>
+</figure>
+<h2 id="di"><font color='red'>准备处理程序：使用闭包和部分函数进行手动 DI</font></h2>
+<p>将具有依赖项的函数转变为稍后可以调用的函数（这些依赖项已经注入）的一种方法是使用闭包或部分函数将该函数与其依赖项组合在一起：</p>
+<p><div class="language-py highlight"><span class="filename">使用闭包或部分函数的 DI 示例</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># existing allocate function, with abstract uow dependency</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="k">def</span> <span class="nf">allocate</span><span class="p">(</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">cmd</span><span class="p">:</span> <span class="n">commands</span><span class="o">.</span><span class="n">Allocate</span><span class="p">,</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p">):</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="n">line</span> <span class="o">=</span> <span class="n">OrderLine</span><span class="p">(</span><span class="n">cmd</span><span class="o">.</span><span class="n">orderid</span><span class="p">,</span> <span class="n">cmd</span><span class="o">.</span><span class="n">sku</span><span class="p">,</span> <span class="n">cmd</span><span class="o">.</span><span class="n">qty</span><span class="p">)</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="k">with</span> <span class="n">uow</span><span class="p">:</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        <span class="o">...</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="c1"># bootstrap script prepares actual UoW</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="k">def</span> <span class="nf">bootstrap</span><span class="p">(</span><span class="o">..</span><span class="p">):</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>    <span class="n">uow</span> <span class="o">=</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">SqlAlchemyUnitOfWork</span><span class="p">()</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>    <span class="c1"># prepare a version of the allocate fn with UoW dependency captured in a closure</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    <span class="n">allocate_composed</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">cmd</span><span class="p">:</span> <span class="n">allocate</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    <span class="c1"># or, equivalently (this gets you a nicer stack trace)</span>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>    <span class="k">def</span> <span class="nf">allocate_composed</span><span class="p">(</span><span class="n">cmd</span><span class="p">):</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>        <span class="k">return</span> <span class="n">allocate</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>    <span class="c1"># alternatively with a partial</span>
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>    <span class="kn">import</span> <span class="nn">functools</span>
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>    <span class="n">allocate_composed</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">allocate</span><span class="p">,</span> <span class="n">uow</span><span class="o">=</span><span class="n">uow</span><span class="p">)</span>  <span class="c1">#(1)</span>
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="c1"># later at runtime, we can call the partial function, and it will have</span>
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="c1"># the UoW already bound</span>
+</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="n">allocate_composed</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+</span></code></pre></div>
+1. 闭包（lambda 或命名函数）和<code>functools.partial</code>之间的区别在于前者使用变量的后期绑定，如果任何依赖项是可变的，这可能会造成混淆。</p>
+<p>对于<code>send_out_of_stock_notification()</code>处理程序来说，这又是相同的模式，它具有不同的依赖关系：</p>
+<div class="language-py highlight"><span class="filename">另一个闭包和部分函数示例</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span> <span class="nf">send_out_of_stock_notification</span><span class="p">(</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">OutOfStock</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">send_mail</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="p">):</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">send_mail</span><span class="p">(</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>        <span class="s2">&quot;stock@made.com&quot;</span><span class="p">,</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>        <span class="o">...</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="c1"># prepare a version of the send_out_of_stock_notification with dependencies</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="n">sosn_composed</span>  <span class="o">=</span> <span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="n">send_out_of_stock_notification</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">email</span><span class="o">.</span><span class="n">send_mail</span><span class="p">)</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="o">...</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="c1"># later, at runtime:</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="n">sosn_composed</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>  <span class="c1"># will have email.send_mail already injected in</span>
+</span></code></pre></div>
+<h2 id="_2"><font color='red'>使用类的替代方法</font></h2>
+<p>对于做过一些函数式编程的人来说，闭包和部分函数会很熟悉。下面是使用类的替代方法，可能对其他人有吸引力。不过，它需要将所有处理程序函数重写为类：</p>
+<div class="language-py highlight"><span class="filename">使用类的 DI</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># we replace the old `def allocate(cmd, uow)` with:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="k">class</span> <span class="nc">AllocateHandler</span><span class="p">:</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">):</span>  <span class="c1">#(2)</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">uow</span> <span class="o">=</span> <span class="n">uow</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd</span><span class="p">:</span> <span class="n">commands</span><span class="o">.</span><span class="n">Allocate</span><span class="p">):</span>  <span class="c1">#(1)</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>        <span class="n">line</span> <span class="o">=</span> <span class="n">OrderLine</span><span class="p">(</span><span class="n">cmd</span><span class="o">.</span><span class="n">orderid</span><span class="p">,</span> <span class="n">cmd</span><span class="o">.</span><span class="n">sku</span><span class="p">,</span> <span class="n">cmd</span><span class="o">.</span><span class="n">qty</span><span class="p">)</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">uow</span><span class="p">:</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>            <span class="c1"># rest of handler method as before</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>            <span class="o">...</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="c1"># bootstrap script prepares actual UoW</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="n">uow</span> <span class="o">=</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">SqlAlchemyUnitOfWork</span><span class="p">()</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="c1"># then prepares a version of the allocate fn with dependencies already injected</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="n">allocate</span> <span class="o">=</span> <span class="n">AllocateHandler</span><span class="p">(</span><span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="o">...</span>
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a><span class="c1"># later at runtime, we can call the handler instance, and it will have</span>
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="c1"># the UoW already injected</span>
+</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a><span class="n">allocate</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li>该类旨在生成可调用函数，因此它具有<code>__call__</code>方法。</li>
+<li>但是我们使用<code>init</code>来声明它所需的依赖项。如果您曾经创建过基于类的描述符或基于类的接受参数的上下文管理器，那么这种事情会让您感觉很熟悉。</li>
+</ol>
+<p>使用您和您的团队感觉更舒服的任何一个。</p>
+<h2 id="_3"><font color='red'>引导脚本</font></h2>
+<p>我们希望引导脚本执行以下操作：</p>
+<ol>
+<li>声明默认依赖项但允许我们覆盖它们</li>
+<li>执行启动应用程序所需的“init”操作</li>
+<li>将所有依赖项注入到我们的处理程序中</li>
+<li>将应用程序的核心对象，即消息总线归还给我们</li>
+</ol>
+<p>以下是第一部分：</p>
+<div class="language-py highlight"><span class="filename">引导函数（src/allocation/bootstrap.py）</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">def</span> <span class="nf">bootstrap</span><span class="p">(</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="n">start_orm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1">#(1)</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span> <span class="o">=</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">SqlAlchemyUnitOfWork</span><span class="p">(),</span>  <span class="c1">#(2)</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="n">send_mail</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">send</span><span class="p">,</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">publish</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">redis_eventpublisher</span><span class="o">.</span><span class="n">publish</span><span class="p">,</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">messagebus</span><span class="o">.</span><span class="n">MessageBus</span><span class="p">:</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    <span class="k">if</span> <span class="n">start_orm</span><span class="p">:</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>        <span class="n">orm</span><span class="o">.</span><span class="n">start_mappers</span><span class="p">()</span>  <span class="c1">#(1)</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>    <span class="n">dependencies</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;uow&quot;</span><span class="p">:</span> <span class="n">uow</span><span class="p">,</span> <span class="s2">&quot;send_mail&quot;</span><span class="p">:</span> <span class="n">send_mail</span><span class="p">,</span> <span class="s2">&quot;publish&quot;</span><span class="p">:</span> <span class="n">publish</span><span class="p">}</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>    <span class="n">injected_event_handlers</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1">#(3)</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>        <span class="n">event_type</span><span class="p">:</span> <span class="p">[</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>            <span class="n">inject_dependencies</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">dependencies</span><span class="p">)</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>            <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">event_handlers</span>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>        <span class="p">]</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>        <span class="k">for</span> <span class="n">event_type</span><span class="p">,</span> <span class="n">event_handlers</span> <span class="ow">in</span> <span class="n">handlers</span><span class="o">.</span><span class="n">EVENT_HANDLERS</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>    <span class="p">}</span>
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>    <span class="n">injected_command_handlers</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1">#(3)</span>
+</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>        <span class="n">command_type</span><span class="p">:</span> <span class="n">inject_dependencies</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">dependencies</span><span class="p">)</span>
+</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>        <span class="k">for</span> <span class="n">command_type</span><span class="p">,</span> <span class="n">handler</span> <span class="ow">in</span> <span class="n">handlers</span><span class="o">.</span><span class="n">COMMAND_HANDLERS</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+</span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>    <span class="p">}</span>
+</span><span id="__span-10-23"><a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>
+</span><span id="__span-10-24"><a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>    <span class="k">return</span> <span class="n">messagebus</span><span class="o">.</span><span class="n">MessageBus</span><span class="p">(</span>  <span class="c1">#(4)</span>
+</span><span id="__span-10-25"><a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a>        <span class="n">uow</span><span class="o">=</span><span class="n">uow</span><span class="p">,</span>
+</span><span id="__span-10-26"><a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a>        <span class="n">event_handlers</span><span class="o">=</span><span class="n">injected_event_handlers</span><span class="p">,</span>
+</span><span id="__span-10-27"><a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a>        <span class="n">command_handlers</span><span class="o">=</span><span class="n">injected_command_handlers</span><span class="p">,</span>
+</span><span id="__span-10-28"><a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>    <span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li><code>orm.start_mappers()</code>这是我们的一个示例，该示例需要在应用程序开始时进行一次初始化工作。另一个常见示例是设置模块<code>logging</code>。</li>
+<li>我们可以使用参数 <code>defaults</code> 来定义正常/生产默认值。将它们放在一个地方固然很好，但有时依赖项在构造时会产生一些副作用，在这种情况下，您可能更愿意将它们设置为默认值<code>None</code>。</li>
+<li>我们使用一个名为<code>inject_dependencies()</code>的函数来构建处理程序映射的注入版本，我们将在接下来展示它。</li>
+<li>我们返回一个已配置且可供使用的消息总线。</li>
+</ol>
+<p>以下是我们如何通过检查将依赖项注入处理程序函数：</p>
+<div class="language-py highlight"><span class="filename">通过检查函数签名进行 DI（src/allocation/bootstrap.py）</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">def</span> <span class="nf">inject_dependencies</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">dependencies</span><span class="p">):</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">params</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span>  <span class="c1">#(1)</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">deps</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>        <span class="n">name</span><span class="p">:</span> <span class="n">dependency</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">dependency</span> <span class="ow">in</span> <span class="n">dependencies</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>  <span class="c1">#(2)</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">params</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="p">}</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    <span class="k">return</span> <span class="k">lambda</span> <span class="n">message</span><span class="p">:</span> <span class="n">handler</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="o">**</span><span class="n">deps</span><span class="p">)</span>  <span class="c1">#(3)</span>
+</span></code></pre></div>
+<ol>
+<li>我们检查我们的命令/事件处理程序的参数。</li>
+<li>我们通过名称将它们与我们的依赖项进行匹配。</li>
+<li>我们将它们作为 kwargs 注入以产生partial。</li>
+</ol>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px;">
+<p align='center'><strong style='font-size:1.6em;color:#186d7a'>更少魔法，更多手动 DI</strong></p>
+<p>如果您发现上面的inspect代码有点难以理解，那么这个更简单的版本可能会吸引您。</p>
+
+<p>Harry为<code>inject_dependencies()</code>编写了代码，作为进行“手动”依赖注入的初步尝试，当 Bob 看到它时，他指责他过度设计并编写了自己的 DI 框架。</p>
+
+老实说，Harry根本没想过可以做得更简单，但你可以像这样：
+
+<pre>
+<code style='border: 1px solid;'>
+# 手动创建内联部分函数（src/allocation/bootstrap.py）
+injected_event_handlers = {
+    events.Allocated: [
+        lambda e: handlers.publish_allocated_event(e, publish),
+        lambda e: handlers.add_allocation_to_read_model(e, uow),
+    ],
+    events.Deallocated: [
+        lambda e: handlers.remove_allocation_from_read_model(e, uow),
+        lambda e: handlers.reallocate(e, uow),
+    ],
+    events.OutOfStock: [
+        lambda e: handlers.send_out_of_stock_notification(e, send_mail)
+    ],
+}
+injected_command_handlers = {
+    commands.Allocate: lambda c: handlers.allocate(c, uow),
+    commands.CreateBatch: lambda c: handlers.add_batch(c, uow),
+    commands.ChangeBatchQuantity: \
+        lambda c: handlers.change_batch_quantity(c, uow),
+}
+</code>
+</pre>
+<p>Harry 说他甚至无法想象写出那么多行代码并手动查找那么多函数参数。不过，这将是一个完全可行的解决方案，因为每个添加的处理程序只有一行代码左右。即使您有几十个处理程序，也不会带来太多的维护负担。</p>
+<p>我们的应用程序的结构使得我们始终只想在一个地方进行依赖注入，即处理程序函数，因此这个手动解决方案和Harry inspect()的解决方案都可以正常工作。</p>
+<p>如果您发现自己想要在更多事物和不同时间进行 DI，或者您陷入依赖链（其中您的依赖项有它们自己的依赖项，等等），您可能会从“真正的” DI 框架中获得一些好处。</p>
+
+<p>在 MADE 中，我们在几个地方使用了<a src='https://pypi.org/project/inject/'>Inject</a>，效果很好（尽管它会让 Pylint 不高兴）。您也可以查看 由 Bob 自己编写的Punq或 DRY-Python 团队的<a src='https://github.com/proofit404/dependencies'>Dependencies</a>。</p>
+</div>
+
+<h2 id="_4"><font color='red'>消息总线在运行时被赋予处理程序</font></h2>
+<p>我们的消息总线将不再是静态的；它需要已注入的处理程序。因此，我们将其从模块转变为可配置的类：</p>
+<div class="language-py highlight"><span class="filename">MessageBus 作为一个类（src/allocation/service_layer/messagebus.py）</span><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">class</span> <span class="nc">MessageBus</span><span class="p">:</span>  <span class="c1">#(1)</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>        <span class="bp">self</span><span class="p">,</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>        <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>        <span class="n">event_handlers</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">events</span><span class="o">.</span><span class="n">Event</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">]],</span>  <span class="c1">#(2)</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>        <span class="n">command_handlers</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="n">commands</span><span class="o">.</span><span class="n">Command</span><span class="p">],</span> <span class="n">Callable</span><span class="p">],</span>  <span class="c1">#(2)</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    <span class="p">):</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">uow</span> <span class="o">=</span> <span class="n">uow</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">event_handlers</span> <span class="o">=</span> <span class="n">event_handlers</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">command_handlers</span> <span class="o">=</span> <span class="n">command_handlers</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>    <span class="k">def</span> <span class="nf">handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Message</span><span class="p">):</span>  <span class="c1">#(3)</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="p">[</span><span class="n">message</span><span class="p">]</span>  <span class="c1">#(4)</span>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="p">:</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>            <span class="n">message</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">events</span><span class="o">.</span><span class="n">Event</span><span class="p">):</span>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">handle_event</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">commands</span><span class="o">.</span><span class="n">Command</span><span class="p">):</span>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">handle_command</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>            <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2"> was not an Event or Command&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li>消息总线变成一个类…​</li>
+<li>…​它被赋予了已经依赖注入的处理程序。</li>
+<li>主要的<code>handle()</code>功能基本相同，只是将一些属性和方法移到了<code>self</code>上。</li>
+<li>像这样使用<code>self.queue</code>不是线程安全的，如果您使用线程，这可能是一个问题，因为总线实例在 Flask 应用上下文中是全局的，就像我们编写的那样。需要注意这一点。</li>
+</ol>
+<p>总线上还有哪些变化？</p>
+<p><div class="language-py highlight"><span class="filename">事件和命令处理程序逻辑保持不变（src/allocation/service_layer/messagebus.py）</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>    <span class="k">def</span> <span class="nf">handle_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">Event</span><span class="p">):</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>        <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_handlers</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">event</span><span class="p">)]:</span>  <span class="c1">#(1)</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>            <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;handling event </span><span class="si">%s</span><span class="s2"> with handler </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>                <span class="n">handler</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>  <span class="c1">#(2)</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>                <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uow</span><span class="o">.</span><span class="n">collect_new_events</span><span class="p">())</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception handling event </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>                <span class="k">continue</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>    <span class="k">def</span> <span class="nf">handle_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="n">commands</span><span class="o">.</span><span class="n">Command</span><span class="p">):</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;handling command </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>        <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>            <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_handlers</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">command</span><span class="p">)]</span>  <span class="c1">#(1)</span>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>            <span class="n">handler</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>  <span class="c1">#(2)</span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uow</span><span class="o">.</span><span class="n">collect_new_events</span><span class="p">())</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Exception handling command </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span>
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>            <span class="k">raise</span>
+</span></code></pre></div>
+1. <code>handle_event</code>和<code>handle_command</code>实质上是相同的，但是它们不是索引到静态<code>EVENT_HANDLERS</code>或<code>COMMAND_HANDLERS</code>字典中，而是使用<code>self</code>上的版本。
+2. 我们不需要将 UoW 传递到处理程序，而是希望处理程序已经具有所有依赖项，因此它们所需要的只是一个参数，即特定的事件或命令。</p>
+<h2 id="bootstrap"><font color='red'>在入口点使用 Bootstrap</font></h2>
+<p>在我们的应用程序的入口点，我们现在只需调用bootstrap.bootstrap() 并获取一个已准备好的消息总线，而不是配置 UoW 和其余部分：</p>
+<div class="language-py highlight"><span class="filename">Flask 调用引导程序（src/allocation/entrypoints/flask_app.py）</span><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="o">-</span><span class="kn">from</span> <span class="nn">allocation</span> <span class="kn">import</span> <span class="n">views</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="o">+</span><span class="kn">from</span> <span class="nn">allocation</span> <span class="kn">import</span> <span class="n">bootstrap</span><span class="p">,</span> <span class="n">views</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a> <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="o">-</span><span class="n">orm</span><span class="o">.</span><span class="n">start_mappers</span><span class="p">()</span>  <span class="c1">#(1)</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="o">+</span><span class="n">bus</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">()</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a> <span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/add_batch&quot;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="o">@@</span> <span class="o">-</span><span class="mi">19</span><span class="p">,</span><span class="mi">8</span> <span class="o">+</span><span class="mi">16</span><span class="p">,</span><span class="mi">7</span> <span class="o">@@</span> <span class="k">def</span> <span class="nf">add_batch</span><span class="p">():</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>     <span class="n">cmd</span> <span class="o">=</span> <span class="n">commands</span><span class="o">.</span><span class="n">CreateBatch</span><span class="p">(</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>         <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;ref&quot;</span><span class="p">],</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;sku&quot;</span><span class="p">],</span> <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s2">&quot;qty&quot;</span><span class="p">],</span> <span class="n">eta</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>     <span class="p">)</span>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="o">-</span>    <span class="n">uow</span> <span class="o">=</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">SqlAlchemyUnitOfWork</span><span class="p">()</span>  <span class="c1">#(2)</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="o">-</span>    <span class="n">messagebus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">uow</span><span class="p">)</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="o">+</span>    <span class="n">bus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>  <span class="c1">#(3)</span>
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>     <span class="k">return</span> <span class="s2">&quot;OK&quot;</span><span class="p">,</span> <span class="mi">201</span>
+</span></code></pre></div>
+<ol>
+<li>我们不再需要调用<code>start_orm()</code>；引导脚本的初始化阶段将会执行此操作。</li>
+<li>我们不再需要明确构建特定类型的 UoW；引导脚本默认会处理它。</li>
+<li>我们的消息总线现在是一个特定的实例，而不是全局模块。</li>
+</ol>
+<h2 id="di_1"><font color='red'>在测试中初始化 DI</font></h2>
+<p>在测试中，我们可以使用bootstrap.bootstrap()覆盖的默认值来获取自定义消息总线。以下是集成测试中的一个示例：</p>
+<div class="language-py highlight"><span class="filename">覆盖引导默认值（tests/integration/test_views.py）</span><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="k">def</span> <span class="nf">sqlite_bus</span><span class="p">(</span><span class="n">sqlite_session_factory</span><span class="p">):</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>    <span class="n">bus</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">(</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>        <span class="n">start_orm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1">#(1)</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>        <span class="n">uow</span><span class="o">=</span><span class="n">unit_of_work</span><span class="o">.</span><span class="n">SqlAlchemyUnitOfWork</span><span class="p">(</span><span class="n">sqlite_session_factory</span><span class="p">),</span>  <span class="c1">#(2)</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>        <span class="n">send_mail</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1">#(3)</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>        <span class="n">publish</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1">#(3)</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>    <span class="p">)</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    <span class="k">yield</span> <span class="n">bus</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>    <span class="n">clear_mappers</span><span class="p">()</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="k">def</span> <span class="nf">test_allocations_view</span><span class="p">(</span><span class="n">sqlite_bus</span><span class="p">):</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>    <span class="n">sqlite_bus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">commands</span><span class="o">.</span><span class="n">CreateBatch</span><span class="p">(</span><span class="s2">&quot;sku1batch&quot;</span><span class="p">,</span> <span class="s2">&quot;sku1&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>    <span class="n">sqlite_bus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">commands</span><span class="o">.</span><span class="n">CreateBatch</span><span class="p">(</span><span class="s2">&quot;sku2batch&quot;</span><span class="p">,</span> <span class="s2">&quot;sku2&quot;</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">today</span><span class="p">))</span>
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>    <span class="o">...</span>
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>    <span class="k">assert</span> <span class="n">views</span><span class="o">.</span><span class="n">allocations</span><span class="p">(</span><span class="s2">&quot;order1&quot;</span><span class="p">,</span> <span class="n">sqlite_bus</span><span class="o">.</span><span class="n">uow</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>        <span class="p">{</span><span class="s2">&quot;sku&quot;</span><span class="p">:</span> <span class="s2">&quot;sku1&quot;</span><span class="p">,</span> <span class="s2">&quot;batchref&quot;</span><span class="p">:</span> <span class="s2">&quot;sku1batch&quot;</span><span class="p">},</span>
+</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>        <span class="p">{</span><span class="s2">&quot;sku&quot;</span><span class="p">:</span> <span class="s2">&quot;sku2&quot;</span><span class="p">,</span> <span class="s2">&quot;batchref&quot;</span><span class="p">:</span> <span class="s2">&quot;sku2batch&quot;</span><span class="p">},</span>
+</span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>    <span class="p">]</span>
+</span></code></pre></div>
+<ol>
+<li>我们仍然想启动 ORM……​</li>
+<li>...​因为我们将使用真正的 UoW，尽管带有内存数据库。</li>
+<li>但我们不需要发送电子邮件或发布，所以我们将这些都设为无用操作。</li>
+</ol>
+<p>相反，在我们的单元测试中，我们可以重用我们的<code>FakeUnitOfWork</code>：</p>
+<div class="language-py highlight"><span class="filename">单元测试中的引导（tests/unit/test_handlers.py）</span><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">def</span> <span class="nf">bootstrap_test_app</span><span class="p">():</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="k">return</span> <span class="n">bootstrap</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">(</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>        <span class="n">start_orm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1">#(1)</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>        <span class="n">uow</span><span class="o">=</span><span class="n">FakeUnitOfWork</span><span class="p">(),</span>  <span class="c1">#(2)</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>        <span class="n">send_mail</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1">#(3)</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>        <span class="n">publish</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1">#(3)</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>    <span class="p">)</span>
+</span></code></pre></div>
+<ol>
+<li>无需启动 ORM…​</li>
+<li>…​因为假的 UoW 不使用这个。</li>
+<li>我们也想伪造我们的电子邮件和 Redis 适配器。</li>
+</ol>
+<p>这样就消除了一些重复，并且我们将一堆设置和合理的默认值移到了一个地方。</p>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px">
+    <p align='center'><strong style='font-size:1.6em;color:#186d7a'>读者练习 1</strong></p>
+    <p>按照【使用类的替代方法】示例将所有处理程序更改为类，并根据需要修改引导程序的 DI 代码。这将让您知道在自己的项目中您更喜欢函数式方法还是基于类的方法。</p>
+</div>
+
+<h2 id="_5"><font color='red'>“正确”构建适配器：一个实际示例</font></h2>
+<p>为了真正了解它的工作原理，让我们通过一个例子来了解如何“正确地”构建适配器并对其进行依赖注入。</p>
+<p>目前，我们有两种类型的依赖关系：</p>
+<div class="language-py highlight"><span class="filename">两种类型的依赖项（src/allocation/service_layer/messagebus.py）</span><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>  <span class="c1">#(1)</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="n">send_mail</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>  <span class="c1">#(2)</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="n">publish</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>  <span class="c1">#(2)</span>
+</span></code></pre></div>
+<ol>
+<li>UoW 有一个抽象基类。这是声明和管理外部依赖关系的重量级选项。当依赖关系相对复杂时，我们会使用它。</li>
+<li>我们的电子邮件发送者和发布/订阅发布者被定义为函数。这对于简单的依赖关系来说非常有效。</li>
+</ol>
+<p>以下是我们在工作中注入的一些东西：</p>
+<ul>
+<li>S3 文件系统客户端</li>
+<li>键/值存储客户端</li>
+<li>requests会话对象</li>
+</ul>
+<p>其中大多数都具有更复杂的 API，您无法将其捕获为单个函数：读取和写入、GET 和 POST 等等。</p>
+<p>尽管很简单，但让我们用<code>send_mail</code>作为示例来讨论如何定义更复杂的依赖关系。</p>
+<h3 id="_6"><font color='red'>定义抽象和具体实现</font></h3>
+<p>我们会设想一个更通用的通知 API。可能是电子邮件，可能是短信，将来也可能是 Slack 帖子。</p>
+<div class="language-py highlight"><span class="filename">ABC 和具体实现 (src/allocation/adapters/notifications.py）</span><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">class</span> <span class="nc">AbstractNotifications</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="o">...</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="k">class</span> <span class="nc">EmailNotifications</span><span class="p">(</span><span class="n">AbstractNotifications</span><span class="p">):</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">smtp_host</span><span class="o">=</span><span class="n">DEFAULT_HOST</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">DEFAULT_PORT</span><span class="p">):</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">smtplib</span><span class="o">.</span><span class="n">SMTP</span><span class="p">(</span><span class="n">smtp_host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">noop</span><span class="p">()</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Subject: allocation service notification</span><span class="se">\n</span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">sendmail</span><span class="p">(</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>            <span class="n">from_addr</span><span class="o">=</span><span class="s2">&quot;allocations@example.com&quot;</span><span class="p">,</span>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a>            <span class="n">to_addrs</span><span class="o">=</span><span class="p">[</span><span class="n">destination</span><span class="p">],</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>            <span class="n">msg</span><span class="o">=</span><span class="n">msg</span><span class="p">,</span>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a>        <span class="p">)</span>
+</span></code></pre></div>
+<p>我们改变引导脚本中的依赖关系：</p>
+<div class="language-py highlight"><span class="filename">消息总线中的通知（src/allocation/bootstrap.py）</span><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">def</span> <span class="nf">bootstrap</span><span class="p">(</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>    <span class="n">start_orm</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span> <span class="o">=</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">SqlAlchemyUnitOfWork</span><span class="p">(),</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="o">-</span>    <span class="n">send_mail</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">send</span><span class="p">,</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="o">+</span>    <span class="n">notifications</span><span class="p">:</span> <span class="n">AbstractNotifications</span> <span class="o">=</span> <span class="n">EmailNotifications</span><span class="p">(),</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>    <span class="n">publish</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">redis_eventpublisher</span><span class="o">.</span><span class="n">publish</span><span class="p">,</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">messagebus</span><span class="o">.</span><span class="n">MessageBus</span><span class="p">:</span>
+</span></code></pre></div>
+<h3 id="_7"><font color='red'>为你的测试制作一个假版本</font></h3>
+<p>我们研究并定义了一个用于单元测试的假版本：</p>
+<div class="language-py highlight"><span class="filename">假通知（tests/unit/test_handlers.py）</span><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">class</span> <span class="nc">FakeNotifications</span><span class="p">(</span><span class="n">notifications</span><span class="o">.</span><span class="n">AbstractNotifications</span><span class="p">):</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">sent</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>  <span class="c1"># type: Dict[str, List[str]]</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">sent</span><span class="p">[</span><span class="n">destination</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="o">...</span>
+</span></code></pre></div>
+<p>我们在测试中使用它：</p>
+<div class="language-py highlight"><span class="filename">测试略有变化（tests/unit/test_handlers.py）</span><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>    <span class="k">def</span> <span class="nf">test_sends_email_on_out_of_stock_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>        <span class="n">fake_notifs</span> <span class="o">=</span> <span class="n">FakeNotifications</span><span class="p">()</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>        <span class="n">bus</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">(</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>            <span class="n">start_orm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>            <span class="n">uow</span><span class="o">=</span><span class="n">FakeUnitOfWork</span><span class="p">(),</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>            <span class="n">notifications</span><span class="o">=</span><span class="n">fake_notifs</span><span class="p">,</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>            <span class="n">publish</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>        <span class="p">)</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>        <span class="n">bus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">commands</span><span class="o">.</span><span class="n">CreateBatch</span><span class="p">(</span><span class="s2">&quot;b1&quot;</span><span class="p">,</span> <span class="s2">&quot;POPULAR-CURTAINS&quot;</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>        <span class="n">bus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">commands</span><span class="o">.</span><span class="n">Allocate</span><span class="p">(</span><span class="s2">&quot;o1&quot;</span><span class="p">,</span> <span class="s2">&quot;POPULAR-CURTAINS&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>        <span class="k">assert</span> <span class="n">fake_notifs</span><span class="o">.</span><span class="n">sent</span><span class="p">[</span><span class="s2">&quot;stock@made.com&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span>
+</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>            <span class="sa">f</span><span class="s2">&quot;Out of stock for POPULAR-CURTAINS&quot;</span><span class="p">,</span>
+</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a>        <span class="p">]</span>
+</span></code></pre></div>
+<h3 id="_8"><font color='red'>弄清楚如何对真实事物进行集成测试</font></h3>
+<p>现在我们测试真实的东西，通常使用端到端或集成测试。我们已经将用<a href="https://github.com/mailhog/MailHog">MailHog</a>作为 Docker 开发环境中的真实电子邮件服务器：</p>
+<div class="language-text highlight"><span class="filename">使用真实虚假电子邮件服务器的 Docker-compose 配置（docker-compose.yml）</span><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>version: &quot;3&quot;
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>services:
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>  redis_pubsub:
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>    build:
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>      context: .
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>      dockerfile: Dockerfile
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>    image: allocation-image
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>    ...
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>
+</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a>  api:
+</span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>    image: allocation-image
+</span><span id="__span-22-14"><a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a>    ...
+</span><span id="__span-22-15"><a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a>
+</span><span id="__span-22-16"><a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a>  postgres:
+</span><span id="__span-22-17"><a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a>    image: postgres:9.6
+</span><span id="__span-22-18"><a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a>    ...
+</span><span id="__span-22-19"><a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a>
+</span><span id="__span-22-20"><a id="__codelineno-22-20" name="__codelineno-22-20" href="#__codelineno-22-20"></a>  redis:
+</span><span id="__span-22-21"><a id="__codelineno-22-21" name="__codelineno-22-21" href="#__codelineno-22-21"></a>    image: redis:alpine
+</span><span id="__span-22-22"><a id="__codelineno-22-22" name="__codelineno-22-22" href="#__codelineno-22-22"></a>    ...
+</span><span id="__span-22-23"><a id="__codelineno-22-23" name="__codelineno-22-23" href="#__codelineno-22-23"></a>
+</span><span id="__span-22-24"><a id="__codelineno-22-24" name="__codelineno-22-24" href="#__codelineno-22-24"></a>  mailhog:
+</span><span id="__span-22-25"><a id="__codelineno-22-25" name="__codelineno-22-25" href="#__codelineno-22-25"></a>    image: mailhog/mailhog
+</span><span id="__span-22-26"><a id="__codelineno-22-26" name="__codelineno-22-26" href="#__codelineno-22-26"></a>    ports:
+</span><span id="__span-22-27"><a id="__codelineno-22-27" name="__codelineno-22-27" href="#__codelineno-22-27"></a>      - &quot;11025:1025&quot;
+</span><span id="__span-22-28"><a id="__codelineno-22-28" name="__codelineno-22-28" href="#__codelineno-22-28"></a>      - &quot;18025:8025&quot;
+</span></code></pre></div>
+<p>在我们的集成测试中，我们使用真实的<code>EmailNotifications</code>类，与 Docker 集群中的 MailHog 服务器进行通信：</p>
+<div class="language-py highlight"><span class="filename">电子邮件集成测试（tests/integration/test_email.py）</span><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="k">def</span> <span class="nf">bus</span><span class="p">(</span><span class="n">sqlite_session_factory</span><span class="p">):</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>    <span class="n">bus</span> <span class="o">=</span> <span class="n">bootstrap</span><span class="o">.</span><span class="n">bootstrap</span><span class="p">(</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>        <span class="n">start_orm</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>        <span class="n">uow</span><span class="o">=</span><span class="n">unit_of_work</span><span class="o">.</span><span class="n">SqlAlchemyUnitOfWork</span><span class="p">(</span><span class="n">sqlite_session_factory</span><span class="p">),</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>        <span class="n">notifications</span><span class="o">=</span><span class="n">notifications</span><span class="o">.</span><span class="n">EmailNotifications</span><span class="p">(),</span>  <span class="c1">#(1)</span>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>        <span class="n">publish</span><span class="o">=</span><span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>    <span class="p">)</span>
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>    <span class="k">yield</span> <span class="n">bus</span>
+</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>    <span class="n">clear_mappers</span><span class="p">()</span>
+</span><span id="__span-23-11"><a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>
+</span><span id="__span-23-12"><a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a>
+</span><span id="__span-23-13"><a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="k">def</span> <span class="nf">get_email_from_mailhog</span><span class="p">(</span><span class="n">sku</span><span class="p">):</span>  <span class="c1">#(2)</span>
+</span><span id="__span-23-14"><a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>    <span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_email_host_and_port</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;host&quot;</span><span class="p">,</span> <span class="s2">&quot;http_port&quot;</span><span class="p">])</span>
+</span><span id="__span-23-15"><a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a>    <span class="n">all_emails</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">/api/v2/messages&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+</span><span id="__span-23-16"><a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a>    <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">all_emails</span><span class="p">[</span><span class="s2">&quot;items&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">sku</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+</span><span id="__span-23-17"><a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a>
+</span><span id="__span-23-18"><a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a>
+</span><span id="__span-23-19"><a id="__codelineno-23-19" name="__codelineno-23-19" href="#__codelineno-23-19"></a><span class="k">def</span> <span class="nf">test_out_of_stock_email</span><span class="p">(</span><span class="n">bus</span><span class="p">):</span>
+</span><span id="__span-23-20"><a id="__codelineno-23-20" name="__codelineno-23-20" href="#__codelineno-23-20"></a>    <span class="n">sku</span> <span class="o">=</span> <span class="n">random_sku</span><span class="p">()</span>
+</span><span id="__span-23-21"><a id="__codelineno-23-21" name="__codelineno-23-21" href="#__codelineno-23-21"></a>    <span class="n">bus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">commands</span><span class="o">.</span><span class="n">CreateBatch</span><span class="p">(</span><span class="s2">&quot;batch1&quot;</span><span class="p">,</span> <span class="n">sku</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>  <span class="c1">#(3)</span>
+</span><span id="__span-23-22"><a id="__codelineno-23-22" name="__codelineno-23-22" href="#__codelineno-23-22"></a>    <span class="n">bus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">commands</span><span class="o">.</span><span class="n">Allocate</span><span class="p">(</span><span class="s2">&quot;order1&quot;</span><span class="p">,</span> <span class="n">sku</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+</span><span id="__span-23-23"><a id="__codelineno-23-23" name="__codelineno-23-23" href="#__codelineno-23-23"></a>    <span class="n">email</span> <span class="o">=</span> <span class="n">get_email_from_mailhog</span><span class="p">(</span><span class="n">sku</span><span class="p">)</span>
+</span><span id="__span-23-24"><a id="__codelineno-23-24" name="__codelineno-23-24" href="#__codelineno-23-24"></a>    <span class="k">assert</span> <span class="n">email</span><span class="p">[</span><span class="s2">&quot;Raw&quot;</span><span class="p">][</span><span class="s2">&quot;From&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;allocations@example.com&quot;</span>  <span class="c1">#(4)</span>
+</span><span id="__span-23-25"><a id="__codelineno-23-25" name="__codelineno-23-25" href="#__codelineno-23-25"></a>    <span class="k">assert</span> <span class="n">email</span><span class="p">[</span><span class="s2">&quot;Raw&quot;</span><span class="p">][</span><span class="s2">&quot;To&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">&quot;stock@made.com&quot;</span><span class="p">]</span>
+</span><span id="__span-23-26"><a id="__codelineno-23-26" name="__codelineno-23-26" href="#__codelineno-23-26"></a>    <span class="k">assert</span> <span class="sa">f</span><span class="s2">&quot;Out of stock for </span><span class="si">{</span><span class="n">sku</span><span class="si">}</span><span class="s2">&quot;</span> <span class="ow">in</span> <span class="n">email</span><span class="p">[</span><span class="s2">&quot;Raw&quot;</span><span class="p">][</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span>
+</span></code></pre></div>
+<ol>
+<li>我们使用引导程序来构建与真实通知类对话的消息总线。</li>
+<li>我们弄清楚了如何从我们的“真实”电子邮件服务器中获取电子邮件。</li>
+<li>我们使用总线来进行测试设置。</li>
+<li>尽管困难重重，但这个方法实际上几乎在第一次尝试时就成功了！</li>
+</ol>
+<p>事实就是这样。</p>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px">
+    <p align='center'><strong style='font-size:1.6em;color:#186d7a'>读者练习 2</strong></p>
+    <p>对于适配器，你可以做两件事来练习：</p>
+    <ul>
+    <li>尝试使用 Twilio 或 Slack 通知将我们的通知从电子邮件替换为短信通知。你能找到与 MailHog 相当的集成测试工具吗？</li>
+    <li>与我们从send_mail移动到Notifications类的方式类似，尝试重构我们的 redis_eventpublisher，它目前只是某种更正式的适配器/基类/协议的可调用。</li>
+    </ul>
+</div>
+
+<h2 id="_9"><font color='red'>总结</font></h2>
+<ul>
+<li>一旦您拥有多个适配器，您就会开始感受到手动传递依赖项的痛苦，除非您进行某种 依赖项注入。</li>
+<li>设置依赖注入只是启动应用时只需执行一次的众多典型设置/初始化活动之一。将所有这些放入引导脚本中通常是一个好主意。</li>
+<li>引导脚本还可以为您的适配器提供合理的默认配置，并作为为您的测试使用伪造内容覆盖这些适配器的单一位置。</li>
+<li>如果您发现自己需要在多个级别执行 DI，那么依赖注入框架会很有用 - 例如，如果您拥有所有需要 DI 的组件的链式依赖关系。</li>
+<li>本章还提供了一个实用示例，将隐式/简单依赖关系更改为“适当”的适配器，分解出 ABC，定义其真实和虚假实现，并进行集成测试思考。</li>
+</ul>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px">
+    <p align='center'><strong style='font-size:1.6em;color:#186d7a'>DI 和 Bootstrap 回顾</strong></p>
+    <p>总之：</p>
+    <ol>
+        <li>使用 ABC 定义您的 API。</li>
+        <li>落实实事。</li>
+        <li>构建一个虚假的并且使用它来进行单元/服务层/处理程序测试。</li>
+        <li>找到一个不太虚假的版本，并将其放入你的 Docker 环境中。</li>
+        <li>测试不那么假的“真”东西。</li>
+        <li>收益！</li>
+    </ol>
+</div>
+
+<p>这些是我们想要介绍的最后几种模式，这也将带我们进入<a href="../k.Part2/">part2</a>的结尾。在<a href="../r.Epilogue/">结尾</a>部分，我们将尝试为您提供一些在 Real World<sup>TM</sup>中应用这些技术的指示。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

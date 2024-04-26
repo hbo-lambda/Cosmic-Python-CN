@@ -1,0 +1,1313 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../e.Repository%20Pattern/">
+      
+      
+        <link rel="next" href="../g.Flask%20API%20and%20Service%20Layer/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>3.简短插曲：耦合和抽象 - My Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#3" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="My Docs" class="md-header__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              3.简短插曲：耦合和抽象
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="My Docs" class="md-nav__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    My Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    REAMDME
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../a.Preface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    前言
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../b.Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    介绍
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c.Part1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第一部分: 构建支持领域建模的架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../d.Domain%20Modeling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.领域建模
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e.Repository%20Pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.存储库模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    3.简短插曲：耦合和抽象
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    3.简短插曲：耦合和抽象
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      抽象化状态有助于可测试性
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      选择正确的抽象
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      实现我们选择的抽象
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="实现我们选择的抽象">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      用Fakes和依赖注入进行端到端测试
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      为什么不直接修复它呢？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../g.Flask%20API%20and%20Service%20Layer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4.我们的第一个用例：Flask API和服务层
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../h.TDD%20in%20High%20Gear%20and%20Low%20Gear/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.TDD高速和低速
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i.Unit%20of%20Work%20Pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6.工作单元模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../j.aggregates%20and%20Consistency%20Boundaries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7.聚合和一致性边界
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k.Part2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第二部分 事件驱动架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l.Events%20and%20the%20Message%20Bus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8.事件和消息总线
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../m.Going%20to%20Town%20on%20the%20Message%20Bus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9.使用消息总线大干一场
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../n.Commands%20and%20Command%20Handler/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10.命令和命令处理程序
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../o.Event-Driven%20Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11.事件驱动架构：使用事件集成微服务
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../p.CQRS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12.命令查询职责分离
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../q.Dependency%20Injection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13.依赖注入（和引导）
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../r.Epilogue/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    结语
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../s.Appendix%20A/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录A：摘要图表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../t.Appendix%20B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录B：模板项目结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../u.Appendix%20C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录C：更换基础设施：用csv完成所有工作
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v.Appendix%20D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录D：Django 的存储库和工作单元模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../w.Appendix%20E/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录E：验证
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      抽象化状态有助于可测试性
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      选择正确的抽象
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      实现我们选择的抽象
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="实现我们选择的抽象">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      用Fakes和依赖注入进行端到端测试
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      为什么不直接修复它呢？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="3">3.简短插曲：耦合和抽象</h1>
+<p>亲爱的读者，请允许我们在抽象的主题上稍作偏离。我们已经讨论了很多关于抽象的内容。例如，存储库模式就是对永久存储的一种抽象。但是，什么才是一个好的抽象？我们从抽象中想要什么？它们与测试有何关联？</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>本章的代码位于<a href="https://github.com/cosmicpython/code/tree/appendix_project_structure">GitHub</a>上的 Chapter_03_abstractions 分支中：
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git clone https://github.com/cosmicpython/code.git
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>git checkout chapter_03_abstractions
+</span></code></pre></div></p>
+</div>
+<p>本书的一个关键主题隐藏在精美的模式中，那就是我们可以使用简单的抽象来隐藏杂乱的细节。当我们为了好玩或练习而编写代码时，我们可以自由发挥想法，敲定方案并积极重构。然而，在大型系统中，我们会受到系统中其他地方做出的决策的限制。</p>
+<p>当我们因为担心组件 B 会损坏而无法更改组件 A 时，我们称组件已耦合。从局部来看，耦合是一件好事：这表明我们的代码可以协同工作，每个组件都支持其他组件，所有组件都像手表的齿轮一样配合到位。用行话来说，当耦合元素之间存在高内聚力时，我们称这种情况有效。</p>
+<p>从总体上看，耦合是一件麻烦事：它增加了更改代码的风险和成本，有时甚至到了我们觉得根本无法进行任何更改的地步。这就是泥球模式的问题所在：随着应用程序的增长，如果我们无法防止没有内聚力的元素之间的耦合，那么这种耦合就会超线性增加，直到我们不再能够有效地更改我们的系统。</p>
+<p>我们可以通过抽象细节（图2） 来降低系统内的耦合度（图1） 。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0301.png" />
+    <figcaption><font size=2>图1.大量耦合</font></figcaption>
+</figure>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0302.png" />
+    <figcaption><font size=2>图2.更少的耦合</font></figcaption>
+</figure>
+<p>在两个图中，我们都有一对子系统，其中一个依赖于另一个。在图1中，两者之间的耦合度很高；箭头的数量表示两者之间存在多种依赖关系。如果我们需要更该系统B，那么更该很可能会波及到系统A。</p>
+<p>然而，在图2中，我们通过插入一个新的、更简单的抽象来减少耦合度。由于更简单，系统A对抽象的依赖更少。这个抽象通过隐藏系统B的复杂细节来保护我们免受更改的影响——我们可以改变右边的箭头，而不改变左边的箭头。</p>
+<h2 id="_1"><font color='red'>抽象化状态有助于可测试性</font></h2>
+<p>让我们看一个例子。假设我们要编写代码来同步两个文件目录，我们将其称为源和目标：</p>
+<ul>
+<li>如果文件存在于源中但不存在于目标中，则复制该文件。</li>
+<li>如果源中存在文件，但其名称与目标文件中的名称不同，则重命名目标文件以匹配。</li>
+<li>如果文件存在于目标中但不存在于源中，则将其删除。</li>
+</ul>
+<p>我们的第一个和第三个要求很简单：我们可以比较两个路径列表。不过，我们的第二个要求比较棘手。要检测重命名，我们必须检查文件的内容。为此，我们可以使用 MD5 或 SHA-1 等哈希函数。从文件生成 SHA-1 哈希的代码非常简单：</p>
+<div class="language-py highlight"><span class="filename">对文件做哈希处理（sync.py）</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">BLOCKSIZE</span> <span class="o">=</span> <span class="mi">65536</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">def</span> <span class="nf">hash_file</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">hasher</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">()</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="k">with</span> <span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        <span class="n">buf</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">BLOCKSIZE</span><span class="p">)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        <span class="k">while</span> <span class="n">buf</span><span class="p">:</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>            <span class="n">hasher</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>            <span class="n">buf</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">BLOCKSIZE</span><span class="p">)</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="k">return</span> <span class="n">hasher</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+</span></code></pre></div>
+<p>现在我们需要编写一些决定做什么的部分——如果你愿意的话，可以称之为业务逻辑。</p>
+<p>当我们必须从基本原理出发解决问题时，我们通常会尝试编写一个简单的实现，然后重构以获得更好的设计。我们将在整本书中使用这种方法，因为这是我们在现实世界中编写代码的方式：从问题最小部分的解决方案开始，然后迭代地使解决方案更丰富、设计更好。</p>
+<p>我们的第一个hacking的方法大致如下：</p>
+<div class="language-py highlight"><span class="filename">基础同步算法（sync.py）</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span> <span class="nn">hashlib</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">import</span> <span class="nn">os</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">import</span> <span class="nn">shutil</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="c1"># Walk the source folder and build a dict of filenames and their hashes</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="n">source_hashes</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="k">for</span> <span class="n">folder</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">source</span><span class="p">):</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>        <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>            <span class="n">source_hashes</span><span class="p">[</span><span class="n">hash_file</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">fn</span><span class="p">)]</span> <span class="o">=</span> <span class="n">fn</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    <span class="n">seen</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>  <span class="c1"># Keep track of the files we&#39;ve found in the target</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>    <span class="c1"># Walk the target folder and get the filenames and hashes</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="k">for</span> <span class="n">folder</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">dest</span><span class="p">):</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>            <span class="n">dest_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">fn</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>            <span class="n">dest_hash</span> <span class="o">=</span> <span class="n">hash_file</span><span class="p">(</span><span class="n">dest_path</span><span class="p">)</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>            <span class="n">seen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">dest_hash</span><span class="p">)</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>            <span class="c1"># if there&#39;s a file in target that&#39;s not in source, delete it</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>            <span class="k">if</span> <span class="n">dest_hash</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">source_hashes</span><span class="p">:</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>                <span class="n">dest_path</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>            <span class="c1"># if there&#39;s a file in target that has a different path in source,</span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>            <span class="c1"># move it to the correct path</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>            <span class="k">elif</span> <span class="n">dest_hash</span> <span class="ow">in</span> <span class="n">source_hashes</span> <span class="ow">and</span> <span class="n">fn</span> <span class="o">!=</span> <span class="n">source_hashes</span><span class="p">[</span><span class="n">dest_hash</span><span class="p">]:</span>
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>                <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">dest_path</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">source_hashes</span><span class="p">[</span><span class="n">dest_hash</span><span class="p">])</span>
+</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>
+</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>    <span class="c1"># for every file that appears in source but not target, copy the file to</span>
+</span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>    <span class="c1"># the target</span>
+</span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>    <span class="k">for</span> <span class="n">source_hash</span><span class="p">,</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">source_hashes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-2-35"><a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>        <span class="k">if</span> <span class="n">source_hash</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">seen</span><span class="p">:</span>
+</span><span id="__span-2-36"><a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>            <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">/</span> <span class="n">fn</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span> <span class="o">/</span> <span class="n">fn</span><span class="p">)</span>
+</span></code></pre></div>
+<p>太棒了！我们有一些代码，看起来还不错，但在我们将其运行在硬盘上之前，也许我们应该对其进行测试。那么，我们应该如何测试这种东西呢？</p>
+<div class="language-py highlight"><span class="filename">一些端到端测试（test_sync.py）</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span> <span class="nf">test_when_a_file_exists_in_the_source_but_not_the_destination</span><span class="p">():</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>        <span class="n">source</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>        <span class="n">dest</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;I am a very useful file&quot;</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>        <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;my-file&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>        <span class="n">sync</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>        <span class="n">expected_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;my-file&quot;</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>        <span class="k">assert</span> <span class="n">expected_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>        <span class="k">assert</span> <span class="n">expected_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span> <span class="o">==</span> <span class="n">content</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>    <span class="k">finally</span><span class="p">:</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="k">def</span> <span class="nf">test_when_a_file_has_been_renamed_in_the_source</span><span class="p">():</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>    <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>        <span class="n">source</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>        <span class="n">dest</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>        <span class="n">content</span> <span class="o">=</span> <span class="s2">&quot;I am a file that was renamed&quot;</span>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>        <span class="n">source_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;source-filename&quot;</span>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>        <span class="n">old_dest_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;dest-filename&quot;</span>
+</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>        <span class="n">expected_dest_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span> <span class="o">/</span> <span class="s2">&quot;source-filename&quot;</span>
+</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>        <span class="n">source_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+</span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>        <span class="n">old_dest_path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+</span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>
+</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>        <span class="n">sync</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
+</span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>
+</span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>        <span class="k">assert</span> <span class="n">old_dest_path</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">False</span>
+</span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>        <span class="k">assert</span> <span class="n">expected_dest_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span> <span class="o">==</span> <span class="n">content</span>
+</span><span id="__span-3-36"><a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>
+</span><span id="__span-3-37"><a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>    <span class="k">finally</span><span class="p">:</span>
+</span><span id="__span-3-38"><a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+</span><span id="__span-3-39"><a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span>
+</span></code></pre></div>
+<p>哇哦，对于两个简单的案例来说，设置工作量太大了！问题在于，我们的领域逻辑“找出两个目录之间的差异”与I/O代码紧密相关。我们无法在不调用<code>pathlib</code>、<code>shutil</code>和<code>hashlib</code>模块的情况下运行我们的差异算法。</p>
+<p>更麻烦的是，即使按照我们当前的需求，我们也没有编写足够的测试：当前的实现存在几个错误（例如，<code>shutil.move()</code>是错误的）。获得适当的覆盖范围并揭示这些错误意味着编写更多测试，但如果它们都像前面的测试一样难以处理，那么很快就会变得非常痛苦。</p>
+<p>此外，我们的代码不太可扩展。想象试图实现一个<code>--dry-run</code>标志，让我们的代码只打印出它要做什么，而不是真正去做。或者如果我们想同步到远程服务器或云存储怎么办？</p>
+<p>我们的高级代码与低级细节耦合在一起，这让事情变得很困难。随着我们考虑的场景变得越来越复杂，我们的测试将变得越来越难以处理。我们当然可以重构这些测试（例如，一些清理工作可以放在<code>pytest fixtures</code>中），但只要我们执行文件系统操作，它们就会变得缓慢，难以读写。</p>
+<h2 id="_2"><font color='red'>选择正确的抽象</font></h2>
+<p>我们应该做些什么来重写我们的代码以使其更易于测试？</p>
+<p>首先，我们需要考虑我们的代码需要从文件系统获取什么。通读代码，我们可以看到发生了三件不同的事情。我们可以将它们视为代码的三个不同职责：</p>
+<ul>
+<li>
+<p>我们通过使用<code>os.walk</code>来查询文件系统，并确定一系列路径的哈希值。源和目标中都类似。</p>
+</li>
+<li>
+<p>我们判断一个文件是新的、重命名的还是多余的。</p>
+</li>
+<li>
+<p>我们复制、移动或删除文件以匹配源。</p>
+</li>
+</ul>
+<p>请记住，我们希望为每个职责找到简化的抽象。这样我们就可以隐藏杂乱的细节，以便专注于有趣的逻辑。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>在本章中，我们正在将一些复杂的代码重构为更易于测试的结构，通过识别需要完成的单独任务，并将每个任务分配给一个明确定义的参与者，类似于<code>duckduckgo</code>示例的方式。</p>
+</div>
+<p>对于步骤 1 和 2，我们已经直观地开始使用抽象，即哈希到路径的字典。您可能已经在想，“为什么不为目标文件夹和源文件夹建立一个字典，然后我们只需比较两个字典？”这似乎是抽象文件系统当前状态的好方法：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>source_files = {&#39;hash1&#39;: &#39;path1&#39;, &#39;hash2&#39;: &#39;path2&#39;}
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>dest_files = {&#39;hash1&#39;: &#39;path1&#39;, &#39;hash2&#39;: &#39;pathX&#39;}
+</span></code></pre></div>
+<p>那么从步骤 2 转到步骤 3 怎么样？我们如何抽象出实际的移动/复制/删除文件系统交互？</p>
+<p>我们将在这里使用一个技巧，本书后面会大规模使用这个技巧。我们将把我们想要做什么与如何去做分开。我们将让我们的程序输出一个如下所示的命令列表：</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>(&quot;COPY&quot;, &quot;sourcepath&quot;, &quot;destpath&quot;),
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>(&quot;MOVE&quot;, &quot;old&quot;, &quot;new&quot;),
+</span></code></pre></div>
+<p>现在我们可以编写仅使用两个文件系统字典作为输入的测试，并且我们期望表示操作的字符串元组列表作为输出。</p>
+<p>我们不会说“给定这个实际的文件系统，当我运行我的函数时，检查发生了哪些操作”，而是说“给定这个文件系统的抽象，将会发生哪些文件系统操作的抽象？”</p>
+<div class="language-py highlight"><span class="filename">简化测试中的输入和输出（test_sync.py）</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a> <span class="k">def</span> <span class="nf">test_when_a_file_exists_in_the_source_but_not_the_destination</span><span class="p">():</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>        <span class="n">source_hashes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;hash1&#39;</span><span class="p">:</span> <span class="s1">&#39;fn1&#39;</span><span class="p">}</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>        <span class="n">dest_hashes</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        <span class="n">expected_actions</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;COPY&#39;</span><span class="p">,</span> <span class="s1">&#39;/src/fn1&#39;</span><span class="p">,</span> <span class="s1">&#39;/dst/fn1&#39;</span><span class="p">)]</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>        <span class="o">...</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="k">def</span> <span class="nf">test_when_a_file_has_been_renamed_in_the_source</span><span class="p">():</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>        <span class="n">source_hashes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;hash1&#39;</span><span class="p">:</span> <span class="s1">&#39;fn1&#39;</span><span class="p">}</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>        <span class="n">dest_hashes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;hash1&#39;</span><span class="p">:</span> <span class="s1">&#39;fn2&#39;</span><span class="p">}</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>        <span class="n">expected_actions</span> <span class="o">==</span> <span class="p">[(</span><span class="s1">&#39;MOVE&#39;</span><span class="p">,</span> <span class="s1">&#39;/dst/fn2&#39;</span><span class="p">,</span> <span class="s1">&#39;/dst/fn1&#39;</span><span class="p">)]</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>        <span class="o">...</span>
+</span></code></pre></div>
+<h2 id="_3"><font color='red'>实现我们选择的抽象</font></h2>
+<p>这一切都很好，但是我们实际上如何编写这些新测试，以及如何改变我们的实现以使其正常工作？</p>
+<p>我们的目标是隔离系统中的聪明部分，并能够在无需设置真实文件系统的情况下对其进行全面测试。我们将创建一个不依赖外部状态的代码“核心”，然后查看当我们从外部世界为其提供输入时它会如何响应（这种方法被Gary Bernhardt称为<a href="https://www.destroyallsoftware.com/screencasts/catalog/functional-core-imperative-shell">函数核心，命令式外壳</a>，或FCIS）。</p>
+<p>让我们首先将代码拆分，将状态部分与逻辑分开。</p>
+<p>我们的顶级函数几乎不包含任何逻辑；它只是一系列必要的步骤：收集输入，调用我们的逻辑，应用输出：</p>
+<div class="language-py highlight"><span class="filename">将代码分成三部分（sync.py）</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="c1"># imperative shell step 1, gather inputs</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">source_hashes</span> <span class="o">=</span> <span class="n">read_paths_and_hashes</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>  <span class="c1">#(1)</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="n">dest_hashes</span> <span class="o">=</span> <span class="n">read_paths_and_hashes</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span>  <span class="c1">#(1)</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="c1"># step 2: call functional core</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="n">actions</span> <span class="o">=</span> <span class="n">determine_actions</span><span class="p">(</span><span class="n">source_hashes</span><span class="p">,</span> <span class="n">dest_hashes</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>  <span class="c1">#(2)</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    <span class="c1"># imperative shell step 3, apply outputs</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>    <span class="k">for</span> <span class="n">action</span><span class="p">,</span> <span class="o">*</span><span class="n">paths</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>        <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;COPY&quot;</span><span class="p">:</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>            <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="o">*</span><span class="n">paths</span><span class="p">)</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>        <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;MOVE&quot;</span><span class="p">:</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>            <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="o">*</span><span class="n">paths</span><span class="p">)</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>        <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;DELETE&quot;</span><span class="p">:</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">paths</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></code></pre></div>
+<ol>
+<li>这是我们分离出来的第一个函数<code>read_paths_and_hashes()</code>，它隔离了我们应用程序的I/O部分。</li>
+<li>在这里我们划分出功能核心，即业务逻辑。</li>
+</ol>
+<p>现在，构建路径和哈希字典的代码变得非常容易编写：</p>
+<div class="language-py highlight"><span class="filename">仅执行 I/O 的函数（sync.py）</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span> <span class="nf">read_paths_and_hashes</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">hashes</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="k">for</span> <span class="n">folder</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>        <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>            <span class="n">hashes</span><span class="p">[</span><span class="n">hash_file</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">fn</span><span class="p">)]</span> <span class="o">=</span> <span class="n">fn</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="k">return</span> <span class="n">hashes</span>
+</span></code></pre></div>
+<p><code>determine_actions()</code>函数将是我们业务逻辑的核心，它表示：“给定这两组哈希和文件名，我们应该复制/移动/删除什么？”它接受简单的数据结构并返回简单的数据结构：</p>
+<div class="language-py highlight"><span class="filename">仅执行业务逻辑的函数（sync.py）</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">def</span> <span class="nf">determine_actions</span><span class="p">(</span><span class="n">source_hashes</span><span class="p">,</span> <span class="n">dest_hashes</span><span class="p">,</span> <span class="n">source_folder</span><span class="p">,</span> <span class="n">dest_folder</span><span class="p">):</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="k">for</span> <span class="n">sha</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">source_hashes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>        <span class="k">if</span> <span class="n">sha</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dest_hashes</span><span class="p">:</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>            <span class="n">sourcepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">source_folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">filename</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>            <span class="n">destpath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dest_folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">filename</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>            <span class="k">yield</span> <span class="s2">&quot;COPY&quot;</span><span class="p">,</span> <span class="n">sourcepath</span><span class="p">,</span> <span class="n">destpath</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>        <span class="k">elif</span> <span class="n">dest_hashes</span><span class="p">[</span><span class="n">sha</span><span class="p">]</span> <span class="o">!=</span> <span class="n">filename</span><span class="p">:</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>            <span class="n">olddestpath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dest_folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">dest_hashes</span><span class="p">[</span><span class="n">sha</span><span class="p">]</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>            <span class="n">newdestpath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dest_folder</span><span class="p">)</span> <span class="o">/</span> <span class="n">filename</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>            <span class="k">yield</span> <span class="s2">&quot;MOVE&quot;</span><span class="p">,</span> <span class="n">olddestpath</span><span class="p">,</span> <span class="n">newdestpath</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>    <span class="k">for</span> <span class="n">sha</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">dest_hashes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>        <span class="k">if</span> <span class="n">sha</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">source_hashes</span><span class="p">:</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>            <span class="k">yield</span> <span class="s2">&quot;DELETE&quot;</span><span class="p">,</span> <span class="n">dest_folder</span> <span class="o">/</span> <span class="n">filename</span>
+</span></code></pre></div>
+<p>我们的测试现在直接作用于<code>determine_actions()</code>函数：</p>
+<div class="language-py highlight"><span class="filename">更好看的测试（test_sync.py）</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">def</span> <span class="nf">test_when_a_file_exists_in_the_source_but_not_the_destination</span><span class="p">():</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="n">source_hashes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;hash1&quot;</span><span class="p">:</span> <span class="s2">&quot;fn1&quot;</span><span class="p">}</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="n">dest_hashes</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="n">actions</span> <span class="o">=</span> <span class="n">determine_actions</span><span class="p">(</span><span class="n">source_hashes</span><span class="p">,</span> <span class="n">dest_hashes</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/src&quot;</span><span class="p">),</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/dst&quot;</span><span class="p">))</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">actions</span><span class="p">)</span> <span class="o">==</span> <span class="p">[(</span><span class="s2">&quot;COPY&quot;</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/src/fn1&quot;</span><span class="p">),</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/dst/fn1&quot;</span><span class="p">))]</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="k">def</span> <span class="nf">test_when_a_file_has_been_renamed_in_the_source</span><span class="p">():</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>    <span class="n">source_hashes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;hash1&quot;</span><span class="p">:</span> <span class="s2">&quot;fn1&quot;</span><span class="p">}</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>    <span class="n">dest_hashes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;hash1&quot;</span><span class="p">:</span> <span class="s2">&quot;fn2&quot;</span><span class="p">}</span>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>    <span class="n">actions</span> <span class="o">=</span> <span class="n">determine_actions</span><span class="p">(</span><span class="n">source_hashes</span><span class="p">,</span> <span class="n">dest_hashes</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/src&quot;</span><span class="p">),</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/dst&quot;</span><span class="p">))</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>    <span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">actions</span><span class="p">)</span> <span class="o">==</span> <span class="p">[(</span><span class="s2">&quot;MOVE&quot;</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/dst/fn2&quot;</span><span class="p">),</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/dst/fn1&quot;</span><span class="p">))]</span>
+</span></code></pre></div>
+<p>因为我们已经将程序的逻辑（用于识别变化的代码）与 I/O 的低级细节分离开来，所以我们可以轻松地测试代码的核心。</p>
+<p>通过这种方法，我们已经从测试我们的主入口函数<code>sync()</code>，转变为测试较低级的函数<code>determine_actions()</code>。您可能认为这样做很好，因为现在<code>sync()</code>函数变得非常简单。或者您可能决定保留一些集成/验收测试来测试<code>sync()</code>函数。但还有另一种选择，即修改<code>sync()</code>函数，以便对其进行单元测试和端到端测试；这是被Bob称之为端到端测试。</p>
+<h3 id="fakes"><font color='red'>用Fakes和依赖注入进行端到端测试</font></h3>
+<p>当我们开始编写新系统时，我们通常首先关注核心逻辑，并通过直接单元测试来驱动它。不过，在某些时候，我们希望一起测试系统的更大块</p>
+<p>我们可以回到端到端测试，但这些测试仍然像以前一样难以编写和维护。相反，我们经常编写测试来调用整个系统，但模拟 I/O，有点像端到端：</p>
+<div class="language-py highlight"><span class="filename">显式依赖项（sync.py）</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">,</span> <span class="n">filesystem</span><span class="o">=</span><span class="n">FileSystem</span><span class="p">()):</span>  <span class="c1">#(1)</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    <span class="n">source_hashes</span> <span class="o">=</span> <span class="n">filesystem</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>  <span class="c1">#(2)</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">dest_hashes</span> <span class="o">=</span> <span class="n">filesystem</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span>  <span class="c1">#(2)</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="k">for</span> <span class="n">sha</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">source_hashes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>        <span class="k">if</span> <span class="n">sha</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dest_hashes</span><span class="p">:</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>            <span class="n">sourcepath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">/</span> <span class="n">filename</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>            <span class="n">destpath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span> <span class="o">/</span> <span class="n">filename</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>            <span class="n">filesystem</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">sourcepath</span><span class="p">,</span> <span class="n">destpath</span><span class="p">)</span>  <span class="c1">#(3)</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>        <span class="k">elif</span> <span class="n">dest_hashes</span><span class="p">[</span><span class="n">sha</span><span class="p">]</span> <span class="o">!=</span> <span class="n">filename</span><span class="p">:</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>            <span class="n">olddestpath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span> <span class="o">/</span> <span class="n">dest_hashes</span><span class="p">[</span><span class="n">sha</span><span class="p">]</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>            <span class="n">newdestpath</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span> <span class="o">/</span> <span class="n">filename</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>            <span class="n">filesystem</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">olddestpath</span><span class="p">,</span> <span class="n">newdestpath</span><span class="p">)</span>  <span class="c1">#(3)</span>
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>    <span class="k">for</span> <span class="n">sha</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">dest_hashes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>        <span class="k">if</span> <span class="n">sha</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">source_hashes</span><span class="p">:</span>
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>            <span class="n">filesystem</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">dest</span> <span class="o">/</span> <span class="n">filename</span><span class="p">)</span>  <span class="c1">#(3)</span>
+</span></code></pre></div>
+<ol>
+<li>我们的顶级函数现在公开了一个新的依赖项，即一个<code>FileSystem</code>。</li>
+<li>我们调用<code>filesystem.read()</code>来生成文件字典。</li>
+<li>我们调用FileSystem的<code>.copy()</code>、<code>.move()</code>和<code>.delete()</code>方法来应用我们检测到的变化。</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>虽然我们使用了依赖注入，但没有必要定义抽象基类或任何形式的显式接口。在本书中，我们经常展示ABC，因为我们希望它们能帮助您理解抽象是什么，但它们并不是必需的。Python 的动态特性意味着我们始终可以依赖鸭子类型。</p>
+</div>
+<p>我们抽象的<code>FileSystem</code>实际上（默认）实现执行了真正的I/O：</p>
+<div class="language-py highlight"><span class="filename">真正的依赖项（sync.py）</span><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">class</span> <span class="nc">FileSystem</span><span class="p">:</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>        <span class="k">return</span> <span class="n">read_paths_and_hashes</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>        <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>        <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span>
+</span></code></pre></div>
+<p>但是假的依赖是围绕我们选择的抽象的包装器，而不是进行真正的I/O：</p>
+<div class="language-py highlight"><span class="filename">使用 DI 进行测试</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">class</span> <span class="nc">FakeFilesystem</span><span class="p">:</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_hashes</span><span class="p">):</span>  <span class="c1">#(1)</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">path_hashes</span> <span class="o">=</span> <span class="n">path_hashes</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">actions</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1">#(2)</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_hashes</span><span class="p">[</span><span class="n">path</span><span class="p">]</span>  <span class="c1">#(1)</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;COPY&#39;</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">))</span>  <span class="c1">#(2)</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;MOVE&#39;</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">dest</span><span class="p">))</span>  <span class="c1">#(2)</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dest</span><span class="p">):</span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="p">))</span>  <span class="c1">#(2)</span>
+</span></code></pre></div>
+<ol>
+<li>我们使用我们选择表示文件系统状态的抽象来初始化我们的伪文件系统：哈希到路径的字典。。</li>
+<li><code>.actions</code>只是将记录附加到列表中，以便我们以后可以检查它。这意味着我们的测试替身既是“假的”又是“间谍”。</li>
+</ol>
+<p>因此，现在我们的测试可以作用于真实的顶层<code>sync()</code>入口点，但它们由<code>FakeFileSystem()</code>实现。就其设置和断言而言，它们最终看起来与我们直接针对功能核心<code>determine_actions()</code>函数进行测试时编写的代码非常相似：</p>
+<div class="language-py highlight"><span class="filename">使用 DI 进行测试</span><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="k">def</span> <span class="nf">test_when_a_file_exists_in_the_source_but_not_the_destination</span><span class="p">():</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    <span class="n">fakefs</span> <span class="o">=</span> <span class="n">FakeFilesystem</span><span class="p">({</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>        <span class="s1">&#39;/src&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;hash1&quot;</span><span class="p">:</span> <span class="s2">&quot;fn1&quot;</span><span class="p">},</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>        <span class="s1">&#39;/dst&#39;</span><span class="p">:</span> <span class="p">{},</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>    <span class="p">})</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>    <span class="n">sync</span><span class="p">(</span><span class="s1">&#39;/src&#39;</span><span class="p">,</span> <span class="s1">&#39;/dst&#39;</span><span class="p">,</span> <span class="n">filesystem</span><span class="o">=</span><span class="n">fakefs</span><span class="p">)</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>    <span class="k">assert</span> <span class="n">fakefs</span><span class="o">.</span><span class="n">actions</span> <span class="o">==</span> <span class="p">[(</span><span class="s2">&quot;COPY&quot;</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/src/fn1&quot;</span><span class="p">),</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/dst/fn1&quot;</span><span class="p">))]</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="k">def</span> <span class="nf">test_when_a_file_has_been_renamed_in_the_source</span><span class="p">():</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>    <span class="n">fakefs</span> <span class="o">=</span> <span class="n">FakeFilesystem</span><span class="p">({</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>        <span class="s1">&#39;/src&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;hash1&quot;</span><span class="p">:</span> <span class="s2">&quot;fn1&quot;</span><span class="p">},</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>        <span class="s1">&#39;/dst&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;hash1&quot;</span><span class="p">:</span> <span class="s2">&quot;fn2&quot;</span><span class="p">},</span>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>    <span class="p">})</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>    <span class="n">sync</span><span class="p">(</span><span class="s1">&#39;/src&#39;</span><span class="p">,</span> <span class="s1">&#39;/dst&#39;</span><span class="p">,</span> <span class="n">filesystem</span><span class="o">=</span><span class="n">fakefs</span><span class="p">)</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>    <span class="k">assert</span> <span class="n">fakefs</span><span class="o">.</span><span class="n">actions</span> <span class="o">==</span> <span class="p">[(</span><span class="s2">&quot;MOVE&quot;</span><span class="p">,</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/dst/fn2&quot;</span><span class="p">),</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;/dst/fn1&quot;</span><span class="p">))]</span>
+</span></code></pre></div>
+<p>这种方法的优点是我们的测试作用于生产代码所使用的完全相同的函数。缺点是我们必须明确我们的状态组件并将它们传递出去。Ruby on Rails 的创建者 David Heinemeier Hansson 将此描述为“测试引起的设计损坏”。</p>
+<p>无论哪种情况，我们现在都可以着手修复实现中的所有错误；枚举所有边缘情况的测试现在变得更加容易。</p>
+<h3 id="_4"><font color='red'>为什么不直接修复它呢？</font></h3>
+<p>此时，您可能会抓耳挠腮，想着“为什么不直接使用<code>mock.patch</code>节省力气呢？”</p>
+<p>在本书中，我们在本书和生产代码中都避免使用<code>mocks</code>。我们不会卷入一场战争，但我们的直觉是，<code>mocking</code>框架，特别是<code>monkeypatching</code>，是一种代码异味。</p>
+<p>相反，我们希望明确识别代码库中的职责，并将这些职责分离为小的、集中的对象，以便于用测试替身进行替换</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>您可以在 <a href="../l.Events%20and%20the%20Message%20Bus/">08.事件和消息总线</a> 中看到一个例子，在这个例子中，我们使用了<code>mock.patch()</code>来替换一个发送电子邮件的模块，但最终我们在 <a href="../q.Dependency%20Injection/">13.依赖注入</a> 中用显示依赖替换了它。</p>
+</div>
+<p>我们的偏好有三个密切相关的原因：</p>
+<ul>
+<li>修补您正在使用的依赖项可以对代码进行单元测试，但这对改进设计没有任何作用。使用<code>mock.patch()</code>不会让您的代码与<code>--dry-run</code>标志一起工作，也不会帮助您针对 FTP 服务器运行。为此，您需要引入抽象。</li>
+<li>使用mocks的测试往往与代码库的实现细节更加耦合。这是因为mock验证了事物之间的交互：我们是否使用了正确的参数调用了<code>shutil.copy</code>？在我们的经验中，代码和测试之间的这种耦合往往会使测试变得更加脆弱。</li>
+<li>过度使用mocks会导致复杂的测试套件，无法解释代码。</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>可测试性设计实际上意味着可扩展性设计。我们牺牲了一点复杂性，换来更简洁的设计，以适应新的用例。</p>
+</div>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px;">
+<p align='center'><strong style='font-size:1.6em;color:#186d7a'>Mocks与Fakes；传统风格与伦敦学派TDD</strong></p>
+<p>以下是关于mock和fake之间区别的简短且略微简单的定义：</p>
+
+<ul>
+    <li>mock用于验证某物如何使用；它们具有像<code>assert_called_once_with()</code>这样的方法。它们与伦敦学派 TDD 相关。</li>
+    <li>fake是被替换对象的有效实现，但它们仅用于测试。它们不会在“现实生活中”发挥作用；我们的内存存储库就是一个很好的例子。但您可以使用它们对系统的最终状态而不是沿途的行为做出断言，因此它们与经典风格的 TDD 相关。</li>
+</ul>
+<p>在这里，我们稍微混淆了mock与spies，以及fake与stub，您可以在马丁·福勒（Martin Fowler）关于这个主题的经典文章中阅读到更长、更正确的答案，名为"<a src='https://martinfowler.com/articles/mocksArentStubs.html'>Mocks Aren’t Stubs</a>"。</p>
+<p>可能也并不有助于理解的是，unittest.mock 提供的 MagicMock 对象严格来说并不是mock；如果说它们是什么，它们更像是spies。但它们也经常被用作stubs或dummies。在这里，我们保证我们现在已经结束了对测试替身术语的吹毛求疵。</p>
+<p>那么伦敦学派和传统 TDD 有什么区别呢？您可以在我们刚刚引用的Martin Fowler文章中，以及<a src='https://softwareengineering.stackexchange.com/questions/123627/what-are-the-london-and-chicago-schools-of-tdd'>softwareengineering网站</a>上，了解更多关于这两种学派的内容，但在本书中，我们更倾向于经典风格。我们喜欢在设置和断言中围绕状态来构建测试，并且我们喜欢在尽可能高的抽象级别上工作，而不是检查中间协作者的行为。</p>
+<p>在[ki]</p>
+</div>
+
+<p>我们认为 TDD 首先是一种设计实践，其次才是测试实践。测试记录了我们的设计选择，并在我们长时间离开后重新查看代码时向我们解释系统。</p>
+<p>使用过多模拟的测试会因设置代码而变得难以承受，而这些设置代码会隐藏我们关心的故事。</p>
+<p>Steve Freeman在他的演讲"Test-Driven Development"中提供了一个很好的过度mock的例子。您也应该看一下我们尊敬的技术审阅员Ed Jung的PyCon演讲"Mocking and Patching Pitfalls"，该演讲也涉及mocks及其替代方法。</p>
+<p>我们在推荐演讲的同时，请看一下Brandon Rhodes的精彩演讲"Hoisting Your I/O"。它实际上不是关于mock的，而是关于将业务逻辑与I/O解耦的一般问题，其中他使用了一个非常简单的说明性示例。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>在本章中，我们花了很多时间用单元测试取代端到端测试。但这并不意味着我们认为您永远不应该使用 E2E 测试！在本书中，我们将向您展示一些技巧，帮助您构建一个体面的测试金字塔，其中包含尽可能多的单元测试，以及让您充满信心所需的最少数量的 E2E 测试。</p>
+</div>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px;">
+<p align='center'><strong style='font-size:1.6em;color:#186d7a'>那么我们在本书中使用哪一个呢？函数式还是面向对象的组合？</strong></p>
+<p>两者都有。我们的领域模型完全没有依赖关系和副作用，所以这就是我们的功能核心。我们围绕它构建的服务层（在[4.服务层](./g.Flask%20API%20and%20Service%20Layer.md)中）使我们能够从边缘到边缘驱动系统，并且我们使用依赖注入为这些服务提供有状态组件，因此我们仍然可以对它们进行单元测试。</p>
+
+<p>请查看[13.依赖注入](./q.Dependency%20Injection.md)以了解更多关于如何使我们的依赖注入更加明确和集中的探索。</p>
+</div>
+
+<h2 id="_5"><font color='red'>总结</font></h2>
+<p>我们会在本书中一次又一次地看到这个想法：通过简化业务逻辑和混乱的 I/O 之间的接口，我们可以使我们的系统更易于测试和维护。找到正确的抽象很棘手，但这里有一些启发式方法和问题要问自己：</p>
+<ul>
+<li>
+<p>我是否可以选择一个熟悉的 Python 数据结构来表示混乱系统的状态，然后尝试想象一个可以返回该状态的单个函数？</p>
+</li>
+<li>
+<p>将“什么”与“如何”分开：我是否可以使用数据结构或 DSL 来表示我想要发生的外部效果，而与我计划如何实现它们无关？</p>
+</li>
+<li>
+<p>我可以在哪里在我的系统之间划一条线，我可以在哪里挖出一条接缝 来粘贴那个抽象？</p>
+</li>
+<li>
+<p>将事物划分为具有不同职责的组件的合理方法是什么？我可以明确哪些隐含的概念？</p>
+</li>
+<li>
+<p>依赖关系是什么，核心业务逻辑是什么？</p>
+</li>
+</ul>
+<p>实践可以减少不完美！现在回到我们的常规编程中...</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

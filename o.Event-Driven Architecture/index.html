@@ -1,0 +1,1229 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../n.Commands%20and%20Command%20Handler/">
+      
+      
+        <link rel="next" href="../p.CQRS/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>11.事件驱动架构：使用事件集成微服务 - My Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#11" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="My Docs" class="md-header__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              11.事件驱动架构：使用事件集成微服务
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="My Docs" class="md-nav__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    My Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    REAMDME
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../a.Preface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    前言
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../b.Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    介绍
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c.Part1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第一部分: 构建支持领域建模的架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../d.Domain%20Modeling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.领域建模
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../e.Repository%20Pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2.存储库模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../f.Coupling%20and%20Abstractions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.简短插曲：耦合和抽象
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../g.Flask%20API%20and%20Service%20Layer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4.我们的第一个用例：Flask API和服务层
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../h.TDD%20in%20High%20Gear%20and%20Low%20Gear/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.TDD高速和低速
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i.Unit%20of%20Work%20Pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6.工作单元模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../j.aggregates%20and%20Consistency%20Boundaries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7.聚合和一致性边界
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k.Part2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第二部分 事件驱动架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l.Events%20and%20the%20Message%20Bus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8.事件和消息总线
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../m.Going%20to%20Town%20on%20the%20Message%20Bus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9.使用消息总线大干一场
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../n.Commands%20and%20Command%20Handler/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10.命令和命令处理程序
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    11.事件驱动架构：使用事件集成微服务
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    11.事件驱动架构：使用事件集成微服务
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      分布式泥球和名词思维
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      分布式系统中的错误处理
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      替代方案：使用异步消息传递实现时间解耦
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用 Redis 发布/订阅通道进行集成
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用端到端测试来测试一切
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="使用端到端测试来测试一切">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#redis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis 是我们消息总线的另一个薄适配器
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Redis 是我们消息总线的另一个薄适配器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      我们的新外出事件
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      内部事件与外部事件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../p.CQRS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12.命令查询职责分离
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../q.Dependency%20Injection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13.依赖注入（和引导）
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../r.Epilogue/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    结语
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../s.Appendix%20A/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录A：摘要图表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../t.Appendix%20B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录B：模板项目结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../u.Appendix%20C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录C：更换基础设施：用csv完成所有工作
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v.Appendix%20D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录D：Django 的存储库和工作单元模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../w.Appendix%20E/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录E：验证
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      分布式泥球和名词思维
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      分布式系统中的错误处理
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      替代方案：使用异步消息传递实现时间解耦
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#redis" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用 Redis 发布/订阅通道进行集成
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      使用端到端测试来测试一切
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="使用端到端测试来测试一切">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#redis_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Redis 是我们消息总线的另一个薄适配器
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Redis 是我们消息总线的另一个薄适配器">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      我们的新外出事件
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      内部事件与外部事件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="11">11.事件驱动架构：使用事件集成微服务</h1>
+<p>在前面的章节中，我们从未真正谈论过如何接收“批量数量改变”事件，或者如何通知外界有关重新分配的信息。</p>
+<p>我们有一个带有 Web API 的微服务，但是还有其他方式可以与其他系统通信吗？我们如何知道货物是否延误或数量是否修改？我们如何告诉仓库系统订单已分配并需要发送给客户？</p>
+<p>在本章中，我们将展示如何扩展事件隐喻以涵盖我们处理来自系统的传入和传出消息的方式。在内部，我们的应用程序的核心现在是一个消息处理器。让我们继续进行下去，以便它在外部也成为一个消息处理器。如图1所示，我们的应用程序将通过外部消息总线从外部源接收事件（我们将使用 Redis 发布/订阅队列作为示例），并以事件的形式将其输出发布回那里。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_1101.png" />
+    <figcaption><font size=2>图1.我们的应用程序是一个消息处理器</font></figcaption>
+</figure>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>本章的代码位于<a href="https://github.com/cosmicpython/code/tree/chapter_11_external_events">GitHub</a>上的chapter_11_external_events 分支中：
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git clone https://github.com/cosmicpython/code.git
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>cd code
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>git checkout chapter_11_external_events
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a># or to code along, checkout the previous chapter:
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>git checkout chapter_10_commands
+</span></code></pre></div></p>
+</div>
+<h2 id="_1"><font color='red'>分布式泥球和名词思维</font></h2>
+<p>在讨论这个问题之前，我们先来谈谈替代方案。我们经常与那些试图构建微服务架构的工程师交谈。他们通常从现有应用程序迁移，他们的第一反应是将系统拆分为名词。</p>
+<p>到目前为止，我们在系统中引入了哪些名词？好吧，我们有库存、订单、产品和客户批次。因此，一种简单的拆分系统的方法可能看起来像图2（请注意，我们以名词<code>Batches</code>而不是<code>Allocation</code>来命名我们的系统）。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_1102.png" />
+    <figcaption><font size=2>图2.基于名词的服务的上下文图</font></figcaption>
+</figure>
+<p>我们系统中的每个“事物”都有一个相关的服务，它公开一个 HTTP API。</p>
+<p>让我们通过图3的命令流示例来看一下：我们的用户访问一个网站，可以从有库存的产品中进行选择。当他们将商品添加到购物车时，我们会为他们保留一些库存。订单完成后，我们会确认保留，这会导致我们向仓库发送调度指令。假设这是客户的第三个订单，我们希望更新客户记录以将其标记为 VIP。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_1103.png" />
+    <figcaption><font size=2>图3.命令流1</font></figcaption>
+</figure>
+<p>我们可以将每个步骤视为系统中的一个命令：<code>ReserveStock</code>，<code>ConfirmReservation</code>，<code>DispatchGoods</code>，<code>MakeCustomerVIP</code> 等等。</p>
+<p>这种架构风格，即我们为每个数据库表创建一个微服务，并将我们的 HTTP API 视为贫血模型的 CRUD 接口，是人们采用面向服务设计的最常见的初始方式。</p>
+<p>这对于非常简单的系统来说很有效，但它很快就会退化为分布式的泥球。</p>
+<p>为了了解原因，我们来考虑另一种情况。有时，当库存到达仓库时，我们发现物品在运输过程中被水损坏了。我们无法出售被水损坏的沙发，因此我们不得不将其扔掉并向合作伙伴请求更多库存。我们还需要更新库存模型，这可能意味着我们需要重新分配客户的订单。</p>
+<p>这个逻辑到哪里去了？</p>
+<p>好吧，仓库系统知道库存已经损坏，所以也许它应该拥有这个过程，如图4.命令流2所示。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_1104.png" />
+    <figcaption><font size=2>图4.命令流2</font></figcaption>
+</figure>
+<p>这种方式也行得通，但现在我们的依赖关系图很乱。为了分配库存，订单服务驱动批次系统，批次系统驱动仓库；但为了处理仓库的问题，我们的仓库系统驱动批次，批次系统驱动订单。</p>
+<p>将此数字乘以我们需要提供的所有其他工作流程，您就会发现服务很快就会变得混乱不堪。</p>
+<h2 id="_2"><font color='red'>分布式系统中的错误处理</font></h2>
+<p>“事情总会出错”是软件工程的普遍规律。当我们的某个请求失败时，我们的系统会发生什么？假设在我们接受用户 3 个<code>MISBEGOTTEN-RUG</code>订单后立即发生网络错误，如图5.带有错误的命令流所示 。</p>
+<p>这里我们有两个选择：我们可以继续下订单，不分配，或者我们可以拒绝接受订单，因为无法保证分配。我们的批次服务的故障状态已经出现，并且正在影响我们订单服务的可靠性。</p>
+<p>当两件事必须同时改变时，我们称它们为耦合。我们可以将这种故障级联视为一种时间耦合：系统的每个部分必须同时工作，系统的任何部分才能工作。随着系统变得越来越大，某个部分退化的概率呈指数级增长。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_1105.png" />
+    <figcaption><font size=2>图5.带错误的命令流</font></figcaption>
+</figure>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px;">
+<p align='center'><strong style='font-size:1.6em;color:#186d7a'>Connascence（共生性）</strong></p>
+<p>我们在这里使用术语“耦合”，但还有另一种方法来描述我们系统之间的关系。Connascence是一些作者用来描述不同类型的耦合的术语。</p>
+<p>Connascence并不坏，但有些类型的Connascence比其他类型的更强。当两个类紧密相关时，我们希望在局部有强Connascence，但关系紧密则希望有弱Connascence。</p>
+<p>在我们的第一个分布式泥球例子中，我们看到了执行的Connascence：多个组件需要知道正确的工作顺序才能使操作成功。</p>
+<p>当我们在这里考虑错误条件时，我们谈论的是时间的Connascence：为了使操作成功，必须接连发生多件事。</p>
+<p>当我们用事件替换 RPC 风格的系统时，我们会用一种较弱的类型替换这两种类型的Connascence。这就是Connascence这个名称的由来：多个组件只需要就事件的名称及其携带的字段名称达成一致。</p>
+<p>我们永远无法完全避免耦合，除非让我们的软件不与任何其他软件通信。我们想要的是避免不适当的耦合。Connascence提供了一个思维模型，用于理解不同架构风格固有的耦合强度和类型。在<a src='https://connascence.io/'>connascence.io</a>上阅读有关它的所有信息。</p>
+</div>
+
+<h2 id="_3"><font color='red'>替代方案：使用异步消息传递实现时间解耦</font></h2>
+<p>我们如何获得适当的耦合？我们已经看到了部分答案，那就是我们应该用动词而不是名词来思考。我们的领域模型是关于业务流程建模的。它不是关于事物的静态数据模型；它是动词的模型。</p>
+<p>因此，我们不会考虑订单系统和批次系统，而是考虑订购系统和分配系统等等。</p>
+<p>当我们以这种方式分离事物时，更容易看出哪个系统应该负责什么。在考虑订购时，我们真的想确保当我们下订单时，订单就被下了。其他一切都可以稍后发生，只要它发生了。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>如果这听起来很熟悉，那就对了！划分职责与我们在设计聚合和命令时经历的过程相同。</p>
+</div>
+<p>与聚合一样，微服务也应该是一致性边界。在两个服务之间，我们可以接受最终一致性，这意味着我们不需要依赖同步调用。每个服务都接受来自外部世界的命令并引发事件来记录结果。其他服务可以监听这些事件以触发工作流中的下一步。</p>
+<p>为了避免“分布式泥球”反模式，我们希望使用异步消息传递来集成我们的系统，而不是时间耦合的 HTTP API 调用。我们希望我们的<code>BatchQuantityChanged</code>消息作为来自上游系统的外部消息传入，我们希望我们的系统发布<code>Allocated</code>事件以供下游系统监听。</p>
+<p>为什么这样更好？首先，因为事情可以独立失败，所以处理降级行为更容易：如果分配系统出现问题，我们仍然可以接受订单。</p>
+<p>其次，我们正在降低系统之间的耦合强度。如果我们需要更改操作顺序或在流程中引入新步骤，我们可以在本地进行。</p>
+<h2 id="redis"><font color='red'>使用 Redis 发布/订阅通道进行集成</font></h2>
+<p>让我们看看它具体是如何工作的。我们需要某种方式将事件从一个系统转移到另一个系统，就像我们的消息总线一样，但对于服务来说。这部分基础设施通常称为消息代理。消息代理的作用是从发布者那里获取消息并将其传递给订阅者。</p>
+<p>在 MADE.com，我们使用<a href="https://www.eventstore.com/">Event Store</a>；<code>Kafka</code> 或 <code>RabbitMQ</code> 是有效的替代方案。基于 Redis <a href="https://redis.io/docs/latest/develop/interact/pubsub/">发布/订阅</a>渠道的轻量级解决方案也可以很好地工作，而且由于 Redis 更为人们所熟悉，因此我们认为在本书中使用它。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>我们忽略了选择合适的消息传递平台所涉及的复杂性。消息排序、故障处理和幂等性等问题都需要考虑。</p>
+</div>
+<p>我们的新流程将看起来像图6.重新分配流程的序列图：Redis 提供<code>BatchQuantityChanged</code>启动整个过程的事件，<code>Allocated</code>最后我们的事件再次发布回 Redis。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_1106.png" />
+    <figcaption><font size=2>图6.重新分配流程的序列图</font></figcaption>
+</figure>
+<h2 id="_4"><font color='red'>使用端到端测试来测试一切</font></h2>
+<p>以下是我们开始端到端测试的方法。我们可以使用现有的 API 创建批次，然后测试入站和出站消息：</p>
+<div class="language-py highlight"><span class="filename">我们的发布/订阅模型的端到端测试（tests/e2e/test_external_events.py）</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span> <span class="nf">test_change_batch_quantity_leading_to_reallocation</span><span class="p">():</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="c1"># start with two batches and an order allocated to one of them  #(1)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="n">orderid</span><span class="p">,</span> <span class="n">sku</span> <span class="o">=</span> <span class="n">random_orderid</span><span class="p">(),</span> <span class="n">random_sku</span><span class="p">()</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">earlier_batch</span><span class="p">,</span> <span class="n">later_batch</span> <span class="o">=</span> <span class="n">random_batchref</span><span class="p">(</span><span class="s2">&quot;old&quot;</span><span class="p">),</span> <span class="n">random_batchref</span><span class="p">(</span><span class="s2">&quot;newer&quot;</span><span class="p">)</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">api_client</span><span class="o">.</span><span class="n">post_to_add_batch</span><span class="p">(</span><span class="n">earlier_batch</span><span class="p">,</span> <span class="n">sku</span><span class="p">,</span> <span class="n">qty</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="s2">&quot;2011-01-01&quot;</span><span class="p">)</span>  <span class="c1">#(2)</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">api_client</span><span class="o">.</span><span class="n">post_to_add_batch</span><span class="p">(</span><span class="n">later_batch</span><span class="p">,</span> <span class="n">sku</span><span class="p">,</span> <span class="n">qty</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="s2">&quot;2011-01-02&quot;</span><span class="p">)</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">response</span> <span class="o">=</span> <span class="n">api_client</span><span class="o">.</span><span class="n">post_to_allocate</span><span class="p">(</span><span class="n">orderid</span><span class="p">,</span> <span class="n">sku</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>  <span class="c1">#(2)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s2">&quot;batchref&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">earlier_batch</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">subscription</span> <span class="o">=</span> <span class="n">redis_client</span><span class="o">.</span><span class="n">subscribe_to</span><span class="p">(</span><span class="s2">&quot;line_allocated&quot;</span><span class="p">)</span>  <span class="c1">#(3)</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>    <span class="c1"># change quantity on allocated batch so it&#39;s less than our order  #(1)</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>    <span class="n">redis_client</span><span class="o">.</span><span class="n">publish_message</span><span class="p">(</span>  <span class="c1">#(3)</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>        <span class="s2">&quot;change_batch_quantity&quot;</span><span class="p">,</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        <span class="p">{</span><span class="s2">&quot;batchref&quot;</span><span class="p">:</span> <span class="n">earlier_batch</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="p">)</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>    <span class="c1"># wait until we see a message saying the order has been reallocated  #(1)</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="n">messages</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>    <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="n">Retrying</span><span class="p">(</span><span class="n">stop</span><span class="o">=</span><span class="n">stop_after_delay</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">reraise</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>  <span class="c1">#(4)</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>        <span class="k">with</span> <span class="n">attempt</span><span class="p">:</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>            <span class="n">message</span> <span class="o">=</span> <span class="n">subscription</span><span class="o">.</span><span class="n">get_message</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>            <span class="k">if</span> <span class="n">message</span><span class="p">:</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>                <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>                <span class="nb">print</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>            <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>            <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;orderid&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">orderid</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>            <span class="k">assert</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;batchref&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">later_batch</span>
+</span></code></pre></div>
+<ol>
+<li>您可以从评论中了解此测试中发生的事情：我们想要向系统发送一个事件，导致订单行被重新分配，并且我们看到重新分配也作为<code>Redis</code> 中的事件出现。</li>
+<li><code>api_client</code>是我们重构后的在两种测试类型之间共享的小助手；它包装了我们对<code>requests.post</code>的调用。</li>
+<li><code>redis_client</code>是另一个小测试助手，其细节并不重要；它的作用是能够从各种 Redis 通道发送和接收消息。我们将使用一个名为<code>change_batch_quantity</code>的通道，发送我们的请求以更改批次的数量，我们将监听另一个名为<code>line_allocated</code>的通道以查找预期的重新分配。</li>
+<li>由于被测系统的异步特性，我们需要再次使用<code>tenacity</code>库来添加重试循环 - 首先，因为我们的<code>line_allocated</code>新消息可能需要一些时间才能到达，而且因为它不是该通道上的唯一消息。</li>
+</ol>
+<h3 id="redis_1"><font color='red'>Redis 是我们消息总线的另一个薄适配器</font></h3>
+<p>我们的 Redis 发布/订阅监听器（我们称之为事件消费者）非常类似于 Flask：它将外部世界转化为我们的事件：</p>
+<div class="language-py highlight"><span class="filename">简单的 Redis 消息监听器 (src/allocation/entrypoints/redis_eventconsumer.py）</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">r</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="o">.</span><span class="n">get_redis_host_and_port</span><span class="p">())</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">orm</span><span class="o">.</span><span class="n">start_mappers</span><span class="p">()</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">pubsub</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">pubsub</span><span class="p">(</span><span class="n">ignore_subscribe_messages</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">pubsub</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s2">&quot;change_batch_quantity&quot;</span><span class="p">)</span>  <span class="c1">#(1)</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">pubsub</span><span class="o">.</span><span class="n">listen</span><span class="p">():</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        <span class="n">handle_change_batch_quantity</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="k">def</span> <span class="nf">handle_change_batch_quantity</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;handling </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">])</span>  <span class="c1">#(2)</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>    <span class="n">cmd</span> <span class="o">=</span> <span class="n">commands</span><span class="o">.</span><span class="n">ChangeBatchQuantity</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;batchref&quot;</span><span class="p">],</span> <span class="n">qty</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;qty&quot;</span><span class="p">])</span>  <span class="c1">#(2)</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="n">messagebus</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">uow</span><span class="o">=</span><span class="n">unit_of_work</span><span class="o">.</span><span class="n">SqlAlchemyUnitOfWork</span><span class="p">())</span>
+</span></code></pre></div>
+<ol>
+<li><code>main()</code>在运行时时订阅<code>change_batch_quantity</code>通道。。</li>
+<li>作为系统入口点，我们的主要工作是反序列化<code>JSON</code>，将其转换为<code>Command</code>，然后将其传递给服务层——就像 Flask 适配器所做的那样。</li>
+</ol>
+<p>我们还构建了一个新的下游适配器来完成相反的工作——将域事件转换为公共事件：</p>
+<div class="language-py highlight"><span class="filename">简单的 Redis 消息发布者（src/allocation/adapters/redis_eventpublisher.py）</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">r</span> <span class="o">=</span> <span class="n">redis</span><span class="o">.</span><span class="n">Redis</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="o">.</span><span class="n">get_redis_host_and_port</span><span class="p">())</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="k">def</span> <span class="nf">publish</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">Event</span><span class="p">):</span>  <span class="c1">#(1)</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;publishing: channel=</span><span class="si">%s</span><span class="s2">, event=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">r</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="n">event</span><span class="p">)))</span>
+</span></code></pre></div>
+<ol>
+<li>我们在这里采用硬编码通道，但您也可以存储事件类/名称和相应通道之间的映射，从而允许一种或多种消息类型进入不同的通道。</li>
+</ol>
+<h4 id="_5"><font color='red'>我们的新外出事件</font></h4>
+<p><code>Allocated</code>事件内容如下：</p>
+<div class="language-py highlight"><span class="filename">新事件（src/allocation/domain/events.py）</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nd">@dataclass</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">class</span> <span class="nc">Allocated</span><span class="p">(</span><span class="n">Event</span><span class="p">):</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>    <span class="n">orderid</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>    <span class="n">sku</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">qty</span><span class="p">:</span> <span class="nb">int</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>    <span class="n">batchref</span><span class="p">:</span> <span class="nb">str</span>
+</span></code></pre></div>
+<p>它捕获了我们需要了解的有关分配的所有信息：订单行的详细信息，以及分配给哪个批次。</p>
+<p>我们将其添加到我们的模型的<code>allocate()</code>方法中（自然，首先添加了一个测试）：</p>
+<div class="language-py highlight"><span class="filename">Product.allocate() 发出新事件来记录发生的事情（src/allocation/domain/model.py）</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">class</span> <span class="nc">Product</span><span class="p">:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>    <span class="o">...</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="k">def</span> <span class="nf">allocate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">:</span> <span class="n">OrderLine</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>        <span class="o">...</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>            <span class="n">batch</span><span class="o">.</span><span class="n">allocate</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">version_number</span> <span class="o">+=</span> <span class="mi">1</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>            <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>                <span class="n">events</span><span class="o">.</span><span class="n">Allocated</span><span class="p">(</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>                    <span class="n">orderid</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">orderid</span><span class="p">,</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>                    <span class="n">sku</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">sku</span><span class="p">,</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>                    <span class="n">qty</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">qty</span><span class="p">,</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>                    <span class="n">batchref</span><span class="o">=</span><span class="n">batch</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>                <span class="p">)</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>            <span class="p">)</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>            <span class="k">return</span> <span class="n">batch</span><span class="o">.</span><span class="n">reference</span>
+</span></code></pre></div>
+<p><code>ChangeBatchQuantity</code>处理程序已经存在，因此我们需要添加的只是一个发布外出事件的处理程序：</p>
+<div class="language-py highlight"><span class="filename">消息总线增长（src/allocation/service_layer/messagebus.py）</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">HANDLERS</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">events</span><span class="o">.</span><span class="n">Allocated</span><span class="p">:</span> <span class="p">[</span><span class="n">handlers</span><span class="o">.</span><span class="n">publish_allocated_event</span><span class="p">],</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">events</span><span class="o">.</span><span class="n">OutOfStock</span><span class="p">:</span> <span class="p">[</span><span class="n">handlers</span><span class="o">.</span><span class="n">send_out_of_stock_notification</span><span class="p">],</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="p">}</span>  <span class="c1"># type: Dict[Type[events.Event], List[Callable]]</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">发布事件使用</span> <span class="n">Redis</span> <span class="n">包装器的辅助函数</span><span class="err">：</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="n">发布到</span> <span class="n">Redis</span><span class="err">（</span><span class="n">src</span><span class="o">/</span><span class="n">allocation</span><span class="o">/</span><span class="n">service_layer</span><span class="o">/</span><span class="n">handlers</span><span class="o">.</span><span class="n">py</span><span class="err">）</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="k">def</span> <span class="nf">publish_allocated_event</span><span class="p">(</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">event</span><span class="p">:</span> <span class="n">events</span><span class="o">.</span><span class="n">Allocated</span><span class="p">,</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="n">uow</span><span class="p">:</span> <span class="n">unit_of_work</span><span class="o">.</span><span class="n">AbstractUnitOfWork</span><span class="p">,</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="p">):</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    <span class="n">redis_eventpublisher</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="s2">&quot;line_allocated&quot;</span><span class="p">,</span> <span class="n">event</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="_6"><font color='red'>内部事件与外部事件</font></h2>
+<p>最好将内部事件和外部事件区分开来。有些事件可能来自外部，有些事件可能会升级并发布到外部，但并非所有事件都会升级和发布到外部。如果你涉足<a href="https://io.made.com/blog/2018-04-28-eventsourcing-101.html">事件溯源</a>（不过，这很可能是另一本书的主题），这一点尤其重要。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>出站事件是应用验证的重要场所之一。请参阅<a href="../w.Appendix%20E/">附录E 验证</a>了解一些验证理念和示例。</p>
+</div>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px;">
+<p align='center'><strong style='font-size:1.6em;color:#186d7a'>读者练习</strong></p>
+<p>本章的一个简单示例：使主要allocate()用例也可以通过 Redis 通道上的事件调用，以及（或代替）通过 API 调用。</p>
+<p>您可能想要添加新的 E2E 测试并将一些更改反馈到 redis_eventconsumer.py中。</p>
+</div>
+
+<h2 id="_7"><font color='red'>总结</font></h2>
+<p>事件可以来自外部，但也可以发布到外部——我们的publish处理程序将事件转换为 Redis 通道上的消息。我们使用事件与外界交流。这种时间解耦为我们的应用程序集成带来了很大的灵活性，但一如既往，这是有代价的。</p>
+<div class="admonition quote">
+<p class="admonition-title">Quote</p>
+<p>事件通知很不错，因为它意味着低耦合度，并且设置起来非常简单。但是，如果确实存在一个贯穿各种事件通知的逻辑流程，那么它可能会成为问题……很难看到这样的流程，因为它在任何程序文本中都不明确……这会使调试和修改变得困难。</p>
+<p>Martin Fowler，<a href="https://martinfowler.com/articles/201701-event-driven.html">“‘事件驱动’是什么意思”</a></p>
+</div>
+<p>表1显示了一些需要权衡的考量。</p>
+<p><font color='#186d7a'>表1.基于事件的微服务集成：权衡</font></p>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>避免分散的大泥球。</td>
+<td>整体的信息流动更加难以看清。</td>
+</tr>
+<tr>
+<td>服务是解耦的：更改单个服务和添加新服务更加容易。</td>
+<td>最终一致性是一个需要处理的新概念。</td>
+</tr>
+<tr>
+<td>需要仔细考虑消息可靠性以及至少一次与最多一次传递的选择。</td>
+<td>更一般地，如果你从同步消息模型转向异步消息模型，你还会遇到一系列与消息可靠性和最终一致性有关的问题。请继续阅读[footguns]。</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

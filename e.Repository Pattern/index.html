@@ -1,0 +1,1465 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../d.Domain%20Modeling/">
+      
+      
+        <link rel="next" href="../f.Coupling%20and%20Abstractions/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>2.存储库模式 - My Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#2" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="My Docs" class="md-header__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2.存储库模式
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="My Docs" class="md-nav__button md-logo" aria-label="My Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    My Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    REAMDME
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../a.Preface/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    前言
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../b.Introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    介绍
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../c.Part1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第一部分: 构建支持领域建模的架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../d.Domain%20Modeling/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1.领域建模
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    2.存储库模式
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    2.存储库模式
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      持久化我们的领域模型
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      一些伪代码：我们需要什么？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dip" class="md-nav__link">
+    <span class="md-ellipsis">
+      将DIP应用于数据访问
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      回顾：我们的模型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="回顾：我们的模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ormorm" class="md-nav__link">
+    <span class="md-ellipsis">
+      "通常"的ORM方法：模型依赖于ORM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#orm" class="md-nav__link">
+    <span class="md-ellipsis">
+      反转依赖关系：ORM依赖于模型
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      存储库模式简介
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="存储库模式简介">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      抽象的存储库模式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      权衡是什么？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      构建一个用于测试的虚假存储库现在变得非常简单
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python中，什么是端口，什么是适配器？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../f.Coupling%20and%20Abstractions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3.简短插曲：耦合和抽象
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../g.Flask%20API%20and%20Service%20Layer/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4.我们的第一个用例：Flask API和服务层
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../h.TDD%20in%20High%20Gear%20and%20Low%20Gear/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5.TDD高速和低速
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../i.Unit%20of%20Work%20Pattern/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6.工作单元模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../j.aggregates%20and%20Consistency%20Boundaries/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7.聚合和一致性边界
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../k.Part2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    第二部分 事件驱动架构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../l.Events%20and%20the%20Message%20Bus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8.事件和消息总线
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../m.Going%20to%20Town%20on%20the%20Message%20Bus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9.使用消息总线大干一场
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../n.Commands%20and%20Command%20Handler/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    10.命令和命令处理程序
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../o.Event-Driven%20Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11.事件驱动架构：使用事件集成微服务
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../p.CQRS/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    12.命令查询职责分离
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../q.Dependency%20Injection/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    13.依赖注入（和引导）
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../r.Epilogue/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    结语
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../s.Appendix%20A/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录A：摘要图表
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../t.Appendix%20B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录B：模板项目结构
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../u.Appendix%20C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录C：更换基础设施：用csv完成所有工作
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v.Appendix%20D/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录D：Django 的存储库和工作单元模式
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../w.Appendix%20E/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    附录E：验证
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      持久化我们的领域模型
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      一些伪代码：我们需要什么？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dip" class="md-nav__link">
+    <span class="md-ellipsis">
+      将DIP应用于数据访问
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      回顾：我们的模型
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="回顾：我们的模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ormorm" class="md-nav__link">
+    <span class="md-ellipsis">
+      "通常"的ORM方法：模型依赖于ORM
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#orm" class="md-nav__link">
+    <span class="md-ellipsis">
+      反转依赖关系：ORM依赖于模型
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      存储库模式简介
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="存储库模式简介">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      抽象的存储库模式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      权衡是什么？
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      构建一个用于测试的虚假存储库现在变得非常简单
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    <span class="md-ellipsis">
+      Python中，什么是端口，什么是适配器？
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="2">2.存储库模式</h1>
+<p>是时候兑现我们的承诺，使用依赖倒置原则将我们的核心逻辑与基础设施问题分离。。</p>
+<p>我们将介绍存储库模式，这是一种简化数据存储的抽象，它允许我们将模型层与数据层分离。我们将提供一个具体示例，说明这种简化抽象如何通过隐藏数据库的复杂性来使我们的系统更易于测试。</p>
+<p>图1 展示了一些我们将要构建的内容：一个<code>Repository</code>位于我们的领域模型和数据库之间的对象。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0201.png" />
+    <figcaption><font size=2>图1.存储库模式的前后对比</font></figcaption>
+</figure>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>本章的代码位于 <a href="https://github.com/cosmicpython/code/tree/chapter_02_repository">Github</a> 上的 Chapter_02_repository 分支中
+<div class="language-shell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git clone https://github.com/cosmicpython/code.git
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span> code
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>git checkout chapter_02_repository
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># or to code along, checkout the previous chapter:</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>git checkout chapter_01_domain_model
+</span></code></pre></div></p>
+</div>
+<h2 id="_1"><font color='red'>持久化我们的领域模型</font></h2>
+<p>在 <a href="../d.Domain%20Modeling/">1.领域模型</a>中，我们建立了一个简单的领域模型，可以将订单分配给库存批次。我们很容易编写针对这段代码的测试，因为没有任何依赖或基础设施需要设置。如果我们需要运行数据库或API并创建测试数据，那么我们的测试将更难编写和维护。</p>
+<p>不幸的是，我们总会在某个时候将我们完美的小模型交给用户，并与现实中的电子表格、Web浏览器、竞态条件进行竞争。在接下来的几章中，我们将探讨如何将我们理想化的领域模型与外部状态进行连接。</p>
+<p>我们期望以敏捷方式工作，因此我们的优先任务是尽快实现最小化的可行产品。在我们的案例中，这将是一个Web API。实际项目中，您可能会直接进行一些端到端测试，然后插入Web框架，从外到内进行测试。</p>
+<p>但我们知道，无论如何，我们都需要某种形式的持久存储，这是一本教科书，所以我们可以允许自己进行一点点自下而上的开发，并开始考虑存储和数据库。</p>
+<h2 id="_2"><font color='red'>一些伪代码：我们需要什么？</font></h2>
+<p>当我们构建第一个 API 端点时，我们知道我们会有一些或多或少类似于以下内容的代码。</p>
+<div class="language-py highlight"><span class="filename">我们的第一个API端点是什么样子的</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@flask</span><span class="o">.</span><span class="n">route</span><span class="o">.</span><span class="n">gubbins</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">def</span> <span class="nf">allocate_endpoint</span><span class="p">():</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="c1"># extract order line from request</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">line</span> <span class="o">=</span> <span class="n">OrderLine</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="c1"># load all batches from the DB</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">batches</span> <span class="o">=</span> <span class="o">...</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="c1"># call our domain service</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">allocate</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">batches</span><span class="p">)</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="c1"># then save the allocation back to the database somehow</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="k">return</span> <span class="mi">201</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>我们使用Flask是因为它是轻量级的，但是你不需要成为Flask用户来理解本书。事实上，我们将向您展示如何使框架选型变得微不足道</p>
+</div>
+<p>我们需要从数据库中检索批次信息并实例化我们的领域模型对象，我们还需要一种方法将它们保存回数据库。</p>
+<p><em>什么？哦，"gubbins" 是一个英国词，意思是"东西"。你可以忽略那个词。这只是伪代码，好吗？</em></p>
+<h2 id="dip"><font color='red'>将DIP应用于数据访问</font></h2>
+<p>如<a href="../b.Introduction/">介绍</a>中提到的，分层架构是构建具有 UI、一些逻辑和数据库的系统的常用方法（参见分层架构）。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0202.png" />
+    <figcaption><font size=2>图2.分层架构</font></figcaption>
+</figure>
+<p>Django的模型-视图-模板结构与模型-视图-控制器（MVC）密切相关。无论如何，目标是保持各层分离（这是一件好事），并且使每个层仅依赖于其下方的层。</p>
+<p>但是，我们希望我们的领域模型完全没有任何依赖关系。我们不希望基础设施问题渗入到我们的领域模型中，从而减慢我们的单元测试或我们进行更改的能力。</p>
+<p>相反，如介绍中所讨论的那样，我们将把我们的模型看作是“内部的”，并且依赖项向内流向它；这就是人们有时称之为洋葱架构的东西（参见图3.洋葱架构）。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0203.png" />
+    <figcaption><font size=2>图3.洋葱架构</font></figcaption>
+</figure>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px;">
+<p><strong style='font-size:1.6em;color:#186d7a'>这是端口和适配器吗？</strong></p>
+<p>如果您一直在阅读有关架构模式的文章，可能会问自己这样的问题：</p>
+<em>这是端口和适配器吗？还是六边形架构？和洋葱架构是一样的吗？那干净的架构呢？什么是端口，什么是适配器？为什么你们对同一个东西有这么多称呼？</em><p>尽管有些人喜欢挑剔其中的差异，但所有这些基本上都是同一事物的名称，它们的核心都是依赖倒置原则：高层模块（领域）不应该依赖低层模块（基础架构）。我们将在书的后面讨论一些关于“依赖于抽象”的细节，以及是否有 Python 中的接口等价物。</p></div>
+
+<h2 id="_3"><font color='red'>回顾：我们的模型</font></h2>
+<p>让我们回顾一下我们的领域模型：分配是将<code>OrderLine</code>链接到<code>Batch</code>的概念。我们将分配集合存储在<code>Batch</code>对象上。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0103.png" />
+    <figcaption><font size=2>图4.我们的模型</font></figcaption>
+</figure>
+<p>让我们看看如何将其转换为关系数据库。</p>
+<h3 id="ormorm"><font color='red'>"通常"的ORM方法：模型依赖于ORM</font></h3>
+<p>如今，您的团队成员不太可能手动编写自己的SQL查询。相反，您几乎肯定会使用某种框架根据您的模型对象为您生成SQL。</p>
+<p>这些框架被称为对象关系映射器（ORM），因为它们存在的目的是弥合对象和领域建模世界与数据库和关系代数世界之间的概念鸿沟。</p>
+<p>ORM最重要的作用是持久性无知：我们的领域模型不需要知道任何有关如何加载或持久化数据的信息。这有助于让我们的领域摆脱对特定数据库技术的直接依赖。</p>
+<p>但是，如果你按照典型的 SQLAlchemy 教程，最终会得到类似下面的东西：</p>
+<div class="language-py highlight"><span class="filename">SQLAlchemy“声明式”语法，模型依赖于ORM (orm.py）</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">String</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span> <span class="nn">sqlalchemy.ext.declarative</span> <span class="kn">import</span> <span class="n">declarative_base</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">relationship</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">Base</span> <span class="o">=</span> <span class="n">declarative_base</span><span class="p">()</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">class</span> <span class="nc">Order</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="k">class</span> <span class="nc">OrderLine</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    <span class="n">sku</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">250</span><span class="p">))</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    <span class="n">qty</span> <span class="o">=</span> <span class="n">Integer</span><span class="p">(</span><span class="n">String</span><span class="p">(</span><span class="mi">250</span><span class="p">))</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    <span class="n">order_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="s1">&#39;order.id&#39;</span><span class="p">))</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    <span class="n">order</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="n">Order</span><span class="p">)</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="k">class</span> <span class="nc">Allocation</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>    <span class="o">...</span>
+</span></code></pre></div>
+<p>您无需了解 SQLAlchemy 就能看到，我们原始的模型现在充满了对 ORM 的依赖，而且看起来也非常丑陋。我们真的可以说这个模型不知道数据库吗？当我们的模型属性直接与数据库列耦合时，它如何与存储问题分开？</p>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px;">
+<p align='center'><strong style='font-size:1.6em;color:#186d7a'>Django的ORM基本相同，但限制更多</strong></p>
+如果你更习惯于Django，上述的"声明式" SQLAlchemy 片段可以转换为以下代码：
+
+<p align='right'><font size=2>Django ORM 示例</font></p>
+<pre>
+<code style='border: 1px solid'>
+class Order(models.Model):
+    pass
+
+class OrderLine(models.Model):
+    sku = models.CharField(max_length=255)
+    qty = models.IntegerField()
+    order = models.ForeignKey(Order)
+
+class Allocation(models.Model):
+    ...
+</code>
+</pre>
+<p>要点是一样的——我们的模型类直接继承自 ORM 类，所以我们的模型依赖于 ORM。我们希望反过来。</p>
+<p>Django 没有提供与 SQLAlchemy 的传统映射器等效的映射器，但请参见[附录_Django]，了解如何将依赖反转和存储库模式应用于Django的示例。</p>
+</div>
+
+<h3 id="orm"><font color='red'>反转依赖关系：ORM依赖于模型</font></h3>
+<p>幸运的是，这不是使用SQLAlchemy的唯一方法。另一种方法是单独定义您的架构，并定义一个显式映射器来确定如何在架构和我们的领域模型之间进行转换，SQLAlchemy 称之为 经典映射</p>
+<div class="language-py highlight"><span class="filename">使用SQLAlchemy的 Table 对象进行显式ORM映射（orm.py）</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">mapper</span><span class="p">,</span> <span class="n">relationship</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">import</span> <span class="nn">model</span>  <span class="c1">#(1)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">metadata</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">()</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">order_lines</span> <span class="o">=</span> <span class="n">Table</span><span class="p">(</span>  <span class="c1">#(2)</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="s2">&quot;order_lines&quot;</span><span class="p">,</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="n">metadata</span><span class="p">,</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">autoincrement</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;sku&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">255</span><span class="p">)),</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;qty&quot;</span><span class="p">,</span> <span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    <span class="n">Column</span><span class="p">(</span><span class="s2">&quot;orderid&quot;</span><span class="p">,</span> <span class="n">String</span><span class="p">(</span><span class="mi">255</span><span class="p">)),</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="p">)</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="o">...</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="k">def</span> <span class="nf">start_mappers</span><span class="p">():</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>    <span class="n">lines_mapper</span> <span class="o">=</span> <span class="n">mapper</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">OrderLine</span><span class="p">,</span> <span class="n">order_lines</span><span class="p">)</span>  <span class="c1">#(3)</span>
+</span></code></pre></div>
+<ol>
+<li>ORM导入（或“依赖”或“了解”）领域模型，而不是相反。</li>
+<li>我们使用SQLAlchemy的抽象来定义我们的数据库表和列。</li>
+<li>当我们调用<code>mapper</code>函数时，SQLAlchemy会通过其魔法将我们的领域模型类绑定到我们定义的各种表上。</li>
+</ol>
+<p>最终结果是，如果我们调用<code>start_mappers</code>，我们将能够轻松地从数据库加载和保存领域模型实例。但是，如果我们从不调用该函数，我们的领域模型类将完全不知道数据库的存在。</p>
+<p>这为我们提供了 SQLAlchemy 的所有好处，包括用于 alembic迁移的能力，以及使用域类透明地查询的能力，正如我们将看到的。</p>
+<p>当您第一次尝试构建 ORM 配置时，为其编写测试会很有用，如下例所示：</p>
+<div class="language-py highlight"><span class="filename">直接测试ORM（一次性测试）（test_orm.py）</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">def</span> <span class="nf">test_orderline_mapper_can_load_lines</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>  <span class="c1">#(1)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>        <span class="s2">&quot;INSERT INTO order_lines (orderid, sku, qty) VALUES &quot;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        <span class="s1">&#39;(&quot;order1&quot;, &quot;RED-CHAIR&quot;, 12),&#39;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        <span class="s1">&#39;(&quot;order1&quot;, &quot;RED-TABLE&quot;, 13),&#39;</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        <span class="s1">&#39;(&quot;order2&quot;, &quot;BLUE-LIPSTICK&quot;, 14）&#39;</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="p">)</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">expected</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        <span class="n">model</span><span class="o">.</span><span class="n">OrderLine</span><span class="p">(</span><span class="s2">&quot;order1&quot;</span><span class="p">,</span> <span class="s2">&quot;RED-CHAIR&quot;</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>        <span class="n">model</span><span class="o">.</span><span class="n">OrderLine</span><span class="p">(</span><span class="s2">&quot;order1&quot;</span><span class="p">,</span> <span class="s2">&quot;RED-TABLE&quot;</span><span class="p">,</span> <span class="mi">13</span><span class="p">),</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>        <span class="n">model</span><span class="o">.</span><span class="n">OrderLine</span><span class="p">(</span><span class="s2">&quot;order2&quot;</span><span class="p">,</span> <span class="s2">&quot;BLUE-LIPSTICK&quot;</span><span class="p">,</span> <span class="mi">14</span><span class="p">),</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>    <span class="p">]</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>    <span class="k">assert</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">OrderLine</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="o">==</span> <span class="n">expected</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="k">def</span> <span class="nf">test_orderline_mapper_can_save_lines</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>    <span class="n">new_line</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">OrderLine</span><span class="p">(</span><span class="s2">&quot;order1&quot;</span><span class="p">,</span> <span class="s2">&quot;DECORATIVE-WIDGET&quot;</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    <span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">new_line</span><span class="p">)</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;SELECT orderid, sku, qty FROM &quot;order_lines&quot;&#39;</span><span class="p">))</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>    <span class="k">assert</span> <span class="n">rows</span> <span class="o">==</span> <span class="p">[(</span><span class="s2">&quot;order1&quot;</span><span class="p">,</span> <span class="s2">&quot;DECORATIVE-WIDGET&quot;</span><span class="p">,</span> <span class="mi">12</span><span class="p">)]</span>
+</span></code></pre></div>
+<ol>
+<li>如果您没有使用过pytest，那么这个测试中的session参数需要解释一下。就本书的目的而言，您不需要担心pytest或其fixture的细节，但简短的解释是，您可以将测试的常见依赖项定义为"fixtures"，pytest会通过查看其函数参数将它们注入到需要它们的测试中。在这种情况下，它是一个SQLAlchemy数据库会话。</li>
+</ol>
+<p>您可能不会保留这些测试——很快您将看到，一旦您采取了反转 ORM 和领域模型的依赖关系的步骤，只需再迈出一小步即可实现另一个称为“存储库模式”的抽象，这将更容易编写测试，并将提供一个简单的界面，用于以后的测试。</p>
+<p>但我们已经实现了颠覆传统依赖关系的目标：领域模型保持“纯粹”，不受基础架构影响。我们可以抛弃 SQLAlchemy，使用不同的 ORM 或完全不同的持久性系统，而领域模型根本不需要改变。</p>
+<p>根据您在领域模型中正在做的事情，特别是如果您偏离了 OO 范式，您可能会发现很难让ORM产生您所需的确切行为，并且可能需要修改您的领域模型。正如架构决策中经常发生的那样，您需要考虑一个权衡。正如Python之禅所说："实用性胜过纯粹性！"</p>
+<p>不过，此时，我们的API端点可能看起来像下面这样，我们可以让它正常工作：</p>
+<div class="language-py highlight"><span class="filename">在我们的API端点直接使用SQLAlchemy</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nd">@flask</span><span class="o">.</span><span class="n">route</span><span class="o">.</span><span class="n">gubbins</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">def</span> <span class="nf">allocate_endpoint</span><span class="p">():</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="n">session</span> <span class="o">=</span> <span class="n">start_session</span><span class="p">()</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="c1"># extract order line from request</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="n">line</span> <span class="o">=</span> <span class="n">OrderLine</span><span class="p">(</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>        <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;orderid&#39;</span><span class="p">],</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>        <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;sku&#39;</span><span class="p">],</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>        <span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">[</span><span class="s1">&#39;qty&#39;</span><span class="p">],</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="p">)</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="c1"># load all batches from the DB</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>    <span class="n">batches</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">Batch</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>    <span class="c1"># call our domain service</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>    <span class="n">allocate</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">batches</span><span class="p">)</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>    <span class="c1"># save the allocation back to the database</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>    <span class="k">return</span> <span class="mi">201</span>
+</span></code></pre></div>
+<h2 id="_4"><font color='red'>存储库模式简介</font></h2>
+<p>存储库 模式是对持久性存储的抽象。它假装我们的所有数据都在内存中，从而隐藏了数据访问的无聊细节。</p>
+<p>如果我们的笔记本有无限的内存，那么我们就不需要笨重的数据库了。相反，我们可以随时使用我们的对象。那会是什么样子呢？</p>
+<div class="language-py highlight"><span class="filename">你必须从某处获取数据</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">import</span> <span class="nn">all_my_data</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">def</span> <span class="nf">create_a_batch</span><span class="p">():</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="n">batch</span> <span class="o">=</span> <span class="n">Batch</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">all_my_data</span><span class="o">.</span><span class="n">batches</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="k">def</span> <span class="nf">modify_a_batch</span><span class="p">(</span><span class="n">batch_id</span><span class="p">,</span> <span class="n">new_quantity</span><span class="p">):</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">batch</span> <span class="o">=</span> <span class="n">all_my_data</span><span class="o">.</span><span class="n">batches</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">batch_id</span><span class="p">)</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">batch</span><span class="o">.</span><span class="n">change_initial_quantity</span><span class="p">(</span><span class="n">new_quantity</span><span class="p">)</span>
+</span></code></pre></div>
+<p>即使我们的对象在内存中，我们仍然需要将它们放在某个地方，以便我们能够再次找到它们。我们的内存数据让我们可以添加新对象，就像列表或集合一样。由于对象在内存中，我们永远不需要调用<code>.save()</code>方法；我们只需获取我们关心的对象并在内存中修改它。</p>
+<h3 id="_5"><font color='red'>抽象的存储库模式</font></h3>
+<p>最简单的存储库只有两种方法：<code>add()</code> 将新项目放入存储库，<code>get()</code> 返回先前添加的项目。我们严格遵守使用这些方法来访问领域和服务层中的数据。这种自我强加的简单性使我们无需将领域模型与数据库耦合。</p>
+<p>下面是我们存储库的抽象基类（ABC）的示例：</p>
+<div class="language-py highlight"><span class="filename">最简单的存储库 (repository.py）</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">class</span> <span class="nc">AbstractRepository</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>  <span class="c1">#(1)</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">model</span><span class="o">.</span><span class="n">Batch</span><span class="p">):</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        <span class="k">raise</span> <span class="ne">NotImplementedError</span>  <span class="c1">#(2)</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">model</span><span class="o">.</span><span class="n">Batch</span><span class="p">:</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</span></code></pre></div>
+<ol>
+<li>Python提示：<code>@abc.abstractmethod</code>这是使 ABC 在 Python 中真正“起作用”的唯一因素之一。Python将拒绝让您实例化一个未实现其父类中所有抽象方法的类。</li>
+<li><code>raise NotImplementedError</code>很好用，但既不是必需的也不是充分的。实际上，如果您真的想要，您的抽象方法可以具有子类可以调用的真实行为。</li>
+</ol>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px;">
+<p align='center'><strong style='font-size:1.6em;color:#186d7a'>抽象基类、鸭子类型和协议</strong></p>
+<p>在本书中，我们出于教学目的使用抽象基类：我们希望它们能帮助解释存储库抽象的接口是什么。</p>
+<p>在现实生活中，我们有时会发现自己从生产代码中删除了 ABC，因为 Python 很容易忽略它们，最终导致它们无人维护，最糟糕的情况是产生误导。在实践中，我们通常只依赖 Python 的鸭子类型来实现抽象。</p>
+<p>另一个要考虑的替代方案是 <a src='https://peps.python.org/pep-0544/'>PEP 544 协议</a>。这些协议为您提供了类型提示，而不会出现继承的可能性，这将特别受到“优先使用组合而不是继承”的粉丝的喜爱。</p></div>
+
+<h3 id="_6"><font color='red'>权衡是什么？</font></h3>
+<div class="admonition quote">
+<p class="admonition-title">Quote</p>
+<p>你知道人们常说经济学家知道一切东西的价格，却不知道任何东西的价值吗？那么，程序员知道一切东西的好处，却不知道任何东西的利弊
+<p align='right'>— Rich Hickey</p></p>
+</div>
+<p>每当我们在本书中引入一个架构模式时，我们总会问：“我们从中得到了什么？而我们又为此付出了什么代价？”</p>
+<p>通常，我们至少会引入一个额外的抽象层，尽管我们可能希望它能够从整体上降低复杂性，但它确实会在局部增加复杂性，并且在移动部件的原始数量和持续维护方面会产生成本</p>
+<p>不过，如果您已经走上了 DDD 和依赖反转路线，那么<code>Repository</code>模式可能是本书中最简单的选择之一。就我们的代码而言，我们实际上只是将SQLAlchemy抽象（<code>session.query(Batch)</code>）替换为我们设计的session.query(Batch)另一个抽象（<code>batches_repo.get</code>）。</p>
+<p>每次添加要检索的新域对象时，我们都必须在我们的存储库类中编写几行代码，但作为回报，我们会获得一个对我们控制的存储层的简单抽象。存储库模式可以轻松对我们存储事物的方式进行根本性的改变（参见 <a href="../t.Appendix%20B/">附录C csvs</a>），而且正如我们将看到的，它很容易被单元测试欺骗。</p>
+<p>此外，存储库模式在 DDD 世界中非常常见，如果您与从 Java 和 C# 领域转到 Python 的程序员合作，他们很可能会认出它。存储库模式说明了该模式。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0205.png" />
+    <figcaption><font size=2>图5.存储库模式</font></figcaption>
+</figure>
+<p>像往常一样，我们从测试开始。这个测试可能被归为集成测试，因为我们正在检查我们的代码（存储库）是否与数据库正确集成；因此，测试倾向于将原始 SQL 与我们自己的代码上的调用和断言混合在一起。</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>与之前的 ORM 测试不同，这些测试适合长期保留为您的代码库的一部分，特别是当您的领域模型的任何部分意味着对象关系图并不简单时。    </p>
+</div>
+<div class="language-py highlight"><span class="filename">用于保存对象的存储库测试（test_repository.py）</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">def</span> <span class="nf">test_repository_can_save_a_batch</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">batch</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Batch</span><span class="p">(</span><span class="s2">&quot;batch1&quot;</span><span class="p">,</span> <span class="s2">&quot;RUSTY-SOAPDISH&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="n">repo</span> <span class="o">=</span> <span class="n">repository</span><span class="o">.</span><span class="n">SqlAlchemyRepository</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>    <span class="n">repo</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>  <span class="c1">#(1)</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>  <span class="c1">#(2)</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="n">rows</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>  <span class="c1">#(3)</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>        <span class="s1">&#39;SELECT reference, sku, _purchased_quantity, eta FROM &quot;batches&quot;&#39;</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>    <span class="p">)</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>    <span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="p">[(</span><span class="s2">&quot;batch1&quot;</span><span class="p">,</span> <span class="s2">&quot;RUSTY-SOAPDISH&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="kc">None</span><span class="p">)]</span>
+</span></code></pre></div>
+<ol>
+<li><code>repo.add()</code>是这里测试的方法。</li>
+<li>我们暴露存储库的<code>.commit()</code>，并将其作为调用者的责任。这样做有利有弊；当我们到达 <a href="../i.Unit%20of%20Work%20Pattern/">6.工作单元模式</a> 时，我们的一些理由会变得更加清晰。</li>
+<li>我们使用原始 SQL 来验证正确的数据是否已保存。</li>
+</ol>
+<p>接下来的测试涉及检索批次和分配，所以它更加复杂：</p>
+<div class="language-py highlight"><span class="filename">用于检索复杂对象的存储库测试（test_repository.py）</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">def</span> <span class="nf">insert_order_line</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>  <span class="c1">#(1)</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>        <span class="s2">&quot;INSERT INTO order_lines (orderid, sku, qty)&quot;</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>        <span class="s1">&#39; VALUES (&quot;order1&quot;, &quot;GENERIC-SOFA&quot;, 12）&#39;</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    <span class="p">)</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>    <span class="p">[[</span><span class="n">orderline_id</span><span class="p">]]</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>        <span class="s2">&quot;SELECT id FROM order_lines WHERE orderid=:orderid AND sku=:sku&quot;</span><span class="p">,</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>        <span class="nb">dict</span><span class="p">(</span><span class="n">orderid</span><span class="o">=</span><span class="s2">&quot;order1&quot;</span><span class="p">,</span> <span class="n">sku</span><span class="o">=</span><span class="s2">&quot;GENERIC-SOFA&quot;</span><span class="p">),</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>    <span class="p">)</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>    <span class="k">return</span> <span class="n">orderline_id</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="k">def</span> <span class="nf">insert_batch</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">batch_id</span><span class="p">):</span>  <span class="c1">#(2)</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>    <span class="o">...</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="k">def</span> <span class="nf">test_repository_can_retrieve_a_batch_with_allocations</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>    <span class="n">orderline_id</span> <span class="o">=</span> <span class="n">insert_order_line</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>    <span class="n">batch1_id</span> <span class="o">=</span> <span class="n">insert_batch</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s2">&quot;batch1&quot;</span><span class="p">)</span>
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a>    <span class="n">insert_batch</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="s2">&quot;batch2&quot;</span><span class="p">)</span>
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>    <span class="n">insert_allocation</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">orderline_id</span><span class="p">,</span> <span class="n">batch1_id</span><span class="p">)</span>  <span class="c1">#(2)</span>
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a>
+</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a>    <span class="n">repo</span> <span class="o">=</span> <span class="n">repository</span><span class="o">.</span><span class="n">SqlAlchemyRepository</span><span class="p">(</span><span class="n">session</span><span class="p">)</span>
+</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a>    <span class="n">retrieved</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;batch1&quot;</span><span class="p">)</span>
+</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>
+</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>    <span class="n">expected</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Batch</span><span class="p">(</span><span class="s2">&quot;batch1&quot;</span><span class="p">,</span> <span class="s2">&quot;GENERIC-SOFA&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-9-26"><a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a>    <span class="k">assert</span> <span class="n">retrieved</span> <span class="o">==</span> <span class="n">expected</span>  <span class="c1"># Batch.__eq__ only compares reference  #(3)</span>
+</span><span id="__span-9-27"><a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a>    <span class="k">assert</span> <span class="n">retrieved</span><span class="o">.</span><span class="n">sku</span> <span class="o">==</span> <span class="n">expected</span><span class="o">.</span><span class="n">sku</span>  <span class="c1">#(4)</span>
+</span><span id="__span-9-28"><a id="__codelineno-9-28" name="__codelineno-9-28" href="#__codelineno-9-28"></a>    <span class="k">assert</span> <span class="n">retrieved</span><span class="o">.</span><span class="n">_purchased_quantity</span> <span class="o">==</span> <span class="n">expected</span><span class="o">.</span><span class="n">_purchased_quantity</span>
+</span><span id="__span-9-29"><a id="__codelineno-9-29" name="__codelineno-9-29" href="#__codelineno-9-29"></a>    <span class="k">assert</span> <span class="n">retrieved</span><span class="o">.</span><span class="n">_allocations</span> <span class="o">==</span> <span class="p">{</span>  <span class="c1">#(4)</span>
+</span><span id="__span-9-30"><a id="__codelineno-9-30" name="__codelineno-9-30" href="#__codelineno-9-30"></a>        <span class="n">model</span><span class="o">.</span><span class="n">OrderLine</span><span class="p">(</span><span class="s2">&quot;order1&quot;</span><span class="p">,</span> <span class="s2">&quot;GENERIC-SOFA&quot;</span><span class="p">,</span> <span class="mi">12</span><span class="p">),</span>
+</span><span id="__span-9-31"><a id="__codelineno-9-31" name="__codelineno-9-31" href="#__codelineno-9-31"></a>    <span class="p">}</span>
+</span></code></pre></div>
+<ol>
+<li>这个测试是针对读取方面的，因此原始 SQL 正在准备数据以供<code>repo.get()</code>读取。</li>
+<li>我们将为您省略<code>insert_batch</code> 和<code>insert_allocation</code> 的细节；重点是创建几个批次，并且对于我们感兴趣的批次，要有一个现有的订单行分配给它。</li>
+<li>这就是我们在这里验证的内容。第一个<code>assert ==</code>检查类型是否匹配，并且引用是否相同（因为，你记得的，Batch 是一个实体，我们为它定义了自定义的<code>__eq__</code>）。</li>
+<li>因此，我们还明确检查了它的主要属性，包括<code>._allocations</code>，它是一个包含<code>OrderLine</code>值对象的 Python 集合。</li>
+</ol>
+<p>是否要为每个模型精心编写测试是一个判断问题。一旦您已经为一个类测试了创建/修改/保存，您可能会愿意继续并对其他类进行最少的往返测试，甚至什么都不做，如果它们都遵循相似的模式。在我们的情况下，设置<code>._allocations</code>集合的 ORM 配置有点复杂，因此它值得进行特定的测试。</p>
+<p>最终你会得到如下结果：</p>
+<div class="language-py highlight"><span class="filename">典型的存储库（repository.py）</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">class</span> <span class="nc">SqlAlchemyRepository</span><span class="p">(</span><span class="n">AbstractRepository</span><span class="p">):</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">):</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Batch</span><span class="p">)</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">)</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">Batch</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+</span></code></pre></div>
+<p>现在我们的 Flask 端点可能看起来像这样：</p>
+<div class="language-py highlight"><span class="filename">直接在我们的 API 端点中使用我们的存储：</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nd">@flask</span><span class="o">.</span><span class="n">route</span><span class="o">.</span><span class="n">gubbins</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">def</span> <span class="nf">allocate_endpoint</span><span class="p">():</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="n">batches</span> <span class="o">=</span> <span class="n">SqlAlchemyRepository</span><span class="o">.</span><span class="n">list</span><span class="p">()</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>        <span class="n">OrderLine</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="s1">&#39;orderid&#39;</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="s1">&#39;sku&#39;</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="s1">&#39;qty&#39;</span><span class="p">])</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>         <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">params</span><span class="o">...</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="p">]</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    <span class="n">allocate</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">batches</span><span class="p">)</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    <span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>    <span class="k">return</span> <span class="mi">201</span>
+</span></code></pre></div>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px;">
+<p align='center'><strong style='font-size:1.6em;color:#186d7a'>读者练习</strong></p>
+<p>前几天，我们在 DDD 会议上遇到了一位朋友，他说：“我已经 10 年没有使用过 ORM 了。”存储库模式和 ORM 都充当原始 SQL 前面的抽象，因此没有必要前后使用一个。为什么不尝试在不使用 ORM 的情况下实现我们的存储库呢？您可以 <a src='https://github.com/cosmicpython/code/tree/chapter_02_repository_exercise'>Github</a>上找到代码。</p>
+<p>我们已经离开了存储库测试，但弄清楚要编写什么 SQL 取决于您。也许这会比您想象的更难；也许会更容易。但好消息是，您的应用程序的其余部分并不关心。</p>
+</div>
+
+<h2 id="_7"><font color='red'>构建一个用于测试的虚假存储库现在变得非常简单</font></h2>
+<p>这是存储库模式的最大优点之一：</p>
+<div class="language-py highlight"><span class="filename">使用集合的简单伪存储库（repository.py）</span><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">class</span> <span class="nc">FakeRepository</span><span class="p">(</span><span class="n">AbstractRepository</span><span class="p">):</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batches</span><span class="p">):</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_batches</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">batches</span><span class="p">)</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_batches</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="p">):</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_batches</span> <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">reference</span> <span class="o">==</span> <span class="n">reference</span><span class="p">)</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>    <span class="k">def</span> <span class="nf">list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_batches</span><span class="p">)</span>
+</span></code></pre></div>
+<p>由于它是一个简单的集合包装器，所有方法都是一行代码。</p>
+<p>测试中使用假存储库非常简单，我们有一个简单的抽象，易于使用和理解：</p>
+<div class="language-py highlight"><span class="filename">虚假存储库的使用示例</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">fake_repo</span> <span class="o">=</span> <span class="n">FakeRepository</span><span class="p">([</span><span class="n">batch1</span><span class="p">,</span> <span class="n">batch2</span><span class="p">,</span> <span class="n">batch3</span><span class="p">])</span>
+</span></code></pre></div>
+<p>你将在下一章节中看到这个假存储库实际应用。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>为您的抽象构建假象是获得设计反馈的绝佳方式：如果很难构建，那么抽象可能太复杂了。</p>
+</div>
+<h2 id="python"><font color='red'>Python中，什么是端口，什么是适配器？ </font></h2>
+<p>我们不想在这里过多地讨论术语，因为我们想要重点关注的是依赖倒置，而你使用的技术细节并不是太重要。此外，我们意识到不同的人可能使用稍微不同的定义。</p>
+<p>端口和适配器起源于OO，我们坚持的定义是，端口是我们的应用程序与我们希望抽象掉的任何东西之间的接口，适配器是该接口或抽象背后的实现。</p>
+<p>现在Python本身没有接口，所以虽然通常很容易识别出适配器，但定义端口可能更难。如果您使用的是抽象基类，则它就是端口。如果不是，端口就是您的适配器遵循的、核心应用程序所期望的鸭子类型——在用的函数和方法名称、参数名称和类型。</p>
+<p>具体地，在本章中，<code>AbstractRepository</code>是端口，<code>SqlAlchemyRepository</code>和<code>FakeRepository</code>是适配器。</p>
+<h2 id="_8"><font color='red'>总结</font></h2>
+<p>牢记 Rich Hickey 的名言，我们在每一章中总结了我们介绍的每种架构模式的成本和收益。我们想明确一点，我们并不是说每个应用程序都需要以这种方式构建；只有有时应用程序和领域的复杂性才值得投入时间和精力来添加这些额外的间接层。</p>
+<p>考虑到这一点，表1展示了存储库模式和我们的持久性无知模型的一些优缺点。</p>
+<p><font color='#186d7a'>表1.存储库模式和持久性无知：权衡</font></p>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>我们的持久性存储和领域模型之间有一个简单的接口。</td>
+<td>ORM已经帮助您带来一些解耦。更改外键可能很难，但如果你需要，切换到MySQL和Postgres应该相当容易</td>
+</tr>
+<tr>
+<td>由于我们已经将模型与基础设施问题完全分离，因此很容易制作用于单元测试的存储库的虚假版本，或者交换不同的存储解决方案。</td>
+<td>手动维护ORM映射需要额外的工作和额外的代码。</td>
+</tr>
+<tr>
+<td>在考虑持久性之前编写领域模型有助于我们专注于手头的业务问题。如果我们想彻底改变我们的方法，我们可以在我们的模型中做到这一点，而不必担心外键或迁移，直到以后再考虑。</td>
+<td>任何额外的间接层都会增加维护成本，并且对于以前从未见过 Repository 模式的 Python 程序员来说会增加“WTF 因素”。</td>
+</tr>
+<tr>
+<td>我们的数据库模式非常简单，因为我们可以完全控制如何将对象映射到表。</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>图6展示了基本论点：是的，对于简单情况，解耦的领域模型比简单的 ActiveRecord/ORM 模式更难。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>如果您的应用程序只是关于数据库简单的CRUD（创建-读取-更新-删除）封装，那么您就不需要一个领域模型或一个存储库。</p>
+</div>
+<p>但是，领域越复杂，从摆脱基础设施问题的角度看，投资越多，在更改的难易程度方面就会越有回报。</p>
+<figure>
+    <img align="center" alt="" src="https://read-code.oss-cn-beijing.aliyuncs.com/apwp_0206.png" />
+    <figcaption><font size=2>图6.领域模型权衡</font></figcaption>
+</figure>
+<p>我们的示例代码并不复杂到足以展示图表右侧的内容，但是其中确实有一些提示。例如，想象一下，如果有一天我们决定希望将分配更改为存在于订单行（OrderLine）上而不是批次（Batch）对象上：如果我们正在使用Django，那么我们必须在运行任何测试之前定义并考虑数据库迁移。然而，由于我们的模型只是普通的Python对象，我们可以将一个 set() 更改为一个新属性，而无需考虑数据库直到以后。</p>
+<div style="border:1px solid #e0e0dc;background:#f8f8f7;padding:15px;">
+<p align='center'><strong style='font-size:1.6em;color:#186d7a'>存储库模式总结</strong></p>
+<p><strong>将依赖倒置应用于您的ORM</strong></p>
+<p>我们的领域模型应该摆脱基础设施问题的影响，因此您的ORM应该导入您的模型，而不是相反。</p>
+<p><strong>存储库模式是围绕永久存储的简单抽象</strong></p>
+<p>该存储库让您感觉像是内存中对象的集合。它让您可以轻松创建一个FakeRepository用于测试的存储库，并交换基础架构的基本细节，而不会破坏您的核心应用程序。请参阅 [附录C csvs](./u.Appendix%20C.md)了解示例。</p>
+</div>
+
+<p>您可能想知道，我们如何实例化这些存储库（无论是假的还是真的）？我们的Flask应用程序实际上会是什么样子？您将会在下一篇激动人心的<a href="../g.Flask%20API%20and%20Service%20Layer/">服务层模式</a>中找到答案。</p>
+<p>但首先，让我们稍作偏离一下话题。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>
